@@ -18,7 +18,11 @@ set -e
 
 cd /home/user
 
-# TODO: implement full reproduction pipeline
-# e.g.:
-#   bash scripts/baseline.sh
-#   bash scripts/method.sh
+TASK="${1:-glue_rte}"
+BUDGET="${2:-100}"
+SEEDS="${3:-5}"
+GRID="${4:-96}"
+
+python data/prepare_modelselector.py --tasks "$TASK"
+bash scripts/baseline.sh "$TASK" "$BUDGET" "$SEEDS"
+bash scripts/method.sh "$TASK" "$BUDGET" "$SEEDS" "$GRID"

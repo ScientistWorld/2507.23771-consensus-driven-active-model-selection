@@ -26,5 +26,14 @@ cd /home/user
 
 mkdir -p scoring
 
-# TODO: implement evaluation using code in eval/
-# Must write scoring/scores.json at the end
+RESULTS_DIR="${1:-outputs/coda}"
+TASK="${2:-glue_rte}"
+EXPERIMENT="${3:-glue_rte_active_selection}"
+METHODS="${METHODS:-random uncertainty coda}"
+
+python eval/evaluate_results.py \
+  --results-dir "$RESULTS_DIR" \
+  --task "$TASK" \
+  --experiment "$EXPERIMENT" \
+  --methods $METHODS \
+  --output scoring/scores.json

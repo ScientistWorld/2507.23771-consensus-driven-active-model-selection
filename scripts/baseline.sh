@@ -17,4 +17,19 @@ set -e
 
 cd /home/user
 
-# TODO: run baseline
+TASK="${1:-glue_rte}"
+BUDGET="${2:-100}"
+SEEDS="${3:-5}"
+DATA_DIR="${DATA_DIR:-data/downloads/modelselector}"
+
+for METHOD in random uncertainty; do
+  python method/coda_reproduction.py \
+    --data-dir "$DATA_DIR" \
+    --task "$TASK" \
+    --method "$METHOD" \
+    --budget "$BUDGET" \
+    --seeds "$SEEDS" \
+    --output-dir outputs/coda
+done
+
+METHODS="random uncertainty" bash scripts/evaluate.sh outputs/coda "$TASK" "${TASK}_active_selection"

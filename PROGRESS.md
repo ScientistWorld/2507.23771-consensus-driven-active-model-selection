@@ -2,36 +2,28 @@
 
 ## What Works
 
-<!-- What has been successfully reproduced so far. -->
+The paper's CODA algorithm is implemented in `method/coda_reproduction.py`. It initializes consensus-informed Dirichlet confusion priors, computes probability of best model via row-wise Beta integration, selects labels by expected information gain, and updates beliefs with queried labels.
+
+The reusable data path uses public ModelSelector raw prediction files converted to portable `.npz` arrays in `data/downloads/modelselector/`. Evaluation in `eval/evaluate_results.py` reads output traces and does not import from `method/`.
 
 ## Results
 
-<!-- Reproduced numbers compared to the paper's reported numbers. -->
+A one-step smoke test on GLUE RTE ran successfully for CODA, random sampling, and uncertainty sampling. Full 100-label results are not available yet; `scripts/run.sh` is prepared to run the 100-step, 5-seed RTE experiment and write `scoring/scores.json`.
+
+Paper reference for GLUE RTE at step 100:
+
+- Random sampling cumulative regret: 375.7
+- Uncertainty cumulative regret: 390.3
+- CODA cumulative regret: 283.8
 
 ## Remaining
 
-<!-- What still needs to be done to reach higher milestones. -->
+Run the submitted CPU job, inspect `scoring/scores.json`, compare with `scoring/reference.json`, and iterate if CODA does not outperform the baselines on the core RTE setting.
 
 ## Issues
 
-<!-- Blockers, bugs, or difficulties encountered. -->
+The login-node PyTorch install path produced a broken GPU wheel, so the runnable reproduction avoids PyTorch by using verified ModelSelector `.npy` files converted to `.npz`. The authors' Google Drive CODA archive was still downloaded and lightly inspected.
 
 ## Deviations from Paper
 
-<!-- Do not edit this section unless you deviated from the paper's original setup.
-     For each deviation, document: what the paper used, what you substituted, and why.
-
-     ACCEPTABLE deviations (data/resource/scale substitutions — milestones still valid):
-       - Replaced a proprietary dataset with a public one
-       - Used a smaller model of the same architecture
-       - Scaled down training (fewer epochs, smaller batch)
-       - Used a different library for the same algorithm
-
-     UNACCEPTABLE deviations (algorithm substitutions — milestones above 'none' are void):
-       - Replaced the paper's algorithm with a fundamentally different one
-       - Wrote a generic model trained to approximate the method's outputs
-         instead of implementing the method's computational steps
-
-     The test: could someone reading your code identify which algorithm from
-     the paper you implemented? If not, you replaced the method. -->
-
+The core job uses the paper's GLUE RTE black-box/class-ID prediction setting through the original ModelSelector raw files instead of the authors' `.pt` release tensors. This is a data-format substitution only: the candidate predictions, labels, and task match the paper's ModelSelector-derived RTE benchmark, and CODA's algorithmic procedure is unchanged.

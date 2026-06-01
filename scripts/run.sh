@@ -13,8 +13,8 @@ set -e
 
 cd /home/user
 
-# Example: train a model
-python method/train.py --epochs 10 --lr 0.001
+python data/prepare_modelselector.py --tasks glue_rte glue_sst2
 
-# Example: evaluate
-bash scripts/evaluate.sh checkpoints/best.pt
+# Smoke-test the complete pipeline on a small released benchmark first.
+bash scripts/baseline.sh glue_rte 100 5
+bash scripts/method.sh glue_rte 100 5 96

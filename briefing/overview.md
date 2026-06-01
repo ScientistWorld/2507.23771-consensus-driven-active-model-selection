@@ -1,14 +1,16 @@
 # Overview
 
-- **Paper ID:** <!-- e.g. 1706.03762 -->
-- **Title:** <!-- e.g. Attention Is All You Need -->
-- **Domain:** <!-- e.g. Computer Vision / Object Detection -->
-- **TL;DR:** <!-- One sentence: what this paper does and why it matters -->
+- **Paper ID:** 2507.23771
+- **Title:** Consensus-Driven Active Model Selection
+- **Domain:** Active learning / model selection
+- **TL;DR:** CODA actively queries labels that best distinguish candidate classifiers by combining classifier consensus priors with Bayesian uncertainty over which model is best.
 
 ## Short Summary
 
-<!-- 3-5 sentences covering the problem, approach, and main findings -->
+The paper studies how to select the best model from a pool of pretrained classifiers for a target dataset without labeling a full validation set. CODA represents classifier behavior with Bayesian confusion matrices initialized from consensus predictions, then queries labels expected to reduce uncertainty over the best model. The paper evaluates 26 model-selection tasks and reports that CODA often finds a near-best model with far fewer labels than prior active model selection baselines.
 
 ## Key Results
 
-<!-- 2-3 bullet points: main findings or numbers in bullet points -->
+- CODA is best on 18 of 26 active model selection tasks at a 100-label budget.
+- On the reproduced GLUE RTE task, the paper reports cumulative regret 283.8 for CODA versus 375.7 for random sampling and 390.3 for uncertainty sampling.
+- The consensus prior alone is also reported to be competitive for unsupervised model selection on many tasks.
