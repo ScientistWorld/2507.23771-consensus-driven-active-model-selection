@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: core_claim**
+**Current: core_claim_plus**
 
 ## Progress Log
 
@@ -21,5 +21,11 @@
 - Reproduced the core active model selection claim: CODA reached cumulative regret 290.04, close to the paper's 283.8 and better than reproduced random sampling (420.51) and uncertainty sampling (371.84).
 - Validation with `python validate.py --compare` passed, including scoring schema and method/evaluation separation checks.
 
+### [2026-06-02 01:30] - core_claim_plus
+- Ran an additional 100-label GLUE SST2 experiment with two seeds and merged scoring.
+- CODA reached cumulative regret 51.72, essentially matching the paper's 51.7 and outperforming reproduced random sampling (345.47) and uncertainty sampling (100.92).
+- `scoring/scores.json` now contains both RTE and SST2 experiments with fixed label-budget, candidate-pool, and task-size constraint metrics.
+- Validation with `python validate.py --compare` passed for both experiments and all structure checks.
+
 ## Stop Justification
-- Not stopped. A CPU job is being submitted for an additional GLUE SST2 setting to attempt `core_claim_plus`.
+- Reproduction is stopping at `core_claim_plus`. The core claim is reproduced on RTE and an additional GLUE task; remaining work would be expanding to more of the paper's 26 task table or implementing secondary ablations.

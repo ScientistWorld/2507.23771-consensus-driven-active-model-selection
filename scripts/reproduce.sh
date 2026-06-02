@@ -23,6 +23,15 @@ BUDGET="${2:-100}"
 SEEDS="${3:-5}"
 GRID="${4:-128}"
 
+if [ "$TASK" = "all" ]; then
+  python data/prepare_modelselector.py --tasks glue_rte glue_sst2
+  bash scripts/baseline.sh glue_rte 100 5
+  bash scripts/method.sh glue_rte 100 5 128
+  MERGE_EXISTING=1 bash scripts/baseline.sh glue_sst2 100 2
+  MERGE_EXISTING=1 bash scripts/method.sh glue_sst2 100 2 64
+  exit 0
+fi
+
 python data/prepare_modelselector.py --tasks "$TASK"
 bash scripts/baseline.sh "$TASK" "$BUDGET" "$SEEDS"
 bash scripts/method.sh "$TASK" "$BUDGET" "$SEEDS" "$GRID"

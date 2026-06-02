@@ -28,9 +28,21 @@ Paper reference for GLUE RTE at step 100:
 - Uncertainty cumulative regret: 390.3
 - CODA cumulative regret: 283.8
 
-## Remaining
+## Expansion Result
 
-Run an additional GLUE SST2 setting to broaden beyond the core RTE reproduction. The SST2 run uses the same algorithm and 100-label budget, with two seeds and a smaller numerical integration grid to fit the CPU scheduler timeout.
+An additional GLUE SST2 setting was run to broaden beyond the core RTE reproduction. The SST2 run uses the same algorithm and 100-label budget, with two seeds and a smaller numerical integration grid to fit the CPU scheduler timeout.
+
+The SST2 expansion also supports the paper's claim:
+
+- Random sampling cumulative regret: 345.47
+- Uncertainty cumulative regret: 100.92
+- CODA cumulative regret: 51.72
+
+CODA essentially matches the paper's SST2 result of 51.7 and outperforms both reproduced baselines. This brings the workspace to `core_claim_plus`.
+
+## What Remains
+
+Further expansion would mean reproducing additional rows of the 26-task main table or adding the paper's ablations on priors and acquisition functions. The packaged gym already includes the method, two scored GLUE experiments, baselines, constraints, download script, and reusable evaluator.
 
 ## Issues
 
@@ -38,4 +50,4 @@ The login-node PyTorch install path produced a broken GPU wheel, so the runnable
 
 ## Deviations from Paper
 
-The core job uses the paper's GLUE RTE black-box/class-ID prediction setting through the original ModelSelector raw files instead of the authors' `.pt` release tensors. This is a data-format substitution only: the candidate predictions, labels, and task match the paper's ModelSelector-derived RTE benchmark, and CODA's algorithmic procedure is unchanged.
+The GLUE jobs use the paper's black-box/class-ID prediction setting through the original ModelSelector raw files instead of the authors' `.pt` release tensors. This is a data-format substitution only: the candidate predictions, labels, and tasks match the paper's ModelSelector-derived GLUE benchmarks, and CODA's algorithmic procedure is unchanged.
