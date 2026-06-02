@@ -27,4 +27,4 @@ if [ ! -e data/downloads/coda_data.zip ]; then
 fi
 
 python data/extract_coda_release.py --tasks glue_rte glue_sst2 cifar10_5592
-python data/prepare_modelselector.py --tasks glue_rte glue_sst2 cifar10_5592
+python data/prepare_modelselector.py --tasks glue_rte glue_sst2 glue_mrpc cifar10_5592

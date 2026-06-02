@@ -13,11 +13,11 @@ set -e
 
 cd /home/user
 
-python data/prepare_modelselector.py --tasks glue_rte glue_sst2
+python data/prepare_modelselector.py --tasks glue_mrpc
 
-# Add Table 5 no-label model-selection experiments without rerunning the
-# already completed 100-label active-selection jobs.
-MERGE_EXISTING=1 bash scripts/unsupervised.sh glue_rte 128
-MERGE_EXISTING=1 bash scripts/unsupervised.sh glue_sst2 64
+# Add another paper-reported active-selection task without rerunning the
+# already completed RTE/SST2 jobs.
+MERGE_EXISTING=1 bash scripts/baseline.sh glue_mrpc 100 5
+MERGE_EXISTING=1 bash scripts/method.sh glue_mrpc 100 5 128
 
 python validate.py --compare

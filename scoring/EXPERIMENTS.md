@@ -8,6 +8,10 @@ This experiment tests active model selection on a small natural-language classif
 
 This experiment repeats the active model selection test on a larger sentiment-classification benchmark. It checks whether the same label-efficient selection behavior transfers to a different GLUE task while keeping the candidate pool and label budget fixed.
 
+## glue_mrpc_active_selection
+
+This experiment adds a paraphrase-classification benchmark from the same prediction-suite family. It broadens the active-selection score beyond the two completed GLUE settings while preserving the fixed prediction pool and fixed annotation budget.
+
 ## glue_rte_unsupervised_selection
 
 This experiment tests model selection on GLUE RTE before any labels are queried. It measures whether the selected candidate is close to the best model in the pool under the strict zero-label budget used by the paper's unsupervised comparison.

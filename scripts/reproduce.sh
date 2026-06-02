@@ -24,11 +24,13 @@ SEEDS="${3:-5}"
 GRID="${4:-128}"
 
 if [ "$TASK" = "all" ]; then
-  python data/prepare_modelselector.py --tasks glue_rte glue_sst2
+  python data/prepare_modelselector.py --tasks glue_rte glue_sst2 glue_mrpc
   bash scripts/baseline.sh glue_rte 100 5
   bash scripts/method.sh glue_rte 100 5 128
   MERGE_EXISTING=1 bash scripts/baseline.sh glue_sst2 100 2
   MERGE_EXISTING=1 bash scripts/method.sh glue_sst2 100 2 64
+  MERGE_EXISTING=1 bash scripts/baseline.sh glue_mrpc 100 5
+  MERGE_EXISTING=1 bash scripts/method.sh glue_mrpc 100 5 128
   MERGE_EXISTING=1 bash scripts/unsupervised.sh glue_rte 128
   MERGE_EXISTING=1 bash scripts/unsupervised.sh glue_sst2 64
   exit 0

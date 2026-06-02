@@ -53,7 +53,9 @@ These match the paper's reported Table 5 scale: 14.8 for GLUE RTE and 3.6 for GL
 
 ## What Remains
 
-Further expansion would mean reproducing additional rows of the 26-task main table or adding the paper's ablations on priors and acquisition functions. The packaged gym already includes the method, two active GLUE experiments, two zero-label secondary experiments, baselines, constraints, download script, and reusable evaluator.
+The next queued expansion is GLUE MRPC active selection at the paper's 100-label budget. Paper targets are 318.2 cumulative regret for random sampling, 301.1 for uncertainty sampling, and 49.0 for CODA. The raw MRPC prediction and label files have been fetched into `data/downloads/modelselector_raw/glue_mrpc/`, and `scripts/run.sh` is prepared to convert them, run five seeds for CODA and both baselines, merge the result into `scoring/scores.json`, and validate.
+
+Further expansion after MRPC would mean reproducing additional rows of the 26-task main table or adding the paper's ablations on priors and acquisition functions. The packaged gym already includes the method, two active GLUE experiments, two zero-label secondary experiments, baselines, constraints, download script, and reusable evaluator.
 
 ## Issues
 

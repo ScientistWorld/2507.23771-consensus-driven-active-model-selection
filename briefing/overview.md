@@ -13,4 +13,5 @@ The paper studies how to select the best model from a pool of pretrained classif
 
 - CODA is best on 18 of 26 active model selection tasks at a 100-label budget.
 - On the reproduced GLUE RTE task, the paper reports cumulative regret 283.8 for CODA versus 375.7 for random sampling and 390.3 for uncertainty sampling.
+- On GLUE MRPC, the paper reports cumulative regret 49.0 for CODA versus 318.2 for random sampling and 301.1 for uncertainty sampling.
 - The consensus prior alone is also reported to be competitive for unsupervised model selection on many tasks.

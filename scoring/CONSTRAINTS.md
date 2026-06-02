@@ -2,7 +2,7 @@
 
 ## Data
 
-Use the provided GLUE prediction benchmarks in `data/downloads/modelselector/glue_rte.npz` and `data/downloads/modelselector/glue_sst2.npz`, or regenerate them with `data/prepare_modelselector.py`. The candidate model predictions, labels, number of items, and number of candidate models must remain fixed for each experiment. Do not add external labeled examples or replace the benchmark with a different task when reporting `glue_rte_active_selection` or `glue_sst2_active_selection`.
+Use the provided GLUE prediction benchmarks in `data/downloads/modelselector/glue_rte.npz`, `data/downloads/modelselector/glue_sst2.npz`, and `data/downloads/modelselector/glue_mrpc.npz`, or regenerate them with `data/prepare_modelselector.py`. The candidate model predictions, labels, number of items, and number of candidate models must remain fixed for each experiment. Do not add external labeled examples or replace the benchmark with a different task when reporting an active-selection experiment.
 
 ## Label Budget
 

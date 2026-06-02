@@ -1,8 +1,10 @@
 # Reproduction Milestones
 
-**Current: core_claim_plus**
+**Current: secondary_claims**
 
 ## Progress Log
 
-## Stop Justification
-- Completed at milestone `core_claim_plus`.
+### [2026-06-02 01:59] - secondary_claims
+- Active-selection core claim reproduced on GLUE RTE and GLUE SST2.
+- Zero-label unsupervised selection claim reproduced on GLUE RTE and GLUE SST2.
+- Prepared a follow-up GLUE MRPC active-selection run to broaden the benchmark.

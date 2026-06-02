@@ -14,6 +14,13 @@ Tests the same active model selection objective on GLUE SST2, which has a larger
 - **Metric:** `cumulative_regret_at_100` (lower is better)
 - **Run:** `MERGE_EXISTING=1 bash scripts/method.sh glue_sst2 100 2 64`
 
+## Additional: glue_mrpc_active_selection
+
+Tests the active model selection objective on another ModelSelector-derived GLUE task, using the same 100-label budget and fixed candidate pool.
+
+- **Metric:** `cumulative_regret_at_100` (lower is better)
+- **Run:** `MERGE_EXISTING=1 bash scripts/method.sh glue_mrpc 100 5 128`
+
 ## Secondary: zero_label_selection
 
 Tests whether a selector can choose a strong model before querying any labels, matching the paper's Table 5 setup.

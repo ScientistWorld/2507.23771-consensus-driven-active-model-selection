@@ -18,6 +18,8 @@ The core reproduced benchmark uses GLUE RTE from the paper's ModelSelector-deriv
 
 The secondary zero-label targets reproduced here are GLUE RTE initial regret 14.8 and GLUE SST2 initial regret 3.6 for both the proposed method and the unsupervised ensemble-validation baseline.
 
+The next active expansion target is GLUE MRPC. The paper reports cumulative regret 318.2 for random sampling, 301.1 for uncertainty sampling, and 49.0 for the proposed method at a 100-label budget.
+
 ## Evaluation Protocol
 
 Evaluation reads method-produced JSON traces from `outputs/coda/<task>/<method>/seed_*.json`. It does not call implementation code from `method/`. Each trace records the selected model at each active labeling step, and the evaluator aggregates metrics across seeds into `scoring/scores.json`.
