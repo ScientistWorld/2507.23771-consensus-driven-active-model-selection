@@ -51,6 +51,12 @@ The completed CPU job `f500fff1-d02` added the paper's zero-label unsupervised s
 
 These match the paper's reported Table 5 scale: 14.8 for GLUE RTE and 3.6 for GLUE SST2. `python validate.py --compare` passes with all four scored experiments.
 
+## Continuing Audit
+
+The continuing-agent audit restored the prior `secondary_claims` milestone. The method code contains CODA's consensus labels, consensus-confusion Dirichlet prior, probability-of-best integration, expected-information-gain acquisition, and online posterior updates. The evaluator reads method output traces and does not execute or import method code.
+
+The audit found one scoring-completeness gap: `scoring/TARGETS.md` and `scoring/reference.json` now include `glue_mrpc_active_selection`, but `scoring/scores.json` does not yet contain that experiment. `scripts/run.sh` is prepared to run MRPC conversion, random and uncertainty baselines, CODA, score merging, and `python validate.py --compare`; that CPU job is being submitted.
+
 ## What Remains
 
 The next queued expansion is GLUE MRPC active selection at the paper's 100-label budget. Paper targets are 318.2 cumulative regret for random sampling, 301.1 for uncertainty sampling, and 49.0 for CODA. The raw MRPC prediction and label files have been fetched into `data/downloads/modelselector_raw/glue_mrpc/`, and `scripts/run.sh` is prepared to convert them, run five seeds for CODA and both baselines, merge the result into `scoring/scores.json`, and validate.

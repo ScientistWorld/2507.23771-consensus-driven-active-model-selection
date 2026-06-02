@@ -5,4 +5,4 @@ action: submit
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Run GLUE MRPC active model selection for CODA plus random and uncertainty baselines, merge scores, and validate."
+notes: "Audit restored secondary_claims; submit the missing GLUE MRPC active-selection CPU run, merge scores, and validate TARGETS completeness."
