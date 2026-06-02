@@ -87,7 +87,7 @@ The first corrective CPU rerun timed out at the scheduler's 3600-second CPU limi
 
 The first evaluation-only job wrote corrected main scores for RTE, SST2, MRPC, and the zero-label secondary experiments, but validation failed on the auxiliary train/test split because zero-label CODA and EnsV intentionally tie on the primary metric. The main evaluator still scores those secondary experiments. The train/test evaluators now default to active-selection experiments only, where the traces are discriminative optimization targets for future scientists.
 
-The second evaluation-only CPU job completed successfully. `python validate.py --compare` passes with corrected main scores, visible train scores, and held-out test scores. The supported milestone is restored to `secondary_claims`.
+The second evaluation-only CPU job completed successfully. `python validate.py --compare` passes with corrected main scores, visible train scores, and held-out test scores. A stricter follow-up validation rejected MRPC in the auxiliary train/test split because the one corrected CODA seed is unstable when rescored on half-splits. MRPC remains in the main `scores.json`; the auxiliary split now covers the stable RTE and SST2 active-selection settings only. The supported milestone remains `secondary_claims`.
 
 Corrected final main scores:
 

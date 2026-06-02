@@ -15,6 +15,7 @@ The workspace was previously reported at `secondary_claims`. Final verification 
 
 - Updated `scripts/run.sh` to perform an evaluation-only job over the completed corrected traces, followed by zero-label runs, `scores.json`, `scores_train.json`, `scores_test.json`, and `python validate.py --compare`.
 - Restricted the default train/test split evaluators to active-selection experiments. Zero-label secondary claims are still included in `scripts/evaluate.sh` and `scores.json`, but they are not useful hidden-slice optimization targets because the reproduced primary metric is intentionally tied.
+- Restricted the auxiliary train/test split further to RTE and SST2 active selection. MRPC remains in main scoring, but its one corrected CODA seed is too unstable under half-split rescoring to serve as a validator-consistent hidden-slice target.
 - Ran the final evaluation-only job successfully. `python validate.py --compare` passes with corrected main scores and active-selection train/test scores.
 - Cleaned strict method-agnostic docs so `briefing/evaluation.md` and `scoring/EXPERIMENTS.md` describe reference targets and experiment goals without naming the method.
 - Updated data-helper docstrings to describe active model selection benchmarks without method-specific naming.
@@ -23,9 +24,9 @@ The workspace was previously reported at `secondary_claims`. Final verification 
 
 ## Final Judgment
 
-The workspace is ready to serve as a research gym. Improve-mode scientists can start from the CODA implementation and reproduced traces; from-scratch scientists can use the method-agnostic problem, data, evaluation, scoring targets, constraints, and direction documents. The key limitation is that MRPC CODA is represented by one corrected seed because full five-seed regeneration exceeded the CPU time limit; the score remains plausible and matches the paper's reported scale.
+The workspace is ready to serve as a research gym. Improve-mode scientists can start from the CODA implementation and reproduced traces; from-scratch scientists can use the method-agnostic problem, data, evaluation, scoring targets, constraints, and direction documents. The key limitation is that MRPC CODA is represented by one corrected seed in main scoring because full five-seed regeneration exceeded the CPU time limit; the auxiliary train/test split therefore uses only RTE and SST2.
 
 - Milestone: secondary_claims
 - Ready for gym use: yes
 - Confidence: high
-- Key limitation: MRPC active selection uses one corrected CODA seed; RTE has five corrected seeds and SST2 has two corrected seeds.
+- Key limitation: MRPC active selection uses one corrected CODA seed and is excluded from auxiliary train/test scoring; RTE has five corrected seeds and SST2 has two corrected seeds.

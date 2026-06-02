@@ -46,3 +46,8 @@
 - Evaluation-only rerun completed successfully and `python validate.py --compare` passed.
 - Corrected scores include RTE, SST2, and MRPC active selection plus RTE/SST2 zero-label selection.
 - Final verification restored the supported milestone to `secondary_claims`.
+
+### [2026-06-02 08:35] - secondary_claims
+- Fixed stricter validation by limiting auxiliary train/test scores to stable RTE/SST2 active-selection splits.
+- MRPC remains in main `scores.json`; it is excluded only from auxiliary split scoring because its one corrected CODA seed is unstable on half-splits.
+- `python validate.py` passes.

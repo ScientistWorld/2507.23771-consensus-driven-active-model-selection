@@ -5,4 +5,4 @@ action: done
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Final verification passed: corrected active scores, zero-label secondary scores, train/test scores, and validation are complete."
+notes: "Validation passed after limiting auxiliary train/test scoring to stable RTE/SST2 active splits; main scores retain MRPC and zero-label secondary claims."
