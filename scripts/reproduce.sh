@@ -21,7 +21,7 @@ cd /home/user
 TASK="${1:-glue_rte}"
 BUDGET="${2:-100}"
 SEEDS="${3:-5}"
-GRID="${4:-96}"
+GRID="${4:-128}"
 
 python data/prepare_modelselector.py --tasks "$TASK"
 bash scripts/baseline.sh "$TASK" "$BUDGET" "$SEEDS"

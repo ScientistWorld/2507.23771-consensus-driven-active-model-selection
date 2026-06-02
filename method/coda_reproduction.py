@@ -67,6 +67,7 @@ class CODASelector:
     alpha: float = 0.1
     temperature: float = 0.5
     eta: float = 0.01
+    eig_update_weight: float = 1.0
     num_grid: int = 128
     acquisition: str = "eig"
 
@@ -123,7 +124,12 @@ class CODASelector:
             for c in range(self.c_count):
                 d = self.dirichlet.copy()
                 for h, pred_c in enumerate(self.pred_classes[:, item_idx]):
-                    d[h, c, pred_c] += self.eta
+                    # The released CODA implementation evaluates information
+                    # gain under a unit hypothetical observation, while the
+                    # committed label update below uses the smaller online
+                    # learning rate. Keeping these separate is material: using
+                    # eta here makes EIG almost flat on small benchmarks.
+                    d[h, c, pred_c] += self.eig_update_weight
                 diag = np.diagonal(d, axis1=1, axis2=2)
                 rest = d.sum(axis=-1) - diag
                 row_pbest = pbest_from_betas(diag, np.clip(rest, 1e-9, None), self.num_grid)
@@ -256,7 +262,7 @@ def main() -> None:
     parser.add_argument("--method", default="coda")
     parser.add_argument("--budget", type=int, default=100)
     parser.add_argument("--seeds", type=int, default=5)
-    parser.add_argument("--coda-grid", type=int, default=96)
+    parser.add_argument("--coda-grid", type=int, default=128)
     parser.add_argument("--output-dir", default="outputs/coda")
     args = parser.parse_args()
 

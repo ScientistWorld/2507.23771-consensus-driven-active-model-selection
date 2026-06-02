@@ -13,7 +13,7 @@ cd /home/user
 TASK="${1:-glue_rte}"
 BUDGET="${2:-100}"
 SEEDS="${3:-5}"
-GRID="${4:-96}"
+GRID="${4:-128}"
 DATA_DIR="${DATA_DIR:-data/downloads/modelselector}"
 
 python method/coda_reproduction.py \

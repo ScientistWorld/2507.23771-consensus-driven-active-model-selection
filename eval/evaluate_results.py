@@ -16,8 +16,9 @@ import numpy as np
 def summarize_trace(trace: dict, tolerance: float = 1.0) -> dict[str, float]:
     regrets = np.asarray([step["regret"] for step in trace["steps"]], dtype=np.float64)
     budget = int(trace["budget"])
+    post_query = regrets[1 : min(budget + 1, len(regrets))]
     return {
-        "cumulative_regret_at_100": float(regrets[: min(101, len(regrets))].sum()),
+        "cumulative_regret_at_100": float(post_query.sum()),
         "instant_regret_at_100": float(regrets[-1]),
         "label_budget": float(budget),
         "num_models": float(trace["num_models"]),

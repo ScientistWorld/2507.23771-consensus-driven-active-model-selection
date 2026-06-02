@@ -17,4 +17,4 @@ python data/prepare_modelselector.py --tasks glue_rte glue_sst2
 
 # Smoke-test the complete pipeline on a small released benchmark first.
 bash scripts/baseline.sh glue_rte 100 5
-bash scripts/method.sh glue_rte 100 5 96
+bash scripts/method.sh glue_rte 100 5 128

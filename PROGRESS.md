@@ -8,7 +8,11 @@ The reusable data path uses public ModelSelector raw prediction files converted 
 
 ## Results
 
-A one-step smoke test on GLUE RTE ran successfully for CODA, random sampling, and uncertainty sampling. Full 100-label results are not available yet; `scripts/run.sh` is prepared to run the 100-step, 5-seed RTE experiment and write `scoring/scores.json`.
+A one-step smoke test on GLUE RTE ran successfully for CODA, random sampling, and uncertainty sampling.
+
+The first full 100-label, 5-seed GLUE RTE job completed, but did not support the core claim. It produced cumulative regret values of 432.42 for random sampling, 383.75 for uncertainty sampling, and 477.26 for CODA when including the step-0 prior regret. After matching the paper's post-query cumulative regret convention, those traces correspond to 420.51 for random sampling, 371.84 for uncertainty sampling, and 462.45 for CODA. Since CODA was worse than the baselines, the milestone remains `method_runs`.
+
+The retry fixes a reproduction divergence found against the released implementation: CODA's EIG acquisition evaluates hypothetical observations with a unit pseudo-count, while the actual posterior update uses the smaller online learning rate. The previous implementation used the learning rate for both, making EIG too flat on RTE.
 
 Paper reference for GLUE RTE at step 100:
 
@@ -18,7 +22,7 @@ Paper reference for GLUE RTE at step 100:
 
 ## Remaining
 
-Run the submitted CPU job, inspect `scoring/scores.json`, compare with `scoring/reference.json`, and iterate if CODA does not outperform the baselines on the core RTE setting.
+Run the corrected CPU job, inspect `scoring/scores.json`, compare with `scoring/reference.json`, and iterate if CODA does not outperform the baselines on the core RTE setting.
 
 ## Issues
 
