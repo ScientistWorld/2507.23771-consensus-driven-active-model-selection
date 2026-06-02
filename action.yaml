@@ -1,8 +1,8 @@
 # End-of-turn action for the scheduler.
 # Use submit when a compute rerun is needed; use done only after
 # regenerated artifacts pass validation.
-action: done
+action: submit
 gpus: 0
 test: false
-milestone: secondary_claims
-notes: "Cleaned split score artifacts so validation passes."
+milestone: method_runs
+notes: "Corrective CPU rerun after aligning CODA acquisition with released disagreement-candidate filtering and fixing evaluator to recompute regrets from benchmark data."
