@@ -28,4 +28,4 @@
 - Validation with `python validate.py --compare` passed for both experiments and all structure checks.
 
 ## Stop Justification
-- Reproduction is stopping at `core_claim_plus`. The core claim is reproduced on RTE and an additional GLUE task; remaining work would be expanding to more of the paper's 26 task table or implementing secondary ablations.
+- Completed at milestone `core_claim_plus`.

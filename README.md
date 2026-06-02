@@ -1,26 +1,117 @@
+# Overview
+
+- **Paper ID:** 2507.23771
+- **Title:** Consensus-Driven Active Model Selection
+- **Domain:** Active learning / model selection
+- **TL;DR:** CODA actively queries labels that best distinguish candidate classifiers by combining classifier consensus priors with Bayesian uncertainty over which model is best.
+
+## Short Summary
+
+The paper studies how to select the best model from a pool of pretrained classifiers for a target dataset without labeling a full validation set. CODA represents classifier behavior with Bayesian confusion matrices initialized from consensus predictions, then queries labels expected to reduce uncertainty over the best model. The paper evaluates 26 model-selection tasks and reports that CODA often finds a near-best model with far fewer labels than prior active model selection baselines.
+
+## Key Results
+
+- CODA is best on 18 of 26 active model selection tasks at a 100-label budget.
+- On the reproduced GLUE RTE task, the paper reports cumulative regret 283.8 for CODA versus 375.7 for random sampling and 390.3 for uncertainty sampling.
+- The consensus prior alone is also reported to be competitive for unsupervised model selection on many tasks.
+
+---
+
 # Problem Definition
-
-What problem does this paper address? Write this so that someone with no knowledge of the paper can understand what needs to be solved and how success is measured.
-
-Do NOT describe the paper's method or solution here — only the problem itself. Think about if a future scientist agent try to solve this problem from scratch without knowing what approach the paper took. If you leak the solution, you compromise the benchmark.
 
 ## Research Question
 
-<!-- What problem or challenge does this paper tackle? What gap in existing work does it address? -->
+Given a fixed pool of candidate classifiers that have already produced predictions on an unlabeled test set, identify the classifier with the best test accuracy while requesting as few ground-truth labels as possible.
 
 ## Why It Matters
 
-<!-- Why is this problem important? What would a good solution enable? Make it short -->
+Selecting among many pretrained or domain-adapted models normally requires a labeled validation set. A label-efficient selector reduces annotation cost for users who need to choose a model for a new deployment distribution.
 
 ## Success Criteria
 
-<!-- What would a successful solution look like? What properties should it have? This is about the goal, not the paper's specific approach. Make it short -->
+A successful solution should choose a near-best or best candidate model early in the label acquisition process. It should achieve low instantaneous and cumulative regret under a fixed label budget, on the same prediction tensors and hidden labels used by all compared methods.
+
+---
+
+# Paper's Method
+
+## Key Contribution
+
+The paper introduces CODA, a consensus-driven active model selection algorithm that uses agreement and disagreement among candidate classifiers to decide which test-set labels are most informative for selecting the best model.
+
+## Approach
+
+CODA models each classifier with a per-class confusion matrix in a Bayesian Dawid-Skene-style framework. It initializes Dirichlet priors for these confusion matrices using consensus labels formed by summing predictions across the candidate pool, regularized by a diagonal prior. At each step it estimates the probability that each candidate model is best by integrating over row-wise Beta distributions for class accuracy. It then scores unlabeled items by expected information gain in that probability-of-best distribution, queries the highest-scoring label, and applies Dirichlet-categorical updates to the affected confusion-matrix rows.
+
+## Main Claims
+
+The primary claim is that CODA reduces annotation effort for active model selection, achieving lower cumulative regret at a 100-label budget than prior active selection methods on most benchmark tasks. Secondary claims include strong unsupervised initialization from the consensus prior and ablation evidence that the consensus prior and expected-information-gain acquisition improve early label efficiency.
+
+---
+
+# Evaluation
+
+## Metrics
+
+The primary metric is cumulative regret at 100 label queries. At each step, regret is the difference between the empirical 0-1 loss of the selected model and the empirical 0-1 loss of the true best model on the full benchmark labels. Lower is better.
+
+Secondary metrics include instantaneous regret at step 100 and fixed-resource checks: the label budget, number of candidate models, and number of evaluated items.
+
+## Baselines and Targets
+
+The core reproduced benchmark uses GLUE RTE from the paper's ModelSelector-derived task suite. Paper-reported targets are taken from the active model selection tables:
+
+- Random sampling: cumulative regret 375.7 at step 100; instantaneous regret 1.2 at step 100.
+- Uncertainty sampling: cumulative regret 390.3 at step 100; instantaneous regret 0.0 at step 100.
+- Proposed method: cumulative regret 283.8 at step 100; instantaneous regret 0.0 at step 100.
+
+## Evaluation Protocol
+
+Evaluation reads method-produced JSON traces from `outputs/coda/<task>/<method>/seed_*.json`. It does not call implementation code from `method/`. Each trace records the selected model at each active labeling step, and the evaluator aggregates metrics across seeds into `scoring/scores.json`.
+
+---
+
+# Reproduction Log
+
+### Iteration 1: gpt-5.5
+- **Milestone**: `core_claim_plus` | **Status**: done
+- **Working time**: 18m | **GPU**: 0.0h
+- **Jobs**: 3 total (3 completed, 0 failed)
+
+<details>
+<summary>Progress Log</summary>
+
+### [2026-06-01 23:14] - method_runs
+- Read the paper and identified CODA's core computational steps: consensus confusion priors, Beta-mixture probability of best model, expected information gain acquisition, and Dirichlet updates.
+- Implemented a standalone CODA reproduction and random/uncertainty active model selection baselines.
+- Downloaded the authors' released CODA archive and verified a smaller portable ModelSelector data path for GLUE/MSV raw prediction files.
+- Ran a one-step local smoke test on released GLUE RTE predictions; CODA, baselines, trace writing, and method-independent evaluation all executed successfully.
+
+### [2026-06-02 00:00] - method_runs
+- Completed the first 100-label, 5-seed GLUE RTE job without runtime errors.
+- The first full run did not support CODA's core claim: CODA's cumulative regret was worse than random and uncertainty baselines.
+- Identified and fixed an implementation divergence from the released CODA code: EIG hypothetical label updates now use a unit pseudo-count, while actual posterior updates keep the paper's small learning rate.
+- Updated evaluation to accumulate regret only after label queries, matching the paper's reported cumulative-regret convention.
+
+### [2026-06-02 00:35] - core_claim
+- Reran the 100-label, 5-seed GLUE RTE experiment after the EIG fix.
+- Reproduced the core active model selection claim: CODA reached cumulative regret 290.04, close to the paper's 283.8 and better than reproduced random sampling (420.51) and uncertainty sampling (371.84).
+- Validation with `python validate.py --compare` passed, including scoring schema and method/evaluation separation checks.
+
+### [2026-06-02 01:30] - core_claim_plus
+- Ran an additional 100-label GLUE SST2 experiment with two seeds and merged scoring.
+- CODA reached cumulative regret 51.72, essentially matching the paper's 51.7 and outperforming reproduced random sampling (345.47) and uncertainty sampling (100.92).
+- `scoring/scores.json` now contains both RTE and SST2 experiments with fixed label-budget, candidate-pool, and task-size constraint metrics.
+- Validation with `python validate.py --compare` passed for both experiments and all structure checks.
+
+</details>
+
 
 ---
 
 # Reproduction Milestones
 
-**Current: none**
+**Current: core_claim_plus**
 
 ## Stop Justification
-- Completed at milestone `none`.
+- Completed at milestone `core_claim_plus`.

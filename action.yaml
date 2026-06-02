@@ -27,9 +27,8 @@
 #   milestone: core_claim
 #   notes: "Reproduced the core claim. Environment packaged."
 
-action: submit
+action: done
 gpus: 0
 test: false
-milestone: method_runs
-milestone: core_claim
-notes: "Run the additional GLUE SST2 active model selection experiment with two seeds and merged scoring to attempt core_claim_plus."
+milestone: core_claim_plus
+notes: "Reproduced CODA's core active model selection claim on GLUE RTE and an additional GLUE SST2 setting. Validation passes and the environment is packaged."
