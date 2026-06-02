@@ -107,6 +107,14 @@
           "label_budget": 100.0,
           "num_models": 95.0,
           "num_items": 408.0
+        },
+        "coda": {
+          "initial_regret": 0.9803921568627416,
+          "cumulative_regret_at_100": 49.01960784313707,
+          "instant_regret_at_100": 0.4901960784313708,
+          "label_budget": 100.0,
+          "num_models": 95.0,
+          "num_items": 408.0
         }
       }
     }
