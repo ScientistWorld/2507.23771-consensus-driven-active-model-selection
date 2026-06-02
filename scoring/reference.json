@@ -126,6 +126,14 @@
         "num_items": {
           "higher_is_better": true,
           "coefficient": 0.05
+        },
+        "cumulative_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -0.05
+        },
+        "instant_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -0.2
         }
       },
       "results": {
@@ -134,14 +142,18 @@
           "initial_regret": 14.8,
           "label_budget": 0,
           "num_models": 87,
-          "num_items": 277
+          "num_items": 277,
+          "cumulative_regret_at_100": 0.0,
+          "instant_regret_at_100": 14.8
         },
         "coda": {
           "type": "proposed",
           "initial_regret": 14.8,
           "label_budget": 0,
           "num_models": 87,
-          "num_items": 277
+          "num_items": 277,
+          "cumulative_regret_at_100": 0.0,
+          "instant_regret_at_100": 14.8
         }
       }
     },
@@ -165,6 +177,14 @@
         "num_items": {
           "higher_is_better": true,
           "coefficient": 0.05
+        },
+        "cumulative_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -0.05
+        },
+        "instant_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -0.2
         }
       },
       "results": {
@@ -173,14 +193,18 @@
           "initial_regret": 3.6,
           "label_budget": 0,
           "num_models": 97,
-          "num_items": 872
+          "num_items": 872,
+          "cumulative_regret_at_100": 0.0,
+          "instant_regret_at_100": 3.6
         },
         "coda": {
           "type": "proposed",
           "initial_regret": 3.6,
           "label_budget": 0,
           "num_models": 97,
-          "num_items": 872
+          "num_items": 872,
+          "cumulative_regret_at_100": 0.0,
+          "instant_regret_at_100": 3.6
         }
       }
     }
