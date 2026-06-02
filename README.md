@@ -13,6 +13,7 @@ The paper studies how to select the best model from a pool of pretrained classif
 
 - CODA is best on 18 of 26 active model selection tasks at a 100-label budget.
 - On the reproduced GLUE RTE task, the paper reports cumulative regret 283.8 for CODA versus 375.7 for random sampling and 390.3 for uncertainty sampling.
+- On GLUE MRPC, the paper reports cumulative regret 49.0 for CODA versus 318.2 for random sampling and 301.1 for uncertainty sampling.
 - The consensus prior alone is also reported to be competitive for unsupervised model selection on many tasks.
 
 ---
@@ -68,6 +69,8 @@ The core reproduced benchmark uses GLUE RTE from the paper's ModelSelector-deriv
 - Proposed method: cumulative regret 283.8 at step 100; instantaneous regret 0.0 at step 100.
 
 The secondary zero-label targets reproduced here are GLUE RTE initial regret 14.8 and GLUE SST2 initial regret 3.6 for both the proposed method and the unsupervised ensemble-validation baseline.
+
+The next active expansion target is GLUE MRPC. The paper reports cumulative regret 318.2 for random sampling, 301.1 for uncertainty sampling, and 49.0 for the proposed method at a 100-label budget.
 
 ## Evaluation Protocol
 
@@ -131,12 +134,39 @@ Evaluation reads method-produced JSON traces from `outputs/coda/<task>/<method>/
 
 </details>
 
+### Iteration 3: gpt-5.5
+- **Milestone**: `secondary_claims` | **Status**: done
+- **Working time**: 8m | **GPU**: 0.0h
+- **Jobs**: 7 total (4 completed, 3 failed)
+
+<details>
+<summary>Progress Log</summary>
+
+### [2026-06-02 01:59] - secondary_claims
+- Active-selection core claim reproduced on GLUE RTE and GLUE SST2.
+- Zero-label unsupervised selection claim reproduced on GLUE RTE and GLUE SST2.
+- Prepared a follow-up GLUE MRPC active-selection run to broaden the benchmark.
+
+### [2026-06-02 02:01] - secondary_claims
+- Continuing-agent audit confirmed the implementation is CODA's consensus-driven active model selection algorithm rather than a surrogate.
+- `python validate.py --compare` passes for the completed RTE/SST2 active and zero-label experiments, and eval/data do not import from `method/`.
+- `scoring/TARGETS.md` includes GLUE MRPC active selection, but `scoring/scores.json` does not yet include it, so the MRPC CPU job is being submitted instead of marking the workspace done.
+
+### [2026-06-02 03:04] - secondary_claims
+- MRPC CPU job timed out after 3600 seconds, but completed random and uncertainty baselines plus CODA seeds 0, 1, and 2.
+- Added resume-safe seed skipping to the method runner and updated `scripts/run.sh` to finish missing CODA seeds 3 and 4.
+- Resubmitting a CPU continuation job to merge the completed five-seed MRPC result into `scoring/scores.json` and validate.
+
+### [2026-06-02 03:40] - secondary_claims
+- MRPC continuation completed CODA seeds 3 and 4 and produced a five-seed MRPC active-selection result.
+- Fixed the evaluator to emit only metrics declared for each experiment in `scoring/reference.json`, and removed its unnecessary NumPy dependency.
+- `python validate.py --compare` now passes with RTE, SST2, MRPC active selection plus RTE/SST2 zero-label selection.
+
+</details>
+
 
 ---
 
 # Reproduction Milestones
 
-**Current: core_claim_plus**
-
-## Stop Justification
-- Completed at milestone `core_claim_plus`.
+**Current: secondary_claims**
