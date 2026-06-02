@@ -293,7 +293,7 @@ def trace_is_complete(path: Path, budget: int) -> bool:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data-dir", default="data/downloads/coda_data")
+    parser.add_argument("--data-dir", default="data/downloads/modelselector")
     parser.add_argument("--task", default="cifar10_5592")
     parser.add_argument("--method", default="coda")
     parser.add_argument("--budget", type=int, default=100)

@@ -1,8 +1,8 @@
 # End-of-turn action for the scheduler.
 # Use submit when a compute rerun is needed; use done only after
 # regenerated artifacts pass validation.
-action: submit
+action: done
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Rerun split scoring after filtering zero-budget active leaks, deduplicating identical unsupervised rows, and using full-benchmark oracle regret on slices."
+notes: "Aligned method default data path with download-generated ModelSelector artifacts."
