@@ -2,8 +2,8 @@
 # Once you set action to 'done', STOP immediately.
 # Do NOT sleep, poll, or wait. The system reads this file
 # only after your turn ends.
-action: done
+action: submit
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Improvements: full-experiment train/test enumeration, active curve triangulation metrics, complete metric descriptions, slice markers, separate unsupervised result directory. Notes: see DESIGN_NOTES.md for runtime concerns."
+notes: "Run evaluate_train.sh and evaluate_test.sh against saved final method traces; populate split score files."
