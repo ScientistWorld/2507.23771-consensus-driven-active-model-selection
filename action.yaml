@@ -5,4 +5,4 @@ action: submit
 gpus: 0
 test: false
 milestone: method_runs
-notes: "Evaluation-only job over corrected RTE/SST2 traces and one corrected MRPC seed; write scores, train/test scores, and validate."
+notes: "Re-run evaluation after restricting train/test splits to active-selection experiments; refresh scores and validate."

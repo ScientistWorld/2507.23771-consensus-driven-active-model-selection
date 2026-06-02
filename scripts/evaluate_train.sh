@@ -1,7 +1,8 @@
 #!/bin/bash
 # Evaluate the visible train slice of method-produced active-selection traces.
 #
-# With no task/experiment arguments, evaluates every configured experiment.
+# With no task/experiment arguments, evaluates active-selection experiments.
+# Zero-label secondary claims are scored by scripts/evaluate.sh.
 #   ./scripts/evaluate_train.sh [active_results_dir] [task] [experiment]
 
 set -e

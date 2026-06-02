@@ -9,13 +9,14 @@ Because the corrected traces have not yet been regenerated, the currently suppor
 ## Issues Found
 
 - critical: `scoring/scores.json` currently lacks corrected `coda` reproduced rows for `glue_rte_active_selection` and `glue_sst2_active_selection`. The file still validates structurally, but it is incomplete evidence for the paper's active-selection core claim after the evaluator/method correction.
-- critical: Corrective CPU reruns completed all corrected GLUE RTE CODA seeds, both GLUE SST2 CODA seeds, and one corrected GLUE MRPC CODA seed, but timed out before running the evaluator.
+- critical: Corrective CPU reruns completed all corrected GLUE RTE CODA seeds, both GLUE SST2 CODA seeds, and one corrected GLUE MRPC CODA seed. The first evaluation-only job wrote corrected main scores, but validation failed because the auxiliary train/test split included zero-label experiments where CODA and EnsV intentionally have identical primary-metric values.
 - minor: Some method-agnostic documentation used paper/proposed-method phrasing and one data helper docstring named the reproduced method family. This could leak unnecessary context to from-scratch scientist agents.
 - minor: `scoring/CONSTRAINTS.md` said traces must contain regret per step, but the evaluator now recomputes regret from fixed benchmark labels and only requires selected-model traces.
 
 ## Fixes Applied
 
 - Updated `scripts/run.sh` to perform an evaluation-only job over the completed corrected traces, followed by zero-label runs, `scores.json`, `scores_train.json`, `scores_test.json`, and `python validate.py --compare`.
+- Restricted the default train/test split evaluators to active-selection experiments. Zero-label secondary claims are still included in `scripts/evaluate.sh` and `scores.json`, but they are not useful hidden-slice optimization targets because the reproduced primary metric is intentionally tied.
 - Cleaned strict method-agnostic docs so `briefing/evaluation.md` and `scoring/EXPERIMENTS.md` describe reference targets and experiment goals without naming the method.
 - Updated data-helper docstrings to describe active model selection benchmarks without method-specific naming.
 - Updated `scoring/CONSTRAINTS.md` to state the actual output contract: traces must include selected models, and regret is recomputed by evaluation.
@@ -23,7 +24,7 @@ Because the corrected traces have not yet been regenerated, the currently suppor
 
 ## Final Judgment
 
-The workspace is not ready to finalize until the evaluation-only CPU job completes and restores corrected CODA rows for the active-selection experiments. The environment structure, scoring design, data separation, and evaluator independence are now in good shape; the blocker is regenerated score files, not architecture.
+The workspace is not ready to finalize until the follow-up evaluation-only CPU job refreshes the train/test score files and passes validation. The corrected main scores have been materialized, and the remaining blocker is validation of the auxiliary split configuration.
 
 - Milestone: method_runs
 - Ready for gym use: partial

@@ -236,11 +236,9 @@ def reference_experiments(reference_path: Path) -> list[str]:
     experiments = reference.get("experiments", {})
     if not isinstance(experiments, dict) or not experiments:
         raise ValueError(f"No experiments found in {reference_path}")
-    return [
-        name
-        for name in experiments
-        if name.endswith("_active_selection") or name.endswith("_unsupervised_selection")
-    ]
+    # Match the visible train slice: hidden scoring should discriminate active
+    # selection behavior, while zero-label comparisons stay in main scores.
+    return [name for name in experiments if name.endswith("_active_selection")]
 
 
 def experiment_task(experiment: str, task_override: str | None) -> str:

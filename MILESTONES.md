@@ -36,3 +36,8 @@
 ### [2026-06-02 07:05] - method_runs
 - Resume job completed GLUE SST2 CODA seed 1 and one corrected GLUE MRPC CODA seed before another CPU timeout.
 - The next job is evaluation-only: it scores the completed corrected traces, including MRPC as a one-seed expansion, and runs train/test scoring plus validation.
+
+### [2026-06-02 07:50] - method_runs
+- Evaluation-only job wrote corrected main scores, but validation failed because the auxiliary train slice included zero-label comparisons where CODA and EnsV intentionally tie on the primary metric.
+- Train/test evaluators now default to active-selection experiments only; zero-label secondary claims remain scored by the main evaluator.
+- Resubmitting an evaluation-only CPU job to refresh train/test scores and rerun `python validate.py --compare`.

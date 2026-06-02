@@ -1,7 +1,8 @@
 #!/bin/bash
 # Evaluate the held-out test slice of method-produced active-selection traces.
 #
-# With no task/experiment arguments, evaluates every configured experiment.
+# With no task/experiment arguments, evaluates active-selection experiments.
+# Zero-label secondary claims are scored by scripts/evaluate.sh.
 #   ./scripts/evaluate_test.sh [active_results_dir] [task] [experiment]
 
 set -e
