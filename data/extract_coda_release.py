@@ -1,4 +1,4 @@
-"""Extract selected task tensors from the CODA release archive."""
+"""Extract selected task tensors from the upstream release archive."""
 
 from __future__ import annotations
 

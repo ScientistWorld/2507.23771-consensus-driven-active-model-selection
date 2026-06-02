@@ -1,4 +1,4 @@
-"""Utilities for CODA-style active model selection prediction benchmarks."""
+"""Utilities for active model selection prediction benchmarks."""
 
 from __future__ import annotations
 
@@ -47,7 +47,7 @@ def load_prediction_benchmark(data_dir: str | Path, task: str) -> PredictionBenc
     """Load benchmark predictions for one task.
 
     Preferred portable format is ``<task>.npz`` with ``predictions`` and
-    ``labels`` arrays. The loader also supports upstream CODA ``.pt`` files
+    ``labels`` arrays. The loader also supports upstream release ``.pt`` files
     when PyTorch is available.
     """
 

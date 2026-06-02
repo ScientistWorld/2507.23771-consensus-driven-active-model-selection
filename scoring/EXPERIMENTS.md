@@ -14,7 +14,7 @@ This experiment adds a paraphrase-classification benchmark from the same predict
 
 ## glue_rte_unsupervised_selection
 
-This experiment tests model selection on GLUE RTE before any labels are queried. It measures whether the selected candidate is close to the best model in the pool under the strict zero-label budget used by the paper's unsupervised comparison.
+This experiment tests model selection on GLUE RTE before any labels are queried. It measures whether the selected candidate is close to the best model in the pool under a strict zero-label budget.
 
 ## glue_sst2_unsupervised_selection
 

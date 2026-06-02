@@ -6,19 +6,19 @@ The primary metric is cumulative regret at 100 label queries. At each step, regr
 
 Secondary metrics include instantaneous regret at step 100 and fixed-resource checks: the label budget, number of candidate models, and number of evaluated items.
 
-For the paper's zero-label comparison, the metric is initial regret before any queried labels. It uses the same full benchmark labels only for scoring, not for method selection.
+For zero-label selection, the metric is initial regret before any queried labels. It uses the same full benchmark labels only for scoring, not for method selection.
 
 ## Baselines and Targets
 
-The core reproduced benchmark uses GLUE RTE from the paper's ModelSelector-derived task suite. Paper-reported targets are taken from the active model selection tables:
+The core reproduced benchmark uses GLUE RTE from the fixed ModelSelector-derived task suite. Reference targets are taken from the published active model selection tables:
 
 - Random sampling: cumulative regret 375.7 at step 100; instantaneous regret 1.2 at step 100.
 - Uncertainty sampling: cumulative regret 390.3 at step 100; instantaneous regret 0.0 at step 100.
-- Proposed method: cumulative regret 283.8 at step 100; instantaneous regret 0.0 at step 100.
+- Reference active selector: cumulative regret 283.8 at step 100; instantaneous regret 0.0 at step 100.
 
-The secondary zero-label targets reproduced here are GLUE RTE initial regret 14.8 and GLUE SST2 initial regret 3.6 for both the proposed method and the unsupervised ensemble-validation baseline.
+The secondary zero-label targets reproduced here are GLUE RTE initial regret 14.8 and GLUE SST2 initial regret 3.6 for both the reference zero-label selector and the unsupervised ensemble-validation baseline.
 
-The next active expansion target is GLUE MRPC. The paper reports cumulative regret 318.2 for random sampling, 301.1 for uncertainty sampling, and 49.0 for the proposed method at a 100-label budget.
+The next active expansion target is GLUE MRPC. Reference targets are cumulative regret 318.2 for random sampling, 301.1 for uncertainty sampling, and 49.0 for the reference active selector at a 100-label budget.
 
 ## Evaluation Protocol
 

@@ -12,7 +12,7 @@ The unsupervised selection experiments must query exactly zero labels. Reporting
 
 ## Output Contract
 
-Methods must write traces to `outputs/coda/<task>/<method>/seed_*.json` with selected model and regret per step, then be scored by `scripts/evaluate.sh`. Evaluation must not import the submitted method implementation.
+Methods must write traces to `outputs/coda/<task>/<method>/seed_*.json` with the selected model at each step, then be scored by `scripts/evaluate.sh`. Evaluation recomputes regret from the fixed benchmark labels and must not import the submitted method implementation.
 
 ## Compliance Checklist
 

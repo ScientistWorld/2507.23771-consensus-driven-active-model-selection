@@ -1,9 +1,8 @@
 """Download and convert ModelSelector raw prediction files.
 
 The ModelSelector release stores predictions as class IDs with shape (N, H).
-CODA's active model selection formulation uses prediction vectors with shape
-(H, N, C), so this script converts IDs to one-hot vectors and writes a compact
-portable .npz file.
+The benchmark loader expects prediction vectors with shape (H, N, C), so this
+script converts IDs to one-hot vectors and writes a compact portable .npz file.
 """
 
 from __future__ import annotations
