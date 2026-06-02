@@ -1,8 +1,8 @@
 # End-of-turn action for the scheduler.
 # Use submit when a compute rerun is needed; use done only after
 # regenerated artifacts pass validation.
-action: done
+action: submit
 gpus: 0
-test: false
+test: true
 milestone: secondary_claims
-notes: "Validation passed after limiting auxiliary train/test scoring to stable RTE/SST2 active splits; main scores retain MRPC and zero-label secondary claims."
+notes: "Evaluation-only CPU test job to refresh auxiliary train/test scores after making split construction deterministic; main secondary_claims evidence is unchanged."

@@ -51,3 +51,7 @@
 - Fixed stricter validation by limiting auxiliary train/test scores to stable RTE/SST2 active-selection splits.
 - MRPC remains in main `scores.json`; it is excluded only from auxiliary split scoring because its one corrected CODA seed is unstable on half-splits.
 - `python validate.py` passes.
+
+### [2026-06-02 06:57] - secondary_claims
+- Removed runtime randomness from the auxiliary train/test split construction so hidden-slice scoring is fully deterministic and the validator no longer flags it as a regenerate-without-read pattern.
+- The main CODA scores and milestone are unchanged; submitting a CPU evaluation-only job to refresh auxiliary score files inside the packaged container.

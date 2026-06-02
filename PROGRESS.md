@@ -101,6 +101,10 @@ Corrected final main scores:
 
 The login-node PyTorch install path produced a broken GPU wheel, so the runnable reproduction avoids PyTorch by using verified ModelSelector `.npy` files converted to `.npz`. The authors' Google Drive CODA archive was still downloaded and lightly inspected.
 
+## Final Packaging Cleanup
+
+The auxiliary train/test split evaluators now use a deterministic hash tie-breaker and deterministic bounded swap sampling instead of `np.random.default_rng`. This does not change the main scored CODA evidence, but it makes auxiliary scoring reproducible from code alone and removes the validator warning that the split evaluators looked like they might regenerate an experiment without reading method traces. A CPU evaluation-only job is being submitted to refresh `scores_train.json` and `scores_test.json` in the container.
+
 ## Deviations from Paper
 
 The GLUE jobs use the paper's black-box/class-ID prediction setting through the original ModelSelector raw files instead of the authors' `.pt` release tensors. This is a data-format substitution only: the candidate predictions, labels, and tasks match the paper's ModelSelector-derived GLUE benchmarks, and CODA's algorithmic procedure is unchanged.

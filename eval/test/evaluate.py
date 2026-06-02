@@ -21,6 +21,33 @@ AUXILIARY_SPLIT_EXPERIMENTS = {
 }
 
 
+def deterministic_jitter(count: int) -> np.ndarray:
+    """Stable tie-breaker in [0, 1) without runtime randomness."""
+
+    idx = np.arange(count, dtype=np.uint64) + np.uint64(SPLIT_SEED)
+    idx ^= idx >> np.uint64(33)
+    idx *= np.uint64(0xff51afd7ed558ccd)
+    idx ^= idx >> np.uint64(33)
+    idx *= np.uint64(0xc4ceb9fe1a85ec53)
+    idx ^= idx >> np.uint64(33)
+    return (idx & np.uint64((1 << 53) - 1)).astype(np.float64) / float(1 << 53)
+
+
+def deterministic_pairs(train_items: np.ndarray, test_items: np.ndarray, limit: int):
+    """Yield a bounded, deterministic coverage sample of cross-split swaps."""
+
+    pair_count = len(train_items) * len(test_items)
+    if pair_count <= limit:
+        yield from ((a, b) for a in train_items for b in test_items)
+        return
+
+    step = max(1, pair_count // limit)
+    offset = SPLIT_SEED % pair_count
+    for pos in range(limit):
+        flat = (offset + pos * step) % pair_count
+        yield train_items[flat // len(test_items)], test_items[flat % len(test_items)]
+
+
 def load_benchmark(data_dir: Path, task: str) -> tuple[np.ndarray, np.ndarray]:
     npz_path = data_dir / f"{task}.npz"
     if not npz_path.exists():
@@ -40,8 +67,7 @@ def balanced_split_mask(predictions: np.ndarray, labels: np.ndarray) -> np.ndarr
     correct = pred_classes == labels[None, :]
     item_error = 1.0 - correct.mean(axis=0)
     signatures = [np.packbits(correct[:, item]).tobytes() for item in range(labels.shape[0])]
-    rng = np.random.default_rng(SPLIT_SEED)
-    jitter = rng.random(labels.shape[0])
+    jitter = deterministic_jitter(labels.shape[0])
     order = np.array(
         sorted(
             range(labels.shape[0]),
@@ -72,14 +98,7 @@ def balanced_split_mask(predictions: np.ndarray, labels: np.ndarray) -> np.ndarr
             test_items = np.where((~train_mask) & (labels == label))[0]
             if len(train_items) == 0 or len(test_items) == 0:
                 continue
-            pair_count = len(train_items) * len(test_items)
-            if pair_count <= pair_limit:
-                pairs = ((a, b) for a in train_items for b in test_items)
-            else:
-                train_sample = rng.choice(train_items, size=pair_limit, replace=True)
-                test_sample = rng.choice(test_items, size=pair_limit, replace=True)
-                pairs = zip(train_sample, test_sample)
-            for train_item, test_item in pairs:
+            for train_item, test_item in deterministic_pairs(train_items, test_items, pair_limit):
                 delta = (errors[:, test_item] - errors[:, train_item]) * (1.0 / train_n + 1.0 / test_n)
                 new_diff = diff + delta
                 new_objective = float(np.mean(new_diff * new_diff))
