@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: core_claim_plus**
+**Current: secondary_claims**
 
 ## Progress Log
 
@@ -10,5 +10,10 @@
 - Added GLUE SST2 as a second setting: CODA cumulative regret 51.72 versus random 345.47 and uncertainty 100.92.
 - Packaged reusable method, baseline, download, reproduction, and evaluation scripts; validation passes with `python validate.py --compare`.
 
+### [2026-06-02 02:16] - secondary_claims
+- Added the paper's zero-label unsupervised selection setting for GLUE RTE and SST2.
+- Reproduced Table 5-scale initial regret: RTE CODA 14.801 and EnsV 14.801 versus paper 14.8; SST2 CODA 3.555 and EnsV 3.555 versus paper 3.6.
+- Verified the final score surface with `python validate.py --compare` after job `f500fff1-d02`.
+
 ## Stop Justification
-- Completed at milestone `core_claim_plus`.
+- Completed at milestone `secondary_claims`.

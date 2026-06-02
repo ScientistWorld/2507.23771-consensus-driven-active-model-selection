@@ -40,9 +40,20 @@ The SST2 expansion also supports the paper's claim:
 
 CODA essentially matches the paper's SST2 result of 51.7 and outperforms both reproduced baselines. This brings the workspace to `core_claim_plus`.
 
+## Secondary Claim
+
+The completed CPU job `f500fff1-d02` added the paper's zero-label unsupervised selection setting from Table 5. These runs evaluate the selected model before any labels are queried, while preserving the same candidate pools and full benchmark labels used for regret measurement.
+
+- GLUE RTE EnsV initial regret: 14.801
+- GLUE RTE CODA initial regret: 14.801
+- GLUE SST2 EnsV initial regret: 3.555
+- GLUE SST2 CODA initial regret: 3.555
+
+These match the paper's reported Table 5 scale: 14.8 for GLUE RTE and 3.6 for GLUE SST2. `python validate.py --compare` passes with all four scored experiments.
+
 ## What Remains
 
-Further expansion would mean reproducing additional rows of the 26-task main table or adding the paper's ablations on priors and acquisition functions. The packaged gym already includes the method, two scored GLUE experiments, baselines, constraints, download script, and reusable evaluator.
+Further expansion would mean reproducing additional rows of the 26-task main table or adding the paper's ablations on priors and acquisition functions. The packaged gym already includes the method, two active GLUE experiments, two zero-label secondary experiments, baselines, constraints, download script, and reusable evaluator.
 
 ## Issues
 

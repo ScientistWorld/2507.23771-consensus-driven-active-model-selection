@@ -7,3 +7,11 @@ This experiment tests active model selection on a small natural-language classif
 ## glue_sst2_active_selection
 
 This experiment repeats the active model selection test on a larger sentiment-classification benchmark. It checks whether the same label-efficient selection behavior transfers to a different GLUE task while keeping the candidate pool and label budget fixed.
+
+## glue_rte_unsupervised_selection
+
+This experiment tests model selection on GLUE RTE before any labels are queried. It measures whether the selected candidate is close to the best model in the pool under the strict zero-label budget used by the paper's unsupervised comparison.
+
+## glue_sst2_unsupervised_selection
+
+This experiment repeats the zero-label model selection test on GLUE SST2. It checks whether no-query selection behavior transfers to a larger sentiment-classification benchmark while keeping the same fixed candidate pool and evaluation labels.

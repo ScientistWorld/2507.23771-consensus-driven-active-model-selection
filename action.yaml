@@ -1,8 +1,8 @@
 # IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends. Sleeping blocks the entire pipeline.
-action: submit
+action: done
 gpus: 0
-test: true
-milestone: core_claim_plus
-notes: "Run the added Table 5 unsupervised step-0 CODA/EnsV experiments for GLUE RTE and SST2, merge scores, and validate."
+test: false
+milestone: secondary_claims
+notes: "Reproduced the core active CODA claim on RTE, expanded to SST2, and reproduced the zero-label Table 5 secondary claim on RTE and SST2; validation passes."
