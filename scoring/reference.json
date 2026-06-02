@@ -7,23 +7,53 @@
       "metrics": {
         "cumulative_regret_at_100": {
           "higher_is_better": false,
-          "coefficient": -1.0
+          "coefficient": -1.0,
+          "description": "Total excess error incurred over the queried-label trajectory through the 100-label budget."
+        },
+        "cumulative_regret_at_25": {
+          "higher_is_better": false,
+          "coefficient": -0.45,
+          "description": "Early-label cumulative excess error through 25 queried labels, catching methods that only recover late."
+        },
+        "cumulative_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.65,
+          "description": "Mid-budget cumulative excess error through 50 queried labels."
+        },
+        "initial_regret": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Zero-query excess error of the initially selected model."
+        },
+        "instant_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Excess error of the selected model after 50 queried labels."
         },
         "instant_regret_at_100": {
           "higher_is_better": false,
-          "coefficient": -0.3
+          "coefficient": -0.3,
+          "description": "Excess error of the selected model after the full 100-label budget."
+        },
+        "near_optimal_at_100": {
+          "higher_is_better": true,
+          "coefficient": 0.35,
+          "description": "Whether the selected model is within one percentage point of the best candidate at the 100-label budget."
         },
         "label_budget": {
           "higher_is_better": false,
-          "coefficient": -0.2
+          "coefficient": -0.2,
+          "description": "Number of ground-truth labels consumed; improvements should not come from querying more labels."
         },
         "num_models": {
           "higher_is_better": true,
-          "coefficient": 0.05
+          "coefficient": 0.05,
+          "description": "Candidate pool size covered by the run, guarding against selecting from an easier reduced pool."
         },
         "num_items": {
           "higher_is_better": true,
-          "coefficient": 0.05
+          "coefficient": 0.05,
+          "description": "Evaluation item count covered by the run, guarding against scoring on a smaller benchmark."
         }
       },
       "results": {
@@ -60,23 +90,53 @@
       "metrics": {
         "cumulative_regret_at_100": {
           "higher_is_better": false,
-          "coefficient": -1.0
+          "coefficient": -1.0,
+          "description": "Total excess error incurred over the queried-label trajectory through the 100-label budget."
+        },
+        "cumulative_regret_at_25": {
+          "higher_is_better": false,
+          "coefficient": -0.45,
+          "description": "Early-label cumulative excess error through 25 queried labels, catching methods that only recover late."
+        },
+        "cumulative_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.65,
+          "description": "Mid-budget cumulative excess error through 50 queried labels."
+        },
+        "initial_regret": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Zero-query excess error of the initially selected model."
+        },
+        "instant_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Excess error of the selected model after 50 queried labels."
         },
         "instant_regret_at_100": {
           "higher_is_better": false,
-          "coefficient": -0.3
+          "coefficient": -0.3,
+          "description": "Excess error of the selected model after the full 100-label budget."
+        },
+        "near_optimal_at_100": {
+          "higher_is_better": true,
+          "coefficient": 0.35,
+          "description": "Whether the selected model is within one percentage point of the best candidate at the 100-label budget."
         },
         "label_budget": {
           "higher_is_better": false,
-          "coefficient": -0.2
+          "coefficient": -0.2,
+          "description": "Number of ground-truth labels consumed; improvements should not come from querying more labels."
         },
         "num_models": {
           "higher_is_better": true,
-          "coefficient": 0.05
+          "coefficient": 0.05,
+          "description": "Candidate pool size covered by the run, guarding against selecting from an easier reduced pool."
         },
         "num_items": {
           "higher_is_better": true,
-          "coefficient": 0.05
+          "coefficient": 0.05,
+          "description": "Evaluation item count covered by the run, guarding against scoring on a smaller benchmark."
         }
       },
       "results": {
@@ -113,23 +173,53 @@
       "metrics": {
         "cumulative_regret_at_100": {
           "higher_is_better": false,
-          "coefficient": -1.0
+          "coefficient": -1.0,
+          "description": "Total excess error incurred over the queried-label trajectory through the 100-label budget."
+        },
+        "cumulative_regret_at_25": {
+          "higher_is_better": false,
+          "coefficient": -0.45,
+          "description": "Early-label cumulative excess error through 25 queried labels, catching methods that only recover late."
+        },
+        "cumulative_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.65,
+          "description": "Mid-budget cumulative excess error through 50 queried labels."
+        },
+        "initial_regret": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Zero-query excess error of the initially selected model."
+        },
+        "instant_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Excess error of the selected model after 50 queried labels."
         },
         "instant_regret_at_100": {
           "higher_is_better": false,
-          "coefficient": -0.3
+          "coefficient": -0.3,
+          "description": "Excess error of the selected model after the full 100-label budget."
+        },
+        "near_optimal_at_100": {
+          "higher_is_better": true,
+          "coefficient": 0.35,
+          "description": "Whether the selected model is within one percentage point of the best candidate at the 100-label budget."
         },
         "label_budget": {
           "higher_is_better": false,
-          "coefficient": -0.2
+          "coefficient": -0.2,
+          "description": "Number of ground-truth labels consumed; improvements should not come from querying more labels."
         },
         "num_models": {
           "higher_is_better": true,
-          "coefficient": 0.05
+          "coefficient": 0.05,
+          "description": "Candidate pool size covered by the run, guarding against selecting from an easier reduced pool."
         },
         "num_items": {
           "higher_is_better": true,
-          "coefficient": 0.05
+          "coefficient": 0.05,
+          "description": "Evaluation item count covered by the run, guarding against scoring on a smaller benchmark."
         }
       },
       "results": {
@@ -166,27 +256,33 @@
       "metrics": {
         "initial_regret": {
           "higher_is_better": false,
-          "coefficient": -1.0
+          "coefficient": -1.0,
+          "description": "Zero-query excess error of the selected model."
         },
         "label_budget": {
           "higher_is_better": false,
-          "coefficient": -0.2
+          "coefficient": -0.2,
+          "description": "Number of ground-truth labels consumed; this zero-label experiment should stay at budget 0."
         },
         "num_models": {
           "higher_is_better": true,
-          "coefficient": 0.05
+          "coefficient": 0.05,
+          "description": "Candidate pool size covered by the run, guarding against selecting from an easier reduced pool."
         },
         "num_items": {
           "higher_is_better": true,
-          "coefficient": 0.05
+          "coefficient": 0.05,
+          "description": "Evaluation item count covered by the run, guarding against scoring on a smaller benchmark."
         },
         "cumulative_regret_at_100": {
           "higher_is_better": false,
-          "coefficient": -0.05
+          "coefficient": -0.05,
+          "description": "Compatibility metric for the shared trace format; should remain zero when no labels are queried."
         },
         "instant_regret_at_100": {
           "higher_is_better": false,
-          "coefficient": -0.2
+          "coefficient": -0.2,
+          "description": "Compatibility metric for the shared trace format; equals initial regret in zero-label runs."
         }
       },
       "results": {
@@ -217,27 +313,33 @@
       "metrics": {
         "initial_regret": {
           "higher_is_better": false,
-          "coefficient": -1.0
+          "coefficient": -1.0,
+          "description": "Zero-query excess error of the selected model."
         },
         "label_budget": {
           "higher_is_better": false,
-          "coefficient": -0.2
+          "coefficient": -0.2,
+          "description": "Number of ground-truth labels consumed; this zero-label experiment should stay at budget 0."
         },
         "num_models": {
           "higher_is_better": true,
-          "coefficient": 0.05
+          "coefficient": 0.05,
+          "description": "Candidate pool size covered by the run, guarding against selecting from an easier reduced pool."
         },
         "num_items": {
           "higher_is_better": true,
-          "coefficient": 0.05
+          "coefficient": 0.05,
+          "description": "Evaluation item count covered by the run, guarding against scoring on a smaller benchmark."
         },
         "cumulative_regret_at_100": {
           "higher_is_better": false,
-          "coefficient": -0.05
+          "coefficient": -0.05,
+          "description": "Compatibility metric for the shared trace format; should remain zero when no labels are queried."
         },
         "instant_regret_at_100": {
           "higher_is_better": false,
-          "coefficient": -0.2
+          "coefficient": -0.2,
+          "description": "Compatibility metric for the shared trace format; equals initial regret in zero-label runs."
         }
       },
       "results": {
