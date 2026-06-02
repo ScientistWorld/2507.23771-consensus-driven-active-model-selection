@@ -120,46 +120,6 @@
           "num_items": 204.0
         }
       }
-    },
-    "glue_rte_unsupervised_selection": {
-      "results": {
-        "coda": {
-          "initial_regret": 15.827338129496404,
-          "cumulative_regret_at_100": 0.0,
-          "instant_regret_at_100": 15.827338129496404,
-          "label_budget": 0.0,
-          "num_models": 87.0,
-          "num_items": 139.0
-        },
-        "ensv": {
-          "initial_regret": 15.827338129496404,
-          "cumulative_regret_at_100": 0.0,
-          "instant_regret_at_100": 15.827338129496404,
-          "label_budget": 0.0,
-          "num_models": 87.0,
-          "num_items": 139.0
-        }
-      }
-    },
-    "glue_sst2_unsupervised_selection": {
-      "results": {
-        "coda": {
-          "initial_regret": 3.669724770642202,
-          "cumulative_regret_at_100": 0.0,
-          "instant_regret_at_100": 3.669724770642202,
-          "label_budget": 0.0,
-          "num_models": 97.0,
-          "num_items": 436.0
-        },
-        "ensv": {
-          "initial_regret": 3.669724770642202,
-          "cumulative_regret_at_100": 0.0,
-          "instant_regret_at_100": 3.669724770642202,
-          "label_budget": 0.0,
-          "num_models": 97.0,
-          "num_items": 436.0
-        }
-      }
     }
   }
 }
