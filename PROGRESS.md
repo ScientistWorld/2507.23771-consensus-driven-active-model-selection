@@ -83,6 +83,8 @@ A final audit found two issues to fix before treating the existing scores as fin
 
 Second, the CODA implementation scored EIG over every unlabeled item, while the released implementation first filters candidates to points where at least one model disagrees with the majority prediction. The method now uses that disagreement candidate filter and removes the previous beta-PDF clipping approximation. Because this changes the query sequence, stale CODA traces were removed from scoring and a CPU rerun is being submitted to regenerate CODA active traces for RTE, SST2, and MRPC, rerun zero-label checks, and validate the refreshed scores.
 
+The first corrective CPU rerun timed out at the scheduler's 3600-second CPU limit. It still produced useful corrected artifacts: all five GLUE RTE CODA traces and GLUE SST2 CODA seed 0 completed. The next resume job skips completed RTE work, finishes GLUE SST2 seed 1, regenerates GLUE MRPC CODA traces with a 64-point quadrature grid, and then reruns the full evaluator. Until that job completes and validation passes, the supported milestone remains `method_runs`.
+
 ## Issues
 
 The login-node PyTorch install path produced a broken GPU wheel, so the runnable reproduction avoids PyTorch by using verified ModelSelector `.npy` files converted to `.npz`. The authors' Google Drive CODA archive was still downloaded and lightly inspected.

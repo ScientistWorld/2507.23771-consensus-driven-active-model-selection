@@ -5,4 +5,4 @@ action: submit
 gpus: 0
 test: false
 milestone: method_runs
-notes: "Corrective CPU rerun after aligning CODA acquisition with released disagreement-candidate filtering and fixing evaluator to recompute regrets from benchmark data."
+notes: "Resume corrected CPU run: finish SST2 CODA seed 1, regenerate MRPC CODA at grid 64, then evaluate and validate."

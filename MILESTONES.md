@@ -28,3 +28,7 @@
 - Final audit found that the main evaluator should recompute regrets from fixed benchmark labels instead of trusting trace-written regret fields, and should score all declared experiments by default.
 - Aligned CODA's EIG acquisition with the released implementation's disagreement-candidate filter and removed the beta-PDF clipping approximation.
 - Because the query sequence changed, stale CODA scores are no longer final evidence; submitting a CPU rerun to regenerate corrected CODA traces and restore the highest supported milestone.
+
+### [2026-06-02 05:25] - method_runs
+- Corrective CPU rerun timed out after producing all five corrected GLUE RTE CODA traces and GLUE SST2 CODA seed 0.
+- Updating the run script to resume only GLUE SST2 seed 1 and regenerate GLUE MRPC CODA traces with a smaller quadrature grid so evaluation can finish inside the CPU job limit.
