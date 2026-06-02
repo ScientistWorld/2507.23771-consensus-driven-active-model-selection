@@ -89,6 +89,26 @@
           "num_items": 872.0
         }
       }
+    },
+    "glue_mrpc_active_selection": {
+      "results": {
+        "random": {
+          "initial_regret": 12.00980392156863,
+          "cumulative_regret_at_100": 349.01960784313707,
+          "instant_regret_at_100": 0.19607843137254832,
+          "label_budget": 100.0,
+          "num_models": 95.0,
+          "num_items": 408.0
+        },
+        "uncertainty": {
+          "initial_regret": 12.00980392156863,
+          "cumulative_regret_at_100": 256.1274509803918,
+          "instant_regret_at_100": 0.2450980392156854,
+          "label_budget": 100.0,
+          "num_models": 95.0,
+          "num_items": 408.0
+        }
+      }
     }
   }
 }
