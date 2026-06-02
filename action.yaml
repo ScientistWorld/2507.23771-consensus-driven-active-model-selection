@@ -31,4 +31,4 @@ action: submit
 gpus: 0
 test: false
 milestone: method_runs
-notes: "Run the 100-label GLUE RTE active model selection experiment with random, uncertainty, and CODA to produce core-claim scores."
+notes: "Retry the 100-label GLUE RTE experiment after fixing CODA EIG hypothetical updates and post-query cumulative regret scoring."

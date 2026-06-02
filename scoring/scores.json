@@ -3,21 +3,21 @@
     "glue_rte_active_selection": {
       "results": {
         "random": {
-          "cumulative_regret_at_100": 432.41877256317673,
+          "cumulative_regret_at_100": 420.50541516245465,
           "instant_regret_at_100": 1.1552346570397098,
           "label_budget": 100.0,
           "num_models": 87.0,
           "num_items": 277.0
         },
         "uncertainty": {
-          "cumulative_regret_at_100": 383.7545126353789,
+          "cumulative_regret_at_100": 371.84115523465687,
           "instant_regret_at_100": 0.0,
           "label_budget": 100.0,
           "num_models": 87.0,
           "num_items": 277.0
         },
         "coda": {
-          "cumulative_regret_at_100": 477.2563176895307,
+          "cumulative_regret_at_100": 290.03610108303235,
           "instant_regret_at_100": 0.0,
           "label_budget": 100.0,
           "num_models": 87.0,
