@@ -50,7 +50,22 @@ def trace_paths(method_dir: Path) -> list[Path]:
     return sorted(method_dir.glob("seed_*.json"), key=seed_number)
 
 
-def summarize_trace(trace: dict, losses: np.ndarray, slice_size: int) -> dict[str, float]:
+def regret_at(regrets: list[float], step: int) -> float:
+    if step < len(regrets):
+        return regrets[step]
+    return regrets[-1]
+
+
+def cumulative_regret(regrets: list[float], horizon: int) -> float:
+    return float(sum(regret_at(regrets, step) for step in range(1, horizon + 1)))
+
+
+def summarize_trace(
+    trace: dict,
+    losses: np.ndarray,
+    slice_size: int,
+    cumulative_horizon: int,
+) -> dict[str, float]:
     steps = trace.get("steps", [])
     if not steps:
         raise ValueError("Trace has no steps")
@@ -64,15 +79,14 @@ def summarize_trace(trace: dict, losses: np.ndarray, slice_size: int) -> dict[st
         regrets.append(float((losses[chosen_model] - best_loss) * 100.0))
 
     budget = int(trace.get("budget", len(steps) - 1))
-    post_query = regrets[1 : min(budget + 1, len(regrets))]
     final_regret = float(regrets[-1])
     return {
         "initial_regret": float(regrets[0]),
-        "cumulative_regret_at_25": float(sum(regrets[1 : min(25, budget) + 1])),
-        "cumulative_regret_at_50": float(sum(regrets[1 : min(50, budget) + 1])),
-        "cumulative_regret_at_100": float(sum(post_query)),
-        "instant_regret_at_50": float(regrets[min(50, len(regrets) - 1)]),
-        "instant_regret_at_100": float(regrets[-1]),
+        "cumulative_regret_at_25": cumulative_regret(regrets, min(25, cumulative_horizon)),
+        "cumulative_regret_at_50": cumulative_regret(regrets, min(50, cumulative_horizon)),
+        "cumulative_regret_at_100": cumulative_regret(regrets, min(100, cumulative_horizon)),
+        "instant_regret_at_50": regret_at(regrets, 50),
+        "instant_regret_at_100": regret_at(regrets, 100),
         "near_optimal_at_100": float(final_regret <= 1.0),
         "label_budget": float(budget),
         "num_models": float(losses.shape[0]),
@@ -80,12 +94,33 @@ def summarize_trace(trace: dict, losses: np.ndarray, slice_size: int) -> dict[st
     }
 
 
-def aggregate_method(method_dir: Path, losses: np.ndarray, slice_size: int) -> dict[str, float]:
+def trace_budget(path: Path) -> int:
+    trace = json.loads(path.read_text())
+    return int(trace.get("budget", len(trace.get("steps", [])) - 1))
+
+
+def experiment_trace_paths(method_dir: Path, cumulative_horizon: int) -> list[Path]:
     paths = trace_paths(method_dir)
     if not paths:
         raise FileNotFoundError(f"No seed_*.json traces found in {method_dir}")
+    if cumulative_horizon > 0:
+        active_paths = [path for path in paths if trace_budget(path) > 0]
+        if active_paths:
+            return active_paths
+    return paths
 
-    per_seed = [summarize_trace(json.loads(path.read_text()), losses, slice_size) for path in paths]
+
+def aggregate_method(
+    method_dir: Path,
+    losses: np.ndarray,
+    slice_size: int,
+    cumulative_horizon: int,
+) -> dict[str, float]:
+    paths = experiment_trace_paths(method_dir, cumulative_horizon)
+    per_seed = [
+        summarize_trace(json.loads(path.read_text()), losses, slice_size, cumulative_horizon)
+        for path in paths
+    ]
     keys = per_seed[0].keys()
     return {key: float(sum(row[key] for row in per_seed) / len(per_seed)) for key in keys}
 
@@ -160,6 +195,7 @@ def result_dir_for_experiment(args: argparse.Namespace, experiment: str) -> Path
 def evaluate_experiment(args: argparse.Namespace, experiment: str) -> dict[str, dict[str, float]]:
     task = experiment_task(experiment, args.task)
     results_dir = result_dir_for_experiment(args, experiment)
+    cumulative_horizon = 0 if experiment.endswith("_unsupervised_selection") else 100
     predictions, labels = load_benchmark(Path(args.data_dir), task)
     indices = train_item_indices(labels.shape[0])
     losses = subset_losses(predictions, labels, indices)
@@ -170,7 +206,7 @@ def evaluate_experiment(args: argparse.Namespace, experiment: str) -> dict[str, 
     for method in methods:
         method_dir = results_dir / task / method
         results[method] = filter_known_metrics(
-            aggregate_method(method_dir, losses, len(indices)),
+            aggregate_method(method_dir, losses, len(indices), cumulative_horizon),
             known_metrics,
         )
     return results

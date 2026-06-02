@@ -6,4 +6,4 @@ action: submit
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Run evaluate_train.sh and evaluate_test.sh against saved final method traces; populate split score files."
+notes: "Rerun split scoring after fixing active cumulative regret for short/zero-budget traces and filtering mixed zero-budget seeds."
