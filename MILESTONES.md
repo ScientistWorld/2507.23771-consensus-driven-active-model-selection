@@ -55,3 +55,7 @@
 ### [2026-06-02 06:57] - secondary_claims
 - Removed runtime randomness from the auxiliary train/test split construction so hidden-slice scoring is fully deterministic and the validator no longer flags it as a regenerate-without-read pattern.
 - The main CODA scores and milestone are unchanged; submitting a CPU evaluation-only job to refresh auxiliary score files inside the packaged container.
+
+### [2026-06-02 08:45] - secondary_claims
+- Final verification passed after the deterministic auxiliary split job completed successfully.
+- `python validate.py --compare` passes, download URLs were checked, and the workspace is ready for gym use.
