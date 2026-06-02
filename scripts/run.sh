@@ -15,3 +15,4 @@ cd /home/user
 
 bash scripts/evaluate_train.sh /home/user/outputs/coda
 bash scripts/evaluate_test.sh /home/user/outputs/coda
+python validate.py

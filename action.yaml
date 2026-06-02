@@ -1,7 +1,6 @@
-# This iteration writes files only — do NOT submit compute jobs.
-# Once you set action to 'done', STOP immediately.
-# Do NOT sleep, poll, or wait. The system reads this file
-# only after your turn ends.
+# End-of-turn action for the scheduler.
+# Use submit when a compute rerun is needed; use done only after
+# regenerated artifacts pass validation.
 action: submit
 gpus: 0
 test: false
