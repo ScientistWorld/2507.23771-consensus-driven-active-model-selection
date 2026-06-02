@@ -1,0 +1,189 @@
+{
+  "slice": "test",
+  "experiments": {
+    "glue_rte_active_selection": {
+      "results": {
+        "coda": {
+          "initial_regret": 9.420289855072472,
+          "cumulative_regret_at_25": 142.60869565217402,
+          "cumulative_regret_at_50": 152.17391304347834,
+          "cumulative_regret_at_100": 152.17391304347834,
+          "instant_regret_at_50": 1.8840579710144945,
+          "instant_regret_at_100": 1.8840579710144945,
+          "near_optimal_at_100": 0.8,
+          "label_budget": 80.0,
+          "num_models": 87.0,
+          "num_items": 138.0
+        },
+        "ensv": {
+          "initial_regret": 9.420289855072472,
+          "cumulative_regret_at_25": 0.0,
+          "cumulative_regret_at_50": 0.0,
+          "cumulative_regret_at_100": 0.0,
+          "instant_regret_at_50": 9.420289855072472,
+          "instant_regret_at_100": 9.420289855072472,
+          "near_optimal_at_100": 0.0,
+          "label_budget": 0.0,
+          "num_models": 87.0,
+          "num_items": 138.0
+        },
+        "random": {
+          "initial_regret": 9.420289855072472,
+          "cumulative_regret_at_25": 227.10144927536234,
+          "cumulative_regret_at_50": 313.76811594202906,
+          "cumulative_regret_at_100": 395.5072463768114,
+          "instant_regret_at_50": 3.3333333333333344,
+          "instant_regret_at_100": 0.8695652173913061,
+          "near_optimal_at_100": 0.8,
+          "label_budget": 100.0,
+          "num_models": 87.0,
+          "num_items": 138.0
+        },
+        "uncertainty": {
+          "initial_regret": 9.420289855072472,
+          "cumulative_regret_at_25": 294.20289855072485,
+          "cumulative_regret_at_50": 320.28985507246387,
+          "cumulative_regret_at_100": 320.28985507246387,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 0.0,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0,
+          "num_models": 87.0,
+          "num_items": 138.0
+        }
+      }
+    },
+    "glue_sst2_active_selection": {
+      "results": {
+        "coda": {
+          "initial_regret": 3.2110091743119296,
+          "cumulative_regret_at_25": 33.14220183486241,
+          "cumulative_regret_at_50": 34.17431192660554,
+          "cumulative_regret_at_100": 34.17431192660554,
+          "instant_regret_at_50": 1.6055045871559648,
+          "instant_regret_at_100": 1.6055045871559648,
+          "near_optimal_at_100": 0.5,
+          "label_budget": 50.0,
+          "num_models": 97.0,
+          "num_items": 436.0
+        },
+        "ensv": {
+          "initial_regret": 3.2110091743119296,
+          "cumulative_regret_at_25": 0.0,
+          "cumulative_regret_at_50": 0.0,
+          "cumulative_regret_at_100": 0.0,
+          "instant_regret_at_50": 3.2110091743119296,
+          "instant_regret_at_100": 3.2110091743119296,
+          "near_optimal_at_100": 0.0,
+          "label_budget": 0.0,
+          "num_models": 97.0,
+          "num_items": 436.0
+        },
+        "random": {
+          "initial_regret": 4.816513761467888,
+          "cumulative_regret_at_25": 171.55963302752298,
+          "cumulative_regret_at_50": 232.79816513761483,
+          "cumulative_regret_at_100": 338.9908256880737,
+          "instant_regret_at_50": 2.0642201834862375,
+          "instant_regret_at_100": 1.949541284403672,
+          "near_optimal_at_100": 0.5,
+          "label_budget": 100.0,
+          "num_models": 97.0,
+          "num_items": 436.0
+        },
+        "uncertainty": {
+          "initial_regret": 4.816513761467888,
+          "cumulative_regret_at_25": 96.78899082568817,
+          "cumulative_regret_at_50": 107.56880733944973,
+          "cumulative_regret_at_100": 121.10091743119297,
+          "instant_regret_at_50": 0.6880733944954143,
+          "instant_regret_at_100": 0.2293577981651418,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0,
+          "num_models": 97.0,
+          "num_items": 436.0
+        }
+      }
+    },
+    "glue_mrpc_active_selection": {
+      "results": {
+        "coda": {
+          "initial_regret": 2.450980392156854,
+          "cumulative_regret_at_25": 12.25490196078427,
+          "cumulative_regret_at_50": 27.450980392156765,
+          "cumulative_regret_at_100": 27.450980392156765,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 0.0,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0,
+          "num_models": 95.0,
+          "num_items": 204.0
+        },
+        "random": {
+          "initial_regret": 9.313725490196067,
+          "cumulative_regret_at_25": 220.3921568627449,
+          "cumulative_regret_at_50": 355.3921568627448,
+          "cumulative_regret_at_100": 513.2352941176465,
+          "instant_regret_at_50": 2.843137254901955,
+          "instant_regret_at_100": 1.764705882352935,
+          "near_optimal_at_100": 0.2,
+          "label_budget": 100.0,
+          "num_models": 95.0,
+          "num_items": 204.0
+        },
+        "uncertainty": {
+          "initial_regret": 9.313725490196067,
+          "cumulative_regret_at_25": 164.705882352941,
+          "cumulative_regret_at_50": 348.0392156862739,
+          "cumulative_regret_at_100": 490.68627450980296,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 2.941176470588225,
+          "near_optimal_at_100": 0.0,
+          "label_budget": 100.0,
+          "num_models": 95.0,
+          "num_items": 204.0
+        }
+      }
+    },
+    "glue_rte_unsupervised_selection": {
+      "results": {
+        "coda": {
+          "initial_regret": 9.420289855072472,
+          "cumulative_regret_at_100": 0.0,
+          "instant_regret_at_100": 9.420289855072472,
+          "label_budget": 0.0,
+          "num_models": 87.0,
+          "num_items": 138.0
+        },
+        "ensv": {
+          "initial_regret": 9.420289855072472,
+          "cumulative_regret_at_100": 0.0,
+          "instant_regret_at_100": 9.420289855072472,
+          "label_budget": 0.0,
+          "num_models": 87.0,
+          "num_items": 138.0
+        }
+      }
+    },
+    "glue_sst2_unsupervised_selection": {
+      "results": {
+        "coda": {
+          "initial_regret": 3.2110091743119296,
+          "cumulative_regret_at_100": 0.0,
+          "instant_regret_at_100": 3.2110091743119296,
+          "label_budget": 0.0,
+          "num_models": 97.0,
+          "num_items": 436.0
+        },
+        "ensv": {
+          "initial_regret": 3.2110091743119296,
+          "cumulative_regret_at_100": 0.0,
+          "instant_regret_at_100": 3.2110091743119296,
+          "label_budget": 0.0,
+          "num_models": 97.0,
+          "num_items": 436.0
+        }
+      }
+    }
+  }
+}
