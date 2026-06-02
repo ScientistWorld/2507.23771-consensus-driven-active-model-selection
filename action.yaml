@@ -1,8 +1,6 @@
 # IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends. Sleeping blocks the entire pipeline.
-action: submit
-gpus: 0
-test: false
+action: done
 milestone: secondary_claims
-notes: "Continue MRPC after timeout: skip completed CODA seeds 0-2, run seeds 3-4, merge random/uncertainty/CODA scores, and validate."
+notes: "Completed and validated RTE/SST2/MRPC active selection plus RTE/SST2 zero-label selection. Stopping at secondary_claims; majority would require many more paper table rows."

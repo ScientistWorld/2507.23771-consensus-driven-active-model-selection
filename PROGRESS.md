@@ -63,11 +63,19 @@ Job `8ad02e06-c3a` timed out at the scheduler's 3600-second CPU limit. It was us
 
 The runner now supports `--start-seed` and `--skip-existing` so continuation jobs can preserve the paper's five-seed protocol without recomputing completed traces. `scripts/run.sh` now resumes MRPC CODA at seed 3, evaluates random, uncertainty, and CODA together, and runs `python validate.py --compare`.
 
+The continuation job `6d949629-9d9` completed the remaining CODA seeds. Its first validation pass failed only because active-selection scores included `initial_regret`, which is not a declared metric in `scoring/reference.json`. The evaluator now filters emitted metrics to the experiment's reference metric set and uses only the Python standard library.
+
+The final MRPC active-selection result matches the paper's proposed-method scale:
+
+- Random sampling cumulative regret: 349.02
+- Uncertainty cumulative regret: 256.13
+- CODA cumulative regret: 49.02
+
+The paper reports MRPC cumulative regret values of 318.2 for random sampling, 301.1 for uncertainty sampling, and 49.0 for CODA. `python validate.py --compare` now passes with all five declared experiments in `scoring/scores.json`.
+
 ## What Remains
 
-The next queued expansion is GLUE MRPC active selection at the paper's 100-label budget. Paper targets are 318.2 cumulative regret for random sampling, 301.1 for uncertainty sampling, and 49.0 for CODA. The raw MRPC prediction and label files have been fetched into `data/downloads/modelselector_raw/glue_mrpc/`. A continuation job is prepared to finish CODA seeds 3 and 4, merge the five-seed MRPC result into `scoring/scores.json`, and validate.
-
-Further expansion after MRPC would mean reproducing additional rows of the 26-task main table or adding the paper's ablations on priors and acquisition functions. The packaged gym already includes the method, two active GLUE experiments, two zero-label secondary experiments, baselines, constraints, download script, and reusable evaluator.
+Further expansion would mean reproducing additional rows of the 26-task main table or adding the paper's ablations on priors and acquisition functions. The packaged gym already includes the method, three active GLUE experiments, two zero-label secondary experiments, baselines, constraints, download script, and reusable evaluator.
 
 ## Issues
 

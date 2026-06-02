@@ -10,16 +10,14 @@ import argparse
 import json
 from pathlib import Path
 
-import numpy as np
-
 
 def summarize_trace(trace: dict, tolerance: float = 1.0) -> dict[str, float]:
-    regrets = np.asarray([step["regret"] for step in trace["steps"]], dtype=np.float64)
+    regrets = [float(step["regret"]) for step in trace["steps"]]
     budget = int(trace["budget"])
     post_query = regrets[1 : min(budget + 1, len(regrets))]
     return {
         "initial_regret": float(regrets[0]),
-        "cumulative_regret_at_100": float(post_query.sum()),
+        "cumulative_regret_at_100": float(sum(post_query)),
         "instant_regret_at_100": float(regrets[-1]),
         "label_budget": float(budget),
         "num_models": float(trace["num_models"]),
@@ -36,7 +34,23 @@ def aggregate_method(method_dir: Path) -> dict[str, float]:
 
     per_seed = [summarize_trace(trace) for trace in traces]
     keys = per_seed[0].keys()
-    return {key: float(np.mean([row[key] for row in per_seed])) for key in keys}
+    return {key: float(sum(row[key] for row in per_seed) / len(per_seed)) for key in keys}
+
+
+def reference_metric_names(reference_path: Path, experiment: str) -> set[str] | None:
+    if not reference_path.exists():
+        return None
+    reference = json.loads(reference_path.read_text())
+    metrics = reference.get("experiments", {}).get(experiment, {}).get("metrics")
+    if not isinstance(metrics, dict):
+        return None
+    return set(metrics)
+
+
+def filter_known_metrics(scores: dict[str, float], known_metrics: set[str] | None) -> dict[str, float]:
+    if known_metrics is None:
+        return scores
+    return {name: value for name, value in scores.items() if name in known_metrics}
 
 
 def main() -> None:
@@ -46,11 +60,13 @@ def main() -> None:
     parser.add_argument("--experiment", default="glue_rte_active_selection")
     parser.add_argument("--methods", nargs="+", default=["random", "uncertainty", "coda"])
     parser.add_argument("--output", default="scoring/scores.json")
+    parser.add_argument("--reference", default="scoring/reference.json")
     parser.add_argument("--merge-existing", action="store_true")
     args = parser.parse_args()
 
     results_dir = Path(args.results_dir)
     out_path = Path(args.output)
+    known_metrics = reference_metric_names(Path(args.reference), args.experiment)
     if args.merge_existing and out_path.exists():
         scores = json.loads(out_path.read_text())
     else:
@@ -58,7 +74,10 @@ def main() -> None:
     scores.setdefault("experiments", {})[args.experiment] = {"results": {}}
     for method in args.methods:
         method_dir = results_dir / args.task / method
-        scores["experiments"][args.experiment]["results"][method] = aggregate_method(method_dir)
+        scores["experiments"][args.experiment]["results"][method] = filter_known_metrics(
+            aggregate_method(method_dir),
+            known_metrics,
+        )
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(scores, indent=2))
