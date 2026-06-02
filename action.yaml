@@ -5,4 +5,4 @@ action: done
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Aligned method default data path with download-generated ModelSelector artifacts."
+notes: "Cleaned split score artifacts so validation passes."

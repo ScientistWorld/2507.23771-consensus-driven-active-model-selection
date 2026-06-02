@@ -15,18 +15,6 @@
           "num_models": 87.0,
           "num_items": 139.0
         },
-        "ensv": {
-          "initial_regret": 15.827338129496404,
-          "cumulative_regret_at_25": 395.6834532374102,
-          "cumulative_regret_at_50": 791.3669064748204,
-          "cumulative_regret_at_100": 1582.7338129496409,
-          "instant_regret_at_50": 15.827338129496404,
-          "instant_regret_at_100": 15.827338129496404,
-          "near_optimal_at_100": 0.0,
-          "label_budget": 0.0,
-          "num_models": 87.0,
-          "num_items": 139.0
-        },
         "random": {
           "initial_regret": 12.230215827338132,
           "cumulative_regret_at_25": 253.23741007194252,
@@ -67,18 +55,6 @@
           "num_models": 97.0,
           "num_items": 436.0
         },
-        "ensv": {
-          "initial_regret": 3.669724770642202,
-          "cumulative_regret_at_25": 91.74311926605509,
-          "cumulative_regret_at_50": 183.4862385321102,
-          "cumulative_regret_at_100": 366.97247706421956,
-          "instant_regret_at_50": 3.669724770642202,
-          "instant_regret_at_100": 3.669724770642202,
-          "near_optimal_at_100": 0.0,
-          "label_budget": 0.0,
-          "num_models": 97.0,
-          "num_items": 436.0
-        },
         "random": {
           "initial_regret": 5.275229357798161,
           "cumulative_regret_at_25": 172.7064220183485,
@@ -105,57 +81,9 @@
         }
       }
     },
-    "glue_mrpc_active_selection": {
-      "results": {
-        "coda": {
-          "initial_regret": 1.9607843137254832,
-          "cumulative_regret_at_25": 9.803921568627416,
-          "cumulative_regret_at_50": 20.588235294117574,
-          "cumulative_regret_at_100": 20.588235294117574,
-          "instant_regret_at_50": 0.0,
-          "instant_regret_at_100": 0.0,
-          "near_optimal_at_100": 1.0,
-          "label_budget": 100.0,
-          "num_models": 95.0,
-          "num_items": 204.0
-        },
-        "random": {
-          "initial_regret": 12.745098039215685,
-          "cumulative_regret_at_25": 186.3725490196078,
-          "cumulative_regret_at_50": 288.1372549019607,
-          "cumulative_regret_at_100": 396.8627450980395,
-          "instant_regret_at_50": 2.3529411764705865,
-          "instant_regret_at_100": 0.7843137254901933,
-          "near_optimal_at_100": 1.0,
-          "label_budget": 100.0,
-          "num_models": 95.0,
-          "num_items": 204.0
-        },
-        "uncertainty": {
-          "initial_regret": 12.745098039215685,
-          "cumulative_regret_at_25": 128.9215686274508,
-          "cumulative_regret_at_50": 236.76470588235284,
-          "cumulative_regret_at_100": 293.62745098039267,
-          "instant_regret_at_50": 0.0,
-          "instant_regret_at_100": 0.9803921568627416,
-          "near_optimal_at_100": 1.0,
-          "label_budget": 100.0,
-          "num_models": 95.0,
-          "num_items": 204.0
-        }
-      }
-    },
     "glue_rte_unsupervised_selection": {
       "results": {
         "coda": {
-          "initial_regret": 15.827338129496404,
-          "cumulative_regret_at_100": 0.0,
-          "instant_regret_at_100": 15.827338129496404,
-          "label_budget": 0.0,
-          "num_models": 87.0,
-          "num_items": 139.0
-        },
-        "ensv": {
           "initial_regret": 15.827338129496404,
           "cumulative_regret_at_100": 0.0,
           "instant_regret_at_100": 15.827338129496404,
@@ -168,14 +96,6 @@
     "glue_sst2_unsupervised_selection": {
       "results": {
         "coda": {
-          "initial_regret": 3.669724770642202,
-          "cumulative_regret_at_100": 0.0,
-          "instant_regret_at_100": 3.669724770642202,
-          "label_budget": 0.0,
-          "num_models": 97.0,
-          "num_items": 436.0
-        },
-        "ensv": {
           "initial_regret": 3.669724770642202,
           "cumulative_regret_at_100": 0.0,
           "instant_regret_at_100": 3.669724770642202,
