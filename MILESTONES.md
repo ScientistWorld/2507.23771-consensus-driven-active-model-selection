@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: method_runs**
+**Current: secondary_claims**
 
 ## Progress Log
 
@@ -41,3 +41,8 @@
 - Evaluation-only job wrote corrected main scores, but validation failed because the auxiliary train slice included zero-label comparisons where CODA and EnsV intentionally tie on the primary metric.
 - Train/test evaluators now default to active-selection experiments only; zero-label secondary claims remain scored by the main evaluator.
 - Resubmitting an evaluation-only CPU job to refresh train/test scores and rerun `python validate.py --compare`.
+
+### [2026-06-02 08:20] - secondary_claims
+- Evaluation-only rerun completed successfully and `python validate.py --compare` passed.
+- Corrected scores include RTE, SST2, and MRPC active selection plus RTE/SST2 zero-label selection.
+- Final verification restored the supported milestone to `secondary_claims`.

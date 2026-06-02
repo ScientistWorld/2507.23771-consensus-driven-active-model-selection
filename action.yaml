@@ -1,8 +1,8 @@
 # End-of-turn action for the scheduler.
 # Use submit when a compute rerun is needed; use done only after
 # regenerated artifacts pass validation.
-action: submit
+action: done
 gpus: 0
 test: false
-milestone: method_runs
-notes: "Re-run evaluation after restricting train/test splits to active-selection experiments; refresh scores and validate."
+milestone: secondary_claims
+notes: "Final verification passed: corrected active scores, zero-label secondary scores, train/test scores, and validation are complete."

@@ -85,7 +85,17 @@ Second, the CODA implementation scored EIG over every unlabeled item, while the 
 
 The first corrective CPU rerun timed out at the scheduler's 3600-second CPU limit. It still produced useful corrected artifacts: all five GLUE RTE CODA traces and GLUE SST2 CODA seed 0 completed. The resume job completed GLUE SST2 seed 1 and one corrected GLUE MRPC seed before another timeout.
 
-The first evaluation-only job wrote corrected main scores for RTE, SST2, MRPC, and the zero-label secondary experiments, but validation failed on the auxiliary train/test split because zero-label CODA and EnsV intentionally tie on the primary metric. The main evaluator still scores those secondary experiments. The train/test evaluators now default to active-selection experiments only, where the traces are discriminative optimization targets for future scientists. A second evaluation-only CPU job is being submitted to refresh `scores_train.json`, `scores_test.json`, and `python validate.py --compare`. Until that job completes and validation passes, the supported milestone remains `method_runs`.
+The first evaluation-only job wrote corrected main scores for RTE, SST2, MRPC, and the zero-label secondary experiments, but validation failed on the auxiliary train/test split because zero-label CODA and EnsV intentionally tie on the primary metric. The main evaluator still scores those secondary experiments. The train/test evaluators now default to active-selection experiments only, where the traces are discriminative optimization targets for future scientists.
+
+The second evaluation-only CPU job completed successfully. `python validate.py --compare` passes with corrected main scores, visible train scores, and held-out test scores. The supported milestone is restored to `secondary_claims`.
+
+Corrected final main scores:
+
+- GLUE RTE active cumulative regret at 100: CODA 290.04, random 420.51, uncertainty 371.84
+- GLUE SST2 active cumulative regret at 100: CODA 51.72, random 345.47, uncertainty 100.92
+- GLUE MRPC active cumulative regret at 100: CODA 49.02, random 349.02, uncertainty 256.13
+- GLUE RTE zero-label initial regret: CODA 14.801, EnsV 14.801
+- GLUE SST2 zero-label initial regret: CODA 3.555, EnsV 3.555
 
 ## Issues
 
