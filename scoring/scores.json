@@ -24,6 +24,31 @@
           "num_items": 277.0
         }
       }
+    },
+    "glue_sst2_active_selection": {
+      "results": {
+        "random": {
+          "cumulative_regret_at_100": 345.47018348623897,
+          "instant_regret_at_100": 1.7775229357798183,
+          "label_budget": 100.0,
+          "num_models": 97.0,
+          "num_items": 872.0
+        },
+        "uncertainty": {
+          "cumulative_regret_at_100": 100.91743119266111,
+          "instant_regret_at_100": 0.11467889908257645,
+          "label_budget": 100.0,
+          "num_models": 97.0,
+          "num_items": 872.0
+        },
+        "coda": {
+          "cumulative_regret_at_100": 51.720183486238724,
+          "instant_regret_at_100": 0.0,
+          "label_budget": 100.0,
+          "num_models": 97.0,
+          "num_items": 872.0
+        }
+      }
     }
   }
 }

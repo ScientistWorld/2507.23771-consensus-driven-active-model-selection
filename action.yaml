@@ -31,4 +31,5 @@ action: submit
 gpus: 0
 test: false
 milestone: method_runs
-notes: "Retry the 100-label GLUE RTE experiment after fixing CODA EIG hypothetical updates and post-query cumulative regret scoring."
+milestone: core_claim
+notes: "Run the additional GLUE SST2 active model selection experiment with two seeds and merged scoring to attempt core_claim_plus."
