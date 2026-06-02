@@ -2,8 +2,8 @@
 # Once you set action to 'done', STOP immediately.
 # Do NOT sleep, poll, or wait. The system reads this file
 # only after your turn ends.
-action: submit
+action: done
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Rerun split scoring with same-label local-swap partitions that directly balance candidate-model losses."
+notes: "Same-label local-swap split balancing candidate-model losses; 134 train metrics, 134 test metrics; active primary train/test CODA gaps RTE 310.3/272.8, SST2 54.8/48.6, MRPC 20.6/175.5; no nulls, method sets match."
