@@ -124,18 +124,18 @@ def summarize_trace(
     losses: np.ndarray,
     slice_size: int,
     cumulative_horizon: int,
+    oracle_loss: float,
 ) -> dict[str, float]:
     steps = trace.get("steps", [])
     if not steps:
         raise ValueError("Trace has no steps")
 
-    best_loss = float(losses.min())
     regrets = []
     for step in steps:
         chosen_model = int(step["chosen_model"])
         if chosen_model < 0 or chosen_model >= losses.shape[0]:
             raise ValueError(f"chosen_model out of range: {chosen_model}")
-        regrets.append(float((losses[chosen_model] - best_loss) * 100.0))
+        regrets.append(float(max(0.0, losses[chosen_model] - oracle_loss) * 100.0))
 
     budget = int(trace.get("budget", len(steps) - 1))
     final_regret = float(regrets[-1])
@@ -174,10 +174,11 @@ def aggregate_method(
     losses: np.ndarray,
     slice_size: int,
     cumulative_horizon: int,
+    oracle_loss: float,
 ) -> dict[str, float]:
     paths = experiment_trace_paths(method_dir, cumulative_horizon)
     per_seed = [
-        summarize_trace(json.loads(path.read_text()), losses, slice_size, cumulative_horizon)
+        summarize_trace(json.loads(path.read_text()), losses, slice_size, cumulative_horizon, oracle_loss)
         for path in paths
     ]
     keys = per_seed[0].keys()
@@ -196,6 +197,22 @@ def enumerate_methods(results_dir: Path, task: str) -> list[str]:
     if not methods:
         raise FileNotFoundError(f"No method directories with seed_*.json traces found in {task_dir}")
     return methods
+
+
+def has_active_trace(method_dir: Path) -> bool:
+    return any(trace_budget(path) > 0 for path in trace_paths(method_dir))
+
+
+def deduplicate_results(results: dict[str, dict[str, float]]) -> dict[str, dict[str, float]]:
+    deduplicated = {}
+    seen = set()
+    for method, values in sorted(results.items()):
+        key = json.dumps(values, sort_keys=True)
+        if key in seen:
+            continue
+        seen.add(key)
+        deduplicated[method] = values
+    return deduplicated
 
 
 def reference_metric_names(reference_path: Path, experiment: str) -> set[str] | None:
@@ -258,16 +275,27 @@ def evaluate_experiment(args: argparse.Namespace, experiment: str) -> dict[str, 
     predictions, labels = load_benchmark(Path(args.data_dir), task)
     indices = train_item_indices(predictions, labels)
     losses = subset_losses(predictions, labels, indices)
+    full_losses = subset_losses(predictions, labels, np.arange(labels.shape[0]))
+    oracle_model = int(full_losses.argmin())
+    oracle_loss = float(losses[oracle_model])
     methods = args.methods if args.methods else enumerate_methods(results_dir, task)
+    if cumulative_horizon > 0:
+        methods = [
+            method
+            for method in methods
+            if has_active_trace(results_dir / task / method)
+        ]
     known_metrics = reference_metric_names(Path(args.reference), experiment)
 
     results = {}
     for method in methods:
         method_dir = results_dir / task / method
         results[method] = filter_known_metrics(
-            aggregate_method(method_dir, losses, len(indices), cumulative_horizon),
+            aggregate_method(method_dir, losses, len(indices), cumulative_horizon, oracle_loss),
             known_metrics,
         )
+    if cumulative_horizon == 0:
+        results = deduplicate_results(results)
     return results
 
 
