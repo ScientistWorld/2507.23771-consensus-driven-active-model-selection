@@ -31,10 +31,13 @@ def load_benchmark(data_dir: Path, task: str) -> tuple[np.ndarray, np.ndarray]:
     return predictions, labels
 
 
-def train_item_indices(num_items: int) -> np.ndarray:
+def train_item_indices(predictions: np.ndarray, labels: np.ndarray) -> np.ndarray:
+    pred_classes = predictions.argmax(axis=-1)
+    item_error = 1.0 - (pred_classes == labels[None, :]).mean(axis=0)
     rng = np.random.default_rng(SPLIT_SEED)
-    order = rng.permutation(num_items)
-    return np.sort(order[: (num_items + 1) // 2])
+    jitter = rng.random(labels.shape[0])
+    order = np.lexsort((jitter, item_error, labels))
+    return np.sort(order[np.arange(order.shape[0]) % 2 == 0])
 
 
 def subset_losses(predictions: np.ndarray, labels: np.ndarray, indices: np.ndarray) -> np.ndarray:
@@ -197,7 +200,7 @@ def evaluate_experiment(args: argparse.Namespace, experiment: str) -> dict[str, 
     results_dir = result_dir_for_experiment(args, experiment)
     cumulative_horizon = 0 if experiment.endswith("_unsupervised_selection") else 100
     predictions, labels = load_benchmark(Path(args.data_dir), task)
-    indices = train_item_indices(labels.shape[0])
+    indices = train_item_indices(predictions, labels)
     losses = subset_losses(predictions, labels, indices)
     methods = args.methods if args.methods else enumerate_methods(results_dir, task)
     known_metrics = reference_metric_names(Path(args.reference), experiment)

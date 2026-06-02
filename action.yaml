@@ -6,4 +6,4 @@ action: submit
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Rerun split scoring after fixing active cumulative regret for short/zero-budget traces and filtering mixed zero-budget seeds."
+notes: "Rerun split scoring with label-and-difficulty-balanced train/test partitions and zero-weighted unsupervised compatibility metric."

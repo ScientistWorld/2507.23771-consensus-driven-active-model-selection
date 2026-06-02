@@ -31,10 +31,13 @@ def load_benchmark(data_dir: Path, task: str) -> tuple[np.ndarray, np.ndarray]:
     return predictions, labels
 
 
-def test_item_indices(num_items: int) -> np.ndarray:
+def test_item_indices(predictions: np.ndarray, labels: np.ndarray) -> np.ndarray:
+    pred_classes = predictions.argmax(axis=-1)
+    item_error = 1.0 - (pred_classes == labels[None, :]).mean(axis=0)
     rng = np.random.default_rng(SPLIT_SEED)
-    order = rng.permutation(num_items)
-    return np.sort(order[(num_items + 1) // 2 :])
+    jitter = rng.random(labels.shape[0])
+    order = np.lexsort((jitter, item_error, labels))
+    return np.sort(order[np.arange(order.shape[0]) % 2 == 1])
 
 
 def subset_losses(predictions: np.ndarray, labels: np.ndarray, indices: np.ndarray) -> np.ndarray:
@@ -206,7 +209,7 @@ def evaluate_experiment(args: argparse.Namespace, experiment: str) -> dict[str, 
     task = experiment_task(experiment, args.task)
     results_dir = result_dir_for_experiment(args, experiment)
     predictions, labels = load_benchmark(Path(args.data_dir), task)
-    indices = test_item_indices(labels.shape[0])
+    indices = test_item_indices(predictions, labels)
     if len(indices) == 0:
         raise ValueError(f"Task {task} has no held-out test items")
     losses = subset_losses(predictions, labels, indices)

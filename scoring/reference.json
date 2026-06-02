@@ -276,8 +276,8 @@
         },
         "cumulative_regret_at_100": {
           "higher_is_better": false,
-          "coefficient": -0.05,
-          "description": "Compatibility metric for the shared trace format; should remain zero when no labels are queried."
+          "coefficient": 0.0,
+          "description": "Unscored compatibility metric for the shared trace format; should remain zero when no labels are queried."
         },
         "instant_regret_at_100": {
           "higher_is_better": false,
@@ -333,8 +333,8 @@
         },
         "cumulative_regret_at_100": {
           "higher_is_better": false,
-          "coefficient": -0.05,
-          "description": "Compatibility metric for the shared trace format; should remain zero when no labels are queried."
+          "coefficient": 0.0,
+          "description": "Unscored compatibility metric for the shared trace format; should remain zero when no labels are queried."
         },
         "instant_regret_at_100": {
           "higher_is_better": false,
