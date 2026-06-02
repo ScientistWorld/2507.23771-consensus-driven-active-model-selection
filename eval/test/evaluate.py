@@ -33,10 +33,17 @@ def load_benchmark(data_dir: Path, task: str) -> tuple[np.ndarray, np.ndarray]:
 
 def test_item_indices(predictions: np.ndarray, labels: np.ndarray) -> np.ndarray:
     pred_classes = predictions.argmax(axis=-1)
-    item_error = 1.0 - (pred_classes == labels[None, :]).mean(axis=0)
+    correct = pred_classes == labels[None, :]
+    item_error = 1.0 - correct.mean(axis=0)
+    signatures = [np.packbits(correct[:, item]).tobytes() for item in range(labels.shape[0])]
     rng = np.random.default_rng(SPLIT_SEED)
     jitter = rng.random(labels.shape[0])
-    order = np.lexsort((jitter, item_error, labels))
+    order = np.array(
+        sorted(
+            range(labels.shape[0]),
+            key=lambda item: (int(labels[item]), float(item_error[item]), signatures[item], float(jitter[item])),
+        )
+    )
     return np.sort(order[np.arange(order.shape[0]) % 2 == 1])
 
 

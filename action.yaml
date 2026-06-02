@@ -6,4 +6,4 @@ action: submit
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Rerun split scoring with label-and-difficulty-balanced train/test partitions and zero-weighted unsupervised compatibility metric."
+notes: "Rerun split scoring with label, difficulty, and correctness-signature balanced train/test partitions."
