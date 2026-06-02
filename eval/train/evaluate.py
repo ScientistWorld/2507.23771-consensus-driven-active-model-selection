@@ -31,7 +31,7 @@ def load_benchmark(data_dir: Path, task: str) -> tuple[np.ndarray, np.ndarray]:
     return predictions, labels
 
 
-def train_item_indices(predictions: np.ndarray, labels: np.ndarray) -> np.ndarray:
+def balanced_split_mask(predictions: np.ndarray, labels: np.ndarray) -> np.ndarray:
     pred_classes = predictions.argmax(axis=-1)
     correct = pred_classes == labels[None, :]
     item_error = 1.0 - correct.mean(axis=0)
@@ -44,7 +44,56 @@ def train_item_indices(predictions: np.ndarray, labels: np.ndarray) -> np.ndarra
             key=lambda item: (int(labels[item]), float(item_error[item]), signatures[item], float(jitter[item])),
         )
     )
-    return np.sort(order[np.arange(order.shape[0]) % 2 == 0])
+    train_mask = np.zeros(labels.shape[0], dtype=bool)
+    train_mask[order[np.arange(order.shape[0]) % 2 == 0]] = True
+
+    errors = (~correct).astype(np.float64)
+    train_n = int(train_mask.sum())
+    test_n = int((~train_mask).sum())
+    if train_n == 0 or test_n == 0:
+        return train_mask
+
+    train_sum = errors[:, train_mask].sum(axis=1)
+    test_sum = errors[:, ~train_mask].sum(axis=1)
+    diff = train_sum / train_n - test_sum / test_n
+    objective = float(np.mean(diff * diff))
+    unique_labels = np.unique(labels)
+    pair_limit = 20000
+
+    for _ in range(30):
+        best = None
+        best_objective = objective
+        for label in unique_labels:
+            train_items = np.where(train_mask & (labels == label))[0]
+            test_items = np.where((~train_mask) & (labels == label))[0]
+            if len(train_items) == 0 or len(test_items) == 0:
+                continue
+            pair_count = len(train_items) * len(test_items)
+            if pair_count <= pair_limit:
+                pairs = ((a, b) for a in train_items for b in test_items)
+            else:
+                train_sample = rng.choice(train_items, size=pair_limit, replace=True)
+                test_sample = rng.choice(test_items, size=pair_limit, replace=True)
+                pairs = zip(train_sample, test_sample)
+            for train_item, test_item in pairs:
+                delta = (errors[:, test_item] - errors[:, train_item]) * (1.0 / train_n + 1.0 / test_n)
+                new_diff = diff + delta
+                new_objective = float(np.mean(new_diff * new_diff))
+                if new_objective < best_objective - 1e-12:
+                    best_objective = new_objective
+                    best = (int(train_item), int(test_item), delta)
+        if best is None:
+            break
+        train_item, test_item, delta = best
+        train_mask[train_item] = False
+        train_mask[test_item] = True
+        diff = diff + delta
+        objective = best_objective
+    return train_mask
+
+
+def train_item_indices(predictions: np.ndarray, labels: np.ndarray) -> np.ndarray:
+    return np.sort(np.where(balanced_split_mask(predictions, labels))[0])
 
 
 def subset_losses(predictions: np.ndarray, labels: np.ndarray, indices: np.ndarray) -> np.ndarray:

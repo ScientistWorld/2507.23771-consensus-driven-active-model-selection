@@ -6,4 +6,4 @@ action: submit
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Rerun split scoring with label, difficulty, and correctness-signature balanced train/test partitions."
+notes: "Rerun split scoring with same-label local-swap partitions that directly balance candidate-model losses."
