@@ -18,6 +18,7 @@ def summarize_trace(trace: dict, tolerance: float = 1.0) -> dict[str, float]:
     budget = int(trace["budget"])
     post_query = regrets[1 : min(budget + 1, len(regrets))]
     return {
+        "initial_regret": float(regrets[0]),
         "cumulative_regret_at_100": float(post_query.sum()),
         "instant_regret_at_100": float(regrets[-1]),
         "label_budget": float(budget),

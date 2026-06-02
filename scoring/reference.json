@@ -2,7 +2,7 @@
   "experiments": {
     "glue_rte_active_selection": {
       "description": "Active model selection on the GLUE RTE benchmark at a 100-label budget, matching the paper's main cumulative-regret comparison for this task.",
-      "weight": 0.65,
+      "weight": 0.45,
       "primary_metric": "cumulative_regret_at_100",
       "metrics": {
         "cumulative_regret_at_100": {
@@ -55,7 +55,7 @@
     },
     "glue_sst2_active_selection": {
       "description": "Active model selection on the GLUE SST2 benchmark at a 100-label budget, matching the paper's main cumulative-regret comparison for this additional GLUE task.",
-      "weight": 0.35,
+      "weight": 0.25,
       "primary_metric": "cumulative_regret_at_100",
       "metrics": {
         "cumulative_regret_at_100": {
@@ -101,6 +101,84 @@
           "cumulative_regret_at_100": 51.7,
           "instant_regret_at_100": 0.0,
           "label_budget": 100,
+          "num_models": 97,
+          "num_items": 872
+        }
+      }
+    },
+    "glue_rte_unsupervised_selection": {
+      "description": "Unsupervised model selection on GLUE RTE using no queried labels, matching the paper's Table 5 step-0 regret comparison.",
+      "weight": 0.18,
+      "primary_metric": "initial_regret",
+      "metrics": {
+        "initial_regret": {
+          "higher_is_better": false,
+          "coefficient": -1.0
+        },
+        "label_budget": {
+          "higher_is_better": false,
+          "coefficient": -0.2
+        },
+        "num_models": {
+          "higher_is_better": true,
+          "coefficient": 0.05
+        },
+        "num_items": {
+          "higher_is_better": true,
+          "coefficient": 0.05
+        }
+      },
+      "results": {
+        "ensv": {
+          "type": "baseline",
+          "initial_regret": 14.8,
+          "label_budget": 0,
+          "num_models": 87,
+          "num_items": 277
+        },
+        "coda": {
+          "type": "proposed",
+          "initial_regret": 14.8,
+          "label_budget": 0,
+          "num_models": 87,
+          "num_items": 277
+        }
+      }
+    },
+    "glue_sst2_unsupervised_selection": {
+      "description": "Unsupervised model selection on GLUE SST2 using no queried labels, matching the paper's Table 5 step-0 regret comparison.",
+      "weight": 0.12,
+      "primary_metric": "initial_regret",
+      "metrics": {
+        "initial_regret": {
+          "higher_is_better": false,
+          "coefficient": -1.0
+        },
+        "label_budget": {
+          "higher_is_better": false,
+          "coefficient": -0.2
+        },
+        "num_models": {
+          "higher_is_better": true,
+          "coefficient": 0.05
+        },
+        "num_items": {
+          "higher_is_better": true,
+          "coefficient": 0.05
+        }
+      },
+      "results": {
+        "ensv": {
+          "type": "baseline",
+          "initial_regret": 3.6,
+          "label_budget": 0,
+          "num_models": 97,
+          "num_items": 872
+        },
+        "coda": {
+          "type": "proposed",
+          "initial_regret": 3.6,
+          "label_budget": 0,
           "num_models": 97,
           "num_items": 872
         }

@@ -15,8 +15,9 @@ cd /home/user
 
 python data/prepare_modelselector.py --tasks glue_rte glue_sst2
 
-# Additional GLUE setting after the RTE core claim run.  Two seeds and a
-# smaller integration grid keep the CPU job under the scheduler timeout while
-# preserving CODA's active-selection procedure.
-MERGE_EXISTING=1 bash scripts/baseline.sh glue_sst2 100 2
-MERGE_EXISTING=1 bash scripts/method.sh glue_sst2 100 2 64
+# Add Table 5 no-label model-selection experiments without rerunning the
+# already completed 100-label active-selection jobs.
+MERGE_EXISTING=1 bash scripts/unsupervised.sh glue_rte 128
+MERGE_EXISTING=1 bash scripts/unsupervised.sh glue_sst2 64
+
+python validate.py --compare

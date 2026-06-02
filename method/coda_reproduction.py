@@ -205,6 +205,30 @@ class EmpiricalRiskSelector:
         self.observed_labels.append(true_class)
 
 
+class EnsembleValidationSelector:
+    """Unsupervised ensemble-validation baseline from Hu et al.
+
+    Accuracy for each candidate is estimated against the ensemble consensus
+    labels, using only the prediction matrix and no ground-truth labels.
+    """
+
+    def __init__(self, benchmark: PredictionBenchmark):
+        self.benchmark = benchmark
+        self.predictions = benchmark.predictions
+        self.pred_classes = benchmark.pred_classes
+        self.consensus = self.predictions.mean(axis=0).argmax(axis=-1)
+
+    def best_model(self) -> int:
+        estimated_acc = (self.pred_classes == self.consensus[None, :]).mean(axis=1)
+        return int(estimated_acc.argmax())
+
+    def next_item(self) -> tuple[int, float]:
+        raise RuntimeError("Ensemble validation is an unsupervised selector; use --budget 0")
+
+    def add_label(self, idx: int, true_class: int) -> None:
+        raise RuntimeError("Ensemble validation does not consume labels")
+
+
 def run_selector(benchmark: PredictionBenchmark, method: str, budget: int, seed: int, coda_grid: int) -> dict:
     random.seed(seed)
     np.random.seed(seed)
@@ -214,6 +238,10 @@ def run_selector(benchmark: PredictionBenchmark, method: str, budget: int, seed:
         selector = CODASelector(benchmark, num_grid=coda_grid, acquisition="uncertainty")
     elif method in {"random", "uncertainty"}:
         selector = EmpiricalRiskSelector(benchmark, method, seed)
+    elif method == "ensv":
+        if budget != 0:
+            raise ValueError("ensv is an unsupervised baseline and requires --budget 0")
+        selector = EnsembleValidationSelector(benchmark)
     else:
         raise ValueError(method)
 
