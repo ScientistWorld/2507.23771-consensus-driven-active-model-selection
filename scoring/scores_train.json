@@ -4,10 +4,10 @@
     "glue_rte_active_selection": {
       "results": {
         "coda": {
-          "initial_regret": 13.669064748201443,
-          "cumulative_regret_at_25": 253.23741007194243,
-          "cumulative_regret_at_50": 264.9280575539568,
-          "cumulative_regret_at_100": 264.9280575539568,
+          "initial_regret": 15.827338129496404,
+          "cumulative_regret_at_25": 296.4028776978418,
+          "cumulative_regret_at_50": 310.25179856115113,
+          "cumulative_regret_at_100": 310.25179856115113,
           "instant_regret_at_50": 0.0,
           "instant_regret_at_100": 0.0,
           "near_optimal_at_100": 1.0,
@@ -16,34 +16,34 @@
           "num_items": 139.0
         },
         "ensv": {
-          "initial_regret": 13.669064748201443,
-          "cumulative_regret_at_25": 341.72661870503595,
-          "cumulative_regret_at_50": 683.4532374100719,
-          "cumulative_regret_at_100": 1366.9064748201438,
-          "instant_regret_at_50": 13.669064748201443,
-          "instant_regret_at_100": 13.669064748201443,
+          "initial_regret": 15.827338129496404,
+          "cumulative_regret_at_25": 395.6834532374102,
+          "cumulative_regret_at_50": 791.3669064748204,
+          "cumulative_regret_at_100": 1582.7338129496409,
+          "instant_regret_at_50": 15.827338129496404,
+          "instant_regret_at_100": 15.827338129496404,
           "near_optimal_at_100": 0.0,
           "label_budget": 0.0,
           "num_models": 87.0,
           "num_items": 139.0
         },
         "random": {
-          "initial_regret": 12.949640287769792,
-          "cumulative_regret_at_25": 263.453237410072,
-          "cumulative_regret_at_50": 346.04316546762595,
-          "cumulative_regret_at_100": 409.20863309352524,
-          "instant_regret_at_50": 2.877697841726621,
-          "instant_regret_at_100": 0.7194244604316546,
+          "initial_regret": 12.230215827338132,
+          "cumulative_regret_at_25": 253.23741007194252,
+          "cumulative_regret_at_50": 344.6043165467627,
+          "cumulative_regret_at_100": 430.5035971223022,
+          "instant_regret_at_50": 3.165467625899283,
+          "instant_regret_at_100": 1.1510791366906492,
           "near_optimal_at_100": 0.8,
           "label_budget": 100.0,
           "num_models": 87.0,
           "num_items": 139.0
         },
         "uncertainty": {
-          "initial_regret": 12.949640287769792,
-          "cumulative_regret_at_25": 344.60431654676273,
-          "cumulative_regret_at_50": 366.18705035971226,
-          "cumulative_regret_at_100": 366.18705035971226,
+          "initial_regret": 12.230215827338132,
+          "cumulative_regret_at_25": 351.7985611510793,
+          "cumulative_regret_at_50": 386.3309352517987,
+          "cumulative_regret_at_100": 386.3309352517987,
           "instant_regret_at_50": 0.0,
           "instant_regret_at_100": 0.0,
           "near_optimal_at_100": 1.0,
@@ -56,10 +56,10 @@
     "glue_sst2_active_selection": {
       "results": {
         "coda": {
-          "initial_regret": 5.5045871559633035,
-          "cumulative_regret_at_25": 59.174311926605434,
-          "cumulative_regret_at_50": 61.23853211009167,
-          "cumulative_regret_at_100": 61.23853211009167,
+          "initial_regret": 3.669724770642202,
+          "cumulative_regret_at_25": 53.44036697247699,
+          "cumulative_regret_at_50": 54.8165137614678,
+          "cumulative_regret_at_100": 54.8165137614678,
           "instant_regret_at_50": 0.0,
           "instant_regret_at_100": 0.0,
           "near_optimal_at_100": 1.0,
@@ -68,35 +68,35 @@
           "num_items": 436.0
         },
         "ensv": {
-          "initial_regret": 5.5045871559633035,
-          "cumulative_regret_at_25": 137.61467889908263,
-          "cumulative_regret_at_50": 275.229357798165,
-          "cumulative_regret_at_100": 550.45871559633,
-          "instant_regret_at_50": 5.5045871559633035,
-          "instant_regret_at_100": 5.5045871559633035,
+          "initial_regret": 3.669724770642202,
+          "cumulative_regret_at_25": 91.74311926605509,
+          "cumulative_regret_at_50": 183.4862385321102,
+          "cumulative_regret_at_100": 366.97247706421956,
+          "instant_regret_at_50": 3.669724770642202,
+          "instant_regret_at_100": 3.669724770642202,
           "near_optimal_at_100": 0.0,
           "label_budget": 0.0,
           "num_models": 97.0,
           "num_items": 436.0
         },
         "random": {
-          "initial_regret": 6.422018348623848,
-          "cumulative_regret_at_25": 190.82568807339447,
-          "cumulative_regret_at_50": 287.95871559633036,
-          "cumulative_regret_at_100": 454.2431192660555,
-          "instant_regret_at_50": 3.5550458715596314,
-          "instant_regret_at_100": 2.8669724770642224,
+          "initial_regret": 5.275229357798161,
+          "cumulative_regret_at_25": 172.7064220183485,
+          "cumulative_regret_at_50": 245.4128440366968,
+          "cumulative_regret_at_100": 365.1376146788979,
+          "instant_regret_at_50": 2.5229357798165095,
+          "instant_regret_at_100": 2.0642201834862375,
           "near_optimal_at_100": 0.5,
           "label_budget": 100.0,
           "num_models": 97.0,
           "num_items": 436.0
         },
         "uncertainty": {
-          "initial_regret": 6.422018348623848,
-          "cumulative_regret_at_25": 112.15596330275233,
-          "cumulative_regret_at_50": 122.93577981651369,
-          "cumulative_regret_at_100": 136.4678899082564,
-          "instant_regret_at_50": 0.6880733944954143,
+          "initial_regret": 5.275229357798161,
+          "cumulative_regret_at_25": 98.39449541284412,
+          "cumulative_regret_at_50": 106.65137614678895,
+          "cumulative_regret_at_100": 118.34862385321057,
+          "instant_regret_at_50": 0.4587155963302725,
           "instant_regret_at_100": 0.2293577981651307,
           "near_optimal_at_100": 1.0,
           "label_budget": 100.0,
@@ -108,10 +108,10 @@
     "glue_mrpc_active_selection": {
       "results": {
         "coda": {
-          "initial_regret": 2.450980392156854,
-          "cumulative_regret_at_25": 12.25490196078427,
-          "cumulative_regret_at_50": 24.01960784313717,
-          "cumulative_regret_at_100": 24.01960784313717,
+          "initial_regret": 1.9607843137254832,
+          "cumulative_regret_at_25": 9.803921568627416,
+          "cumulative_regret_at_50": 20.588235294117574,
+          "cumulative_regret_at_100": 20.588235294117574,
           "instant_regret_at_50": 0.0,
           "instant_regret_at_100": 0.0,
           "near_optimal_at_100": 1.0,
@@ -120,25 +120,25 @@
           "num_items": 204.0
         },
         "random": {
-          "initial_regret": 13.235294117647054,
-          "cumulative_regret_at_25": 193.4313725490195,
-          "cumulative_regret_at_50": 304.9019607843135,
-          "cumulative_regret_at_100": 436.9607843137254,
-          "instant_regret_at_50": 2.647058823529407,
-          "instant_regret_at_100": 1.3725490196078383,
-          "near_optimal_at_100": 0.6,
+          "initial_regret": 12.745098039215685,
+          "cumulative_regret_at_25": 186.3725490196078,
+          "cumulative_regret_at_50": 288.1372549019607,
+          "cumulative_regret_at_100": 396.8627450980395,
+          "instant_regret_at_50": 2.3529411764705865,
+          "instant_regret_at_100": 0.7843137254901933,
+          "near_optimal_at_100": 1.0,
           "label_budget": 100.0,
           "num_models": 95.0,
           "num_items": 204.0
         },
         "uncertainty": {
-          "initial_regret": 13.235294117647054,
-          "cumulative_regret_at_25": 130.39215686274497,
-          "cumulative_regret_at_50": 227.45098039215662,
-          "cumulative_regret_at_100": 338.72549019607777,
+          "initial_regret": 12.745098039215685,
+          "cumulative_regret_at_25": 128.9215686274508,
+          "cumulative_regret_at_50": 236.76470588235284,
+          "cumulative_regret_at_100": 293.62745098039267,
           "instant_regret_at_50": 0.0,
-          "instant_regret_at_100": 2.450980392156854,
-          "near_optimal_at_100": 0.0,
+          "instant_regret_at_100": 0.9803921568627416,
+          "near_optimal_at_100": 1.0,
           "label_budget": 100.0,
           "num_models": 95.0,
           "num_items": 204.0
@@ -148,17 +148,17 @@
     "glue_rte_unsupervised_selection": {
       "results": {
         "coda": {
-          "initial_regret": 13.669064748201443,
+          "initial_regret": 15.827338129496404,
           "cumulative_regret_at_100": 0.0,
-          "instant_regret_at_100": 13.669064748201443,
+          "instant_regret_at_100": 15.827338129496404,
           "label_budget": 0.0,
           "num_models": 87.0,
           "num_items": 139.0
         },
         "ensv": {
-          "initial_regret": 13.669064748201443,
+          "initial_regret": 15.827338129496404,
           "cumulative_regret_at_100": 0.0,
-          "instant_regret_at_100": 13.669064748201443,
+          "instant_regret_at_100": 15.827338129496404,
           "label_budget": 0.0,
           "num_models": 87.0,
           "num_items": 139.0
@@ -168,17 +168,17 @@
     "glue_sst2_unsupervised_selection": {
       "results": {
         "coda": {
-          "initial_regret": 5.5045871559633035,
+          "initial_regret": 3.669724770642202,
           "cumulative_regret_at_100": 0.0,
-          "instant_regret_at_100": 5.5045871559633035,
+          "instant_regret_at_100": 3.669724770642202,
           "label_budget": 0.0,
           "num_models": 97.0,
           "num_items": 436.0
         },
         "ensv": {
-          "initial_regret": 5.5045871559633035,
+          "initial_regret": 3.669724770642202,
           "cumulative_regret_at_100": 0.0,
-          "instant_regret_at_100": 5.5045871559633035,
+          "instant_regret_at_100": 3.669724770642202,
           "label_budget": 0.0,
           "num_models": 97.0,
           "num_items": 436.0
