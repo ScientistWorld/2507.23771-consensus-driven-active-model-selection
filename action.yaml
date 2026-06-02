@@ -5,4 +5,4 @@ action: submit
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Audit restored secondary_claims; submit the missing GLUE MRPC active-selection CPU run, merge scores, and validate TARGETS completeness."
+notes: "Continue MRPC after timeout: skip completed CODA seeds 0-2, run seeds 3-4, merge random/uncertainty/CODA scores, and validate."

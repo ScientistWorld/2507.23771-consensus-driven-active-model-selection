@@ -57,9 +57,15 @@ The continuing-agent audit restored the prior `secondary_claims` milestone. The 
 
 The audit found one scoring-completeness gap: `scoring/TARGETS.md` and `scoring/reference.json` now include `glue_mrpc_active_selection`, but `scoring/scores.json` does not yet contain that experiment. `scripts/run.sh` is prepared to run MRPC conversion, random and uncertainty baselines, CODA, score merging, and `python validate.py --compare`; that CPU job is being submitted.
 
+## MRPC Continuation
+
+Job `8ad02e06-c3a` timed out at the scheduler's 3600-second CPU limit. It was useful partial progress rather than a failed method run: MRPC data conversion completed, all five random and uncertainty baseline traces were written, and CODA wrote complete traces for seeds 0, 1, and 2 before the kill.
+
+The runner now supports `--start-seed` and `--skip-existing` so continuation jobs can preserve the paper's five-seed protocol without recomputing completed traces. `scripts/run.sh` now resumes MRPC CODA at seed 3, evaluates random, uncertainty, and CODA together, and runs `python validate.py --compare`.
+
 ## What Remains
 
-The next queued expansion is GLUE MRPC active selection at the paper's 100-label budget. Paper targets are 318.2 cumulative regret for random sampling, 301.1 for uncertainty sampling, and 49.0 for CODA. The raw MRPC prediction and label files have been fetched into `data/downloads/modelselector_raw/glue_mrpc/`, and `scripts/run.sh` is prepared to convert them, run five seeds for CODA and both baselines, merge the result into `scoring/scores.json`, and validate.
+The next queued expansion is GLUE MRPC active selection at the paper's 100-label budget. Paper targets are 318.2 cumulative regret for random sampling, 301.1 for uncertainty sampling, and 49.0 for CODA. The raw MRPC prediction and label files have been fetched into `data/downloads/modelselector_raw/glue_mrpc/`. A continuation job is prepared to finish CODA seeds 3 and 4, merge the five-seed MRPC result into `scoring/scores.json`, and validate.
 
 Further expansion after MRPC would mean reproducing additional rows of the 26-task main table or adding the paper's ablations on priors and acquisition functions. The packaged gym already includes the method, two active GLUE experiments, two zero-label secondary experiments, baselines, constraints, download script, and reusable evaluator.
 

@@ -283,6 +283,14 @@ def run_selector(benchmark: PredictionBenchmark, method: str, budget: int, seed:
     }
 
 
+def trace_is_complete(path: Path, budget: int) -> bool:
+    try:
+        trace = json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return False
+    return trace.get("budget") == budget and len(trace.get("steps", [])) == budget + 1
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-dir", default="data/downloads/coda_data")
@@ -290,6 +298,8 @@ def main() -> None:
     parser.add_argument("--method", default="coda")
     parser.add_argument("--budget", type=int, default=100)
     parser.add_argument("--seeds", type=int, default=5)
+    parser.add_argument("--start-seed", type=int, default=0)
+    parser.add_argument("--skip-existing", action="store_true")
     parser.add_argument("--coda-grid", type=int, default=128)
     parser.add_argument("--output-dir", default="outputs/coda")
     args = parser.parse_args()
@@ -297,9 +307,18 @@ def main() -> None:
     benchmark = load_prediction_benchmark(args.data_dir, args.task)
     out_dir = Path(args.output_dir) / args.task / args.method
     out_dir.mkdir(parents=True, exist_ok=True)
-    for seed in range(args.seeds):
+    for seed in range(args.start_seed, args.seeds):
+        out_path = out_dir / f"seed_{seed}.json"
+        if args.skip_existing and trace_is_complete(out_path, args.budget):
+            print(f"skip existing complete trace: {out_path}", flush=True)
+            continue
+        print(
+            f"running {args.method} task={args.task} seed={seed} budget={args.budget} grid={args.coda_grid}",
+            flush=True,
+        )
         result = run_selector(benchmark, args.method, args.budget, seed, args.coda_grid)
-        (out_dir / f"seed_{seed}.json").write_text(json.dumps(result, indent=2))
+        out_path.write_text(json.dumps(result, indent=2))
+        print(f"wrote {out_path}", flush=True)
 
 
 if __name__ == "__main__":

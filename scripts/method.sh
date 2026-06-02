@@ -15,6 +15,11 @@ BUDGET="${2:-100}"
 SEEDS="${3:-5}"
 GRID="${4:-128}"
 DATA_DIR="${DATA_DIR:-data/downloads/modelselector}"
+START_SEED="${START_SEED:-0}"
+SKIP_ARGS=()
+if [ "${SKIP_EXISTING:-0}" = "1" ]; then
+  SKIP_ARGS=(--skip-existing)
+fi
 
 python method/coda_reproduction.py \
   --data-dir "$DATA_DIR" \
@@ -22,6 +27,8 @@ python method/coda_reproduction.py \
   --method coda \
   --budget "$BUDGET" \
   --seeds "$SEEDS" \
+  --start-seed "$START_SEED" \
+  "${SKIP_ARGS[@]}" \
   --coda-grid "$GRID" \
   --output-dir outputs/coda
 
