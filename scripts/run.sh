@@ -13,6 +13,39 @@ set -e
 
 cd /home/user
 
+python data/prepare_modelselector.py --tasks glue_rte glue_sst2 glue_mrpc
+
+python method/coda_reproduction.py \
+  --data-dir data/downloads/modelselector \
+  --task glue_rte \
+  --method coda \
+  --budget 100 \
+  --seeds 5 \
+  --coda-grid 128 \
+  --output-dir outputs/coda
+
+python method/coda_reproduction.py \
+  --data-dir data/downloads/modelselector \
+  --task glue_sst2 \
+  --method coda \
+  --budget 100 \
+  --seeds 2 \
+  --coda-grid 64 \
+  --output-dir outputs/coda
+
+python method/coda_reproduction.py \
+  --data-dir data/downloads/modelselector \
+  --task glue_mrpc \
+  --method coda \
+  --budget 100 \
+  --seeds 5 \
+  --coda-grid 128 \
+  --output-dir outputs/coda
+
+bash scripts/unsupervised.sh glue_rte 128
+bash scripts/unsupervised.sh glue_sst2 64
+
+bash scripts/evaluate.sh /home/user/outputs/coda
 bash scripts/evaluate_train.sh /home/user/outputs/coda
 bash scripts/evaluate_test.sh /home/user/outputs/coda
-python validate.py
+python validate.py --compare

@@ -77,6 +77,12 @@ The paper reports MRPC cumulative regret values of 318.2 for random sampling, 30
 
 Further expansion would mean reproducing additional rows of the 26-task main table or adding the paper's ablations on priors and acquisition functions. The packaged gym already includes the method, three active GLUE experiments, two zero-label secondary experiments, baselines, constraints, download script, and reusable evaluator.
 
+## Corrective Rerun
+
+A final audit found two issues to fix before treating the existing scores as final gym evidence. First, the main evaluator trusted regret and benchmark-size fields written by method traces and only scored one experiment by default. It now recomputes regret, model count, and item count from the fixed benchmark arrays in `data/downloads/modelselector/`, and `scripts/evaluate.sh` evaluates every experiment in `scoring/reference.json` unless a specific task or experiment is requested.
+
+Second, the CODA implementation scored EIG over every unlabeled item, while the released implementation first filters candidates to points where at least one model disagrees with the majority prediction. The method now uses that disagreement candidate filter and removes the previous beta-PDF clipping approximation. Because this changes the query sequence, stale CODA traces were removed from scoring and a CPU rerun is being submitted to regenerate CODA active traces for RTE, SST2, and MRPC, rerun zero-label checks, and validate the refreshed scores.
+
 ## Issues
 
 The login-node PyTorch install path produced a broken GPU wheel, so the runnable reproduction avoids PyTorch by using verified ModelSelector `.npy` files converted to `.npz`. The authors' Google Drive CODA archive was still downloaded and lightly inspected.

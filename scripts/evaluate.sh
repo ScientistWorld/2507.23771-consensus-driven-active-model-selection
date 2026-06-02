@@ -27,9 +27,23 @@ cd /home/user
 mkdir -p scoring
 
 RESULTS_DIR="${1:-outputs/coda}"
-TASK="${2:-glue_rte}"
-EXPERIMENT="${3:-glue_rte_active_selection}"
-METHODS="${METHODS:-random uncertainty coda}"
+TASK="${2:-}"
+EXPERIMENT="${3:-}"
+DATA_DIR="${DATA_DIR:-data/downloads/modelselector}"
+UNSUPERVISED_RESULTS_DIR="${UNSUPERVISED_RESULTS_DIR:-outputs/coda_unsupervised}"
+
+TASK_ARGS=()
+if [ -n "$TASK" ]; then
+  TASK_ARGS=(--task "$TASK")
+fi
+EXPERIMENT_ARGS=()
+if [ -n "$EXPERIMENT" ]; then
+  EXPERIMENT_ARGS=(--experiment "$EXPERIMENT")
+fi
+METHOD_ARGS=()
+if [ -n "${METHODS:-}" ]; then
+  METHOD_ARGS=(--methods $METHODS)
+fi
 MERGE_ARGS=()
 if [ "${MERGE_EXISTING:-0}" = "1" ]; then
   MERGE_ARGS=(--merge-existing)
@@ -37,8 +51,10 @@ fi
 
 python eval/evaluate_results.py \
   --results-dir "$RESULTS_DIR" \
-  --task "$TASK" \
-  --experiment "$EXPERIMENT" \
-  --methods $METHODS \
+  --unsupervised-results-dir "$UNSUPERVISED_RESULTS_DIR" \
+  --data-dir "$DATA_DIR" \
+  "${TASK_ARGS[@]}" \
+  "${EXPERIMENT_ARGS[@]}" \
+  "${METHOD_ARGS[@]}" \
   "${MERGE_ARGS[@]}" \
   --output scoring/scores.json

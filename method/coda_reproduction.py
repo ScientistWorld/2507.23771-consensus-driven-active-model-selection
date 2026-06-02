@@ -32,7 +32,7 @@ def beta_pdf_grid(a: np.ndarray, b: np.ndarray, x: np.ndarray) -> np.ndarray:
     log_pdf = (a[..., None] - 1.0) * np.log(x)
     log_pdf += (b[..., None] - 1.0) * np.log1p(-x)
     log_pdf -= betaln(a, b)[..., None]
-    return np.exp(np.clip(log_pdf, -80.0, 80.0))
+    return np.nan_to_num(np.exp(log_pdf), nan=0.0, posinf=0.0, neginf=0.0)
 
 
 def pbest_from_betas(alpha_diag: np.ndarray, beta_rest: np.ndarray, num_grid: int) -> np.ndarray:
@@ -143,7 +143,7 @@ class CODASelector:
 
     def next_item(self) -> tuple[int, float]:
         if self.acquisition == "eig":
-            candidates = self.unlabeled
+            candidates = self._disagreement_candidates()
             q_values = self._eig_scores(candidates)
         elif self.acquisition == "uncertainty":
             candidates = self.unlabeled
@@ -158,6 +158,15 @@ class CODASelector:
         ties = np.flatnonzero(np.isclose(q_values, max_q))
         local = int(random.choice(ties))
         return int(candidates[local]), float(q_values[local])
+
+    def _disagreement_candidates(self) -> list[int]:
+        candidates = []
+        for item_idx in self.unlabeled:
+            votes = np.bincount(self.pred_classes[:, item_idx], minlength=self.c_count)
+            majority_class = int(votes.argmax())
+            if np.any(self.pred_classes[:, item_idx] != majority_class):
+                candidates.append(item_idx)
+        return candidates if candidates else self.unlabeled
 
     def add_label(self, idx: int, true_class: int) -> None:
         for h, pred_c in enumerate(self.pred_classes[:, idx]):
@@ -300,7 +309,7 @@ def main() -> None:
     parser.add_argument("--seeds", type=int, default=5)
     parser.add_argument("--start-seed", type=int, default=0)
     parser.add_argument("--skip-existing", action="store_true")
-    parser.add_argument("--coda-grid", type=int, default=128)
+    parser.add_argument("--coda-grid", type=int, default=256)
     parser.add_argument("--output-dir", default="outputs/coda")
     args = parser.parse_args()
 

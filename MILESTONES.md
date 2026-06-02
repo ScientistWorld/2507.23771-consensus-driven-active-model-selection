@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: secondary_claims**
+**Current: method_runs**
 
 ## Progress Log
 
@@ -23,3 +23,8 @@
 - MRPC continuation completed CODA seeds 3 and 4 and produced a five-seed MRPC active-selection result.
 - Fixed the evaluator to emit only metrics declared for each experiment in `scoring/reference.json`, and removed its unnecessary NumPy dependency.
 - `python validate.py --compare` now passes with RTE, SST2, MRPC active selection plus RTE/SST2 zero-label selection.
+
+### [2026-06-02 04:25] - method_runs
+- Final audit found that the main evaluator should recompute regrets from fixed benchmark labels instead of trusting trace-written regret fields, and should score all declared experiments by default.
+- Aligned CODA's EIG acquisition with the released implementation's disagreement-candidate filter and removed the beta-PDF clipping approximation.
+- Because the query sequence changed, stale CODA scores are no longer final evidence; submitting a CPU rerun to regenerate corrected CODA traces and restore the highest supported milestone.

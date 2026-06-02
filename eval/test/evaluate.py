@@ -203,18 +203,6 @@ def has_active_trace(method_dir: Path) -> bool:
     return any(trace_budget(path) > 0 for path in trace_paths(method_dir))
 
 
-def deduplicate_results(results: dict[str, dict[str, float]]) -> dict[str, dict[str, float]]:
-    deduplicated = {}
-    seen = set()
-    for method, values in sorted(results.items()):
-        key = json.dumps(values, sort_keys=True)
-        if key in seen:
-            continue
-        seen.add(key)
-        deduplicated[method] = values
-    return deduplicated
-
-
 def train_score_methods(train_scores_path: Path, experiment: str) -> list[str]:
     if not train_scores_path.exists():
         return []
@@ -313,8 +301,6 @@ def evaluate_experiment(args: argparse.Namespace, experiment: str) -> dict[str, 
             aggregate_method(method_dir, losses, len(indices), cumulative_horizon, oracle_loss),
             known_metrics,
         )
-    if cumulative_horizon == 0:
-        results = deduplicate_results(results)
     return results
 
 
