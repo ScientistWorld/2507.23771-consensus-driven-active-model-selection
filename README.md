@@ -57,6 +57,8 @@ The primary metric is cumulative regret at 100 label queries. At each step, regr
 
 Secondary metrics include instantaneous regret at step 100 and fixed-resource checks: the label budget, number of candidate models, and number of evaluated items.
 
+For the paper's zero-label comparison, the metric is initial regret before any queried labels. It uses the same full benchmark labels only for scoring, not for method selection.
+
 ## Baselines and Targets
 
 The core reproduced benchmark uses GLUE RTE from the paper's ModelSelector-derived task suite. Paper-reported targets are taken from the active model selection tables:
@@ -64,6 +66,8 @@ The core reproduced benchmark uses GLUE RTE from the paper's ModelSelector-deriv
 - Random sampling: cumulative regret 375.7 at step 100; instantaneous regret 1.2 at step 100.
 - Uncertainty sampling: cumulative regret 390.3 at step 100; instantaneous regret 0.0 at step 100.
 - Proposed method: cumulative regret 283.8 at step 100; instantaneous regret 0.0 at step 100.
+
+The secondary zero-label targets reproduced here are GLUE RTE initial regret 14.8 and GLUE SST2 initial regret 3.6 for both the proposed method and the unsupervised ensemble-validation baseline.
 
 ## Evaluation Protocol
 
@@ -106,12 +110,33 @@ Evaluation reads method-produced JSON traces from `outputs/coda/<task>/<method>/
 
 </details>
 
+### Iteration 2: gpt-5.5
+- **Milestone**: `secondary_claims` | **Status**: done
+- **Working time**: 4m | **GPU**: 0.0h
+- **Jobs**: 5 total (4 completed, 1 failed)
+
+<details>
+<summary>Progress Log</summary>
+
+### [2026-06-02 01:48] - core_claim_plus
+- Implemented and ran CODA's consensus priors, Beta-mixture P(best), expected-information-gain acquisition, and Dirichlet updates.
+- Reproduced the core GLUE RTE active model selection result at a 100-label budget: CODA cumulative regret 290.04 versus random 420.51 and uncertainty 371.84.
+- Added GLUE SST2 as a second setting: CODA cumulative regret 51.72 versus random 345.47 and uncertainty 100.92.
+- Packaged reusable method, baseline, download, reproduction, and evaluation scripts; validation passes with `python validate.py --compare`.
+
+### [2026-06-02 02:16] - secondary_claims
+- Added the paper's zero-label unsupervised selection setting for GLUE RTE and SST2.
+- Reproduced Table 5-scale initial regret: RTE CODA 14.801 and EnsV 14.801 versus paper 14.8; SST2 CODA 3.555 and EnsV 3.555 versus paper 3.6.
+- Verified the final score surface with `python validate.py --compare` after job `f500fff1-d02`.
+
+</details>
+
 
 ---
 
 # Reproduction Milestones
 
-**Current: core_claim**
+**Current: secondary_claims**
 
 ## Stop Justification
-- Completed at milestone `core_claim`.
+- Completed at milestone `secondary_claims`.
