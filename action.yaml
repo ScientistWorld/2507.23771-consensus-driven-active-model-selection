@@ -1,8 +1,8 @@
 # IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends. Sleeping blocks the entire pipeline.
-action: done
-gpus: 1
-test: false
+action: submit
+gpus: 0
+test: true
 milestone: core_claim_plus
-notes: "Packaged CODA reproduction with validated RTE core claim plus SST2 expansion; python validate.py --compare passes."
+notes: "Run the added Table 5 unsupervised step-0 CODA/EnsV experiments for GLUE RTE and SST2, merge scores, and validate."
