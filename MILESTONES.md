@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: method_runs**
+**Current: core_claim**
 
 ## Progress Log
 
@@ -16,5 +16,10 @@
 - Identified and fixed an implementation divergence from the released CODA code: EIG hypothetical label updates now use a unit pseudo-count, while actual posterior updates keep the paper's small learning rate.
 - Updated evaluation to accumulate regret only after label queries, matching the paper's reported cumulative-regret convention.
 
+### [2026-06-02 00:35] - core_claim
+- Reran the 100-label, 5-seed GLUE RTE experiment after the EIG fix.
+- Reproduced the core active model selection claim: CODA reached cumulative regret 290.04, close to the paper's 283.8 and better than reproduced random sampling (420.51) and uncertainty sampling (371.84).
+- Validation with `python validate.py --compare` passed, including scoring schema and method/evaluation separation checks.
+
 ## Stop Justification
-- Not stopped. A corrected CPU job is being submitted to rerun the 100-label GLUE RTE core experiment.
+- Not stopped. A CPU job is being submitted for an additional GLUE SST2 setting to attempt `core_claim_plus`.

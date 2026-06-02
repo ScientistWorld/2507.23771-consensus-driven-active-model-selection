@@ -45,15 +45,20 @@ def main() -> None:
     parser.add_argument("--experiment", default="glue_rte_active_selection")
     parser.add_argument("--methods", nargs="+", default=["random", "uncertainty", "coda"])
     parser.add_argument("--output", default="scoring/scores.json")
+    parser.add_argument("--merge-existing", action="store_true")
     args = parser.parse_args()
 
     results_dir = Path(args.results_dir)
-    scores = {"experiments": {args.experiment: {"results": {}}}}
+    out_path = Path(args.output)
+    if args.merge_existing and out_path.exists():
+        scores = json.loads(out_path.read_text())
+    else:
+        scores = {"experiments": {}}
+    scores.setdefault("experiments", {})[args.experiment] = {"results": {}}
     for method in args.methods:
         method_dir = results_dir / args.task / method
         scores["experiments"][args.experiment]["results"][method] = aggregate_method(method_dir)
 
-    out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(scores, indent=2))
     print(json.dumps(scores, indent=2))

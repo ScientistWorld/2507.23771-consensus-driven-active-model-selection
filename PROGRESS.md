@@ -14,6 +14,14 @@ The first full 100-label, 5-seed GLUE RTE job completed, but did not support the
 
 The retry fixes a reproduction divergence found against the released implementation: CODA's EIG acquisition evaluates hypothetical observations with a unit pseudo-count, while the actual posterior update uses the smaller online learning rate. The previous implementation used the learning rate for both, making EIG too flat on RTE.
 
+The corrected 100-label, 5-seed GLUE RTE job supports the core claim:
+
+- Random sampling cumulative regret: 420.51
+- Uncertainty cumulative regret: 371.84
+- CODA cumulative regret: 290.04
+
+CODA is close to the paper's reported RTE result of 283.8 and substantially improves over the reproduced baselines under the same label budget.
+
 Paper reference for GLUE RTE at step 100:
 
 - Random sampling cumulative regret: 375.7
@@ -22,7 +30,7 @@ Paper reference for GLUE RTE at step 100:
 
 ## Remaining
 
-Run the corrected CPU job, inspect `scoring/scores.json`, compare with `scoring/reference.json`, and iterate if CODA does not outperform the baselines on the core RTE setting.
+Run an additional GLUE SST2 setting to broaden beyond the core RTE reproduction. The SST2 run uses the same algorithm and 100-label budget, with two seeds and a smaller numerical integration grid to fit the CPU scheduler timeout.
 
 ## Issues
 

@@ -2,7 +2,7 @@
   "experiments": {
     "glue_rte_active_selection": {
       "description": "Active model selection on the GLUE RTE benchmark at a 100-label budget, matching the paper's main cumulative-regret comparison for this task.",
-      "weight": 1.0,
+      "weight": 0.65,
       "primary_metric": "cumulative_regret_at_100",
       "metrics": {
         "cumulative_regret_at_100": {
@@ -50,6 +50,59 @@
           "label_budget": 100,
           "num_models": 87,
           "num_items": 277
+        }
+      }
+    },
+    "glue_sst2_active_selection": {
+      "description": "Active model selection on the GLUE SST2 benchmark at a 100-label budget, matching the paper's main cumulative-regret comparison for this additional GLUE task.",
+      "weight": 0.35,
+      "primary_metric": "cumulative_regret_at_100",
+      "metrics": {
+        "cumulative_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -1.0
+        },
+        "instant_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -0.3
+        },
+        "label_budget": {
+          "higher_is_better": false,
+          "coefficient": -0.2
+        },
+        "num_models": {
+          "higher_is_better": true,
+          "coefficient": 0.05
+        },
+        "num_items": {
+          "higher_is_better": true,
+          "coefficient": 0.05
+        }
+      },
+      "results": {
+        "random": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 219.9,
+          "instant_regret_at_100": 0.8,
+          "label_budget": 100,
+          "num_models": 97,
+          "num_items": 872
+        },
+        "uncertainty": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 89.6,
+          "instant_regret_at_100": 0.1,
+          "label_budget": 100,
+          "num_models": 97,
+          "num_items": 872
+        },
+        "coda": {
+          "type": "proposed",
+          "cumulative_regret_at_100": 51.7,
+          "instant_regret_at_100": 0.0,
+          "label_budget": 100,
+          "num_models": 97,
+          "num_items": 872
         }
       }
     }

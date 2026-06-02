@@ -15,6 +15,8 @@ cd /home/user
 
 python data/prepare_modelselector.py --tasks glue_rte glue_sst2
 
-# Smoke-test the complete pipeline on a small released benchmark first.
-bash scripts/baseline.sh glue_rte 100 5
-bash scripts/method.sh glue_rte 100 5 128
+# Additional GLUE setting after the RTE core claim run.  Two seeds and a
+# smaller integration grid keep the CPU job under the scheduler timeout while
+# preserving CODA's active-selection procedure.
+MERGE_EXISTING=1 bash scripts/baseline.sh glue_sst2 100 2
+MERGE_EXISTING=1 bash scripts/method.sh glue_sst2 100 2 64
