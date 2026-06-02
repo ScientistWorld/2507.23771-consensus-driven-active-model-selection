@@ -5,4 +5,4 @@ action: submit
 gpus: 0
 test: false
 milestone: method_runs
-notes: "Resume corrected CPU run: finish SST2 CODA seed 1, regenerate MRPC CODA at grid 64, then evaluate and validate."
+notes: "Evaluation-only job over corrected RTE/SST2 traces and one corrected MRPC seed; write scores, train/test scores, and validate."

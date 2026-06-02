@@ -15,33 +15,9 @@ cd /home/user
 
 python data/prepare_modelselector.py --tasks glue_rte glue_sst2 glue_mrpc
 
-# The previous corrective CPU job completed all five RTE CODA seeds and SST2
-# seed 0 before timing out during SST2 seed 1. Resume only the missing/stale
-# corrected traces so this job fits the one-hour CPU-node limit.
-rm -f outputs/coda/glue_sst2/coda/seed_1.json
-python method/coda_reproduction.py \
-  --data-dir data/downloads/modelselector \
-  --task glue_sst2 \
-  --method coda \
-  --budget 100 \
-  --seeds 2 \
-  --start-seed 1 \
-  --coda-grid 64 \
-  --output-dir outputs/coda
-
-# MRPC traces were produced before the corrected CODA acquisition change, so
-# regenerate them. A 64-point quadrature grid preserves the CODA computation
-# while fitting the available CPU wall-clock budget.
-rm -f outputs/coda/glue_mrpc/coda/seed_*.json
-python method/coda_reproduction.py \
-  --data-dir data/downloads/modelselector \
-  --task glue_mrpc \
-  --method coda \
-  --budget 100 \
-  --seeds 5 \
-  --coda-grid 64 \
-  --output-dir outputs/coda
-
+# Corrected CODA traces are already present for RTE (5 seeds), SST2 (2 seeds),
+# and MRPC (1 seed). This job is intentionally evaluation-only so it finishes
+# inside the CPU scheduler limit and materializes the refreshed score files.
 bash scripts/unsupervised.sh glue_rte 128
 bash scripts/unsupervised.sh glue_sst2 64
 

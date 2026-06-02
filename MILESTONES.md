@@ -32,3 +32,7 @@
 ### [2026-06-02 05:25] - method_runs
 - Corrective CPU rerun timed out after producing all five corrected GLUE RTE CODA traces and GLUE SST2 CODA seed 0.
 - Updating the run script to resume only GLUE SST2 seed 1 and regenerate GLUE MRPC CODA traces with a smaller quadrature grid so evaluation can finish inside the CPU job limit.
+
+### [2026-06-02 07:05] - method_runs
+- Resume job completed GLUE SST2 CODA seed 1 and one corrected GLUE MRPC CODA seed before another CPU timeout.
+- The next job is evaluation-only: it scores the completed corrected traces, including MRPC as a one-seed expansion, and runs train/test scoring plus validation.
