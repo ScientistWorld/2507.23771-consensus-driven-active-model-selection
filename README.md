@@ -136,7 +136,7 @@ Evaluation reads method-produced JSON traces from `outputs/coda/<task>/<method>/
 
 # Reproduction Milestones
 
-**Current: secondary_claims**
+**Current: core_claim_plus**
 
 ## Stop Justification
-- Completed at milestone `secondary_claims`.
+- Completed at milestone `core_claim_plus`.
