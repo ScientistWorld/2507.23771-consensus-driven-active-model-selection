@@ -1,8 +1,4 @@
-# Once you set action to 'submit' or 'done', STOP immediately.
-# Do NOT sleep, poll, or wait for jobs. The system reads this file
-# only after your turn ends.
-action: pending
+action: submit
 gpus: 0
 test: false
-milestone: secondary_claims
-notes: ""
+notes: "Resume audit after worker loss: keep completed 3 reference seeds, test honest stability-based stopping, finish saved eta=1 variant and all hidden-test shortcut checks."
