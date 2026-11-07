@@ -34,6 +34,8 @@ CODA = ["python", "method/coda_reproduction.py"]
 CASES = [
     ("honest_stable_stop", "better variant: eta 0.1 + stop after 12 unchanged rounds (>= 25 labels)",
      CODA + ["--eta", "0.1", "--stable-rounds", "12", "--min-labels", "25"], None, ("test", "train")),
+    ("coda_uncertainty_acquisition", "exploratory variant (paper Fig. 6 ablation): CODA posterior, committee-entropy queries",
+     CODA + ["--acquisition", "uncertainty"], None, ("test", "train")),
     ("weaker_no_learning", "weaker variant: CODA prior and EIG queries, but no posterior update (eta 0)",
      CODA + ["--eta", "0"], None, ("test", "train")),
     ("visible_label_oracle_shortcut", "read all visible labels, select their best index, no queries",

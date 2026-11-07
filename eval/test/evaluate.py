@@ -40,6 +40,9 @@ BENCHMARK_SHA256 = {
     "glue_sst2": "b2319b8d7c35fbadf6a34656eb1625c9309b3bf0ecbbd3e29c7171516eadc2db",
     "glue_mrpc": "e9c3e738468f0cdc011da5858cebc9cb9a55e1d8220f7ec57169b2decda19f05",
     "glue_cola": "159c25fce8e20c17bd22d923808e9ba62d7aaa4585259402299ea2bd86121737",
+    "glue_qnli": "83a8596ad7bcb7df83a969e855a0a45eef4c444cf1c3a8eb4f74e2d8ddf138c9",
+    "glue_qqp": "ea492719e13712c003d83ae80969d2df83356061ab72935760d798f3acd58248",
+    "glue_mnli": "0589c076438609f7887308b070e8f41ff22a89e24cbdf138fe331b3c53eecf5c",
 }
 SEEDS = (0, 1, 2, 3, 4)
 ACTIVE_BUDGET = 100
@@ -49,6 +52,9 @@ EXPERIMENTS = {
     "glue_rte_active_selection": ("glue_rte", ACTIVE_BUDGET),
     "glue_sst2_active_selection": ("glue_sst2", ACTIVE_BUDGET),
     "glue_mrpc_active_selection": ("glue_mrpc", ACTIVE_BUDGET),
+    "glue_qnli_active_selection": ("glue_qnli", ACTIVE_BUDGET),
+    "glue_qqp_active_selection": ("glue_qqp", ACTIVE_BUDGET),
+    "glue_mnli_active_selection": ("glue_mnli", ACTIVE_BUDGET),
     "glue_cola_active_selection": ("glue_cola", ACTIVE_BUDGET),
     "glue_rte_unsupervised_selection": ("glue_rte", 0),
     "glue_sst2_unsupervised_selection": ("glue_sst2", 0),

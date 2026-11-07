@@ -1,10 +1,10 @@
 {
   "experiments": {
     "glue_rte_active_selection": {
-      "description": "Active model selection on GLUE RTE (87 candidates, 2 classes) with a 100-label budget: the paper's main cumulative-regret comparison (Table 1).",
-      "weight": 0.3,
+      "description": "Active model selection on GLUE RTE (87 candidates, 2 classes) with a 100-label budget: Table 1.",
+      "weight": 0.13,
       "primary_metric": "cumulative_regret_at_100",
-      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
+      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. QNLI, QQP and MNLI are first cut to a fixed uniform sample of 1200 items (600 per half) so that an episode stays light; the paper used the full pools. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
       "metrics": {
         "cumulative_regret_at_100": {
           "higher_is_better": false,
@@ -78,9 +78,9 @@
     },
     "glue_sst2_active_selection": {
       "description": "Active model selection on GLUE SST2 (97 candidates, 2 classes) with a 100-label budget (Table 1).",
-      "weight": 0.2,
+      "weight": 0.13,
       "primary_metric": "cumulative_regret_at_100",
-      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
+      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. QNLI, QQP and MNLI are first cut to a fixed uniform sample of 1200 items (600 per half) so that an episode stays light; the paper used the full pools. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
       "metrics": {
         "cumulative_regret_at_100": {
           "higher_is_better": false,
@@ -154,9 +154,9 @@
     },
     "glue_mrpc_active_selection": {
       "description": "Active model selection on GLUE MRPC (95 candidates, 2 classes) with a 100-label budget (Table 1).",
-      "weight": 0.2,
+      "weight": 0.13,
       "primary_metric": "cumulative_regret_at_100",
-      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
+      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. QNLI, QQP and MNLI are first cut to a fixed uniform sample of 1200 items (600 per half) so that an episode stays light; the paper used the full pools. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
       "metrics": {
         "cumulative_regret_at_100": {
           "higher_is_better": false,
@@ -228,11 +228,239 @@
         }
       }
     },
+    "glue_qnli_active_selection": {
+      "description": "Active model selection on GLUE QNLI (90 candidates, 2 classes) with a 100-label budget (Table 1).",
+      "weight": 0.13,
+      "primary_metric": "cumulative_regret_at_100",
+      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. QNLI, QQP and MNLI are first cut to a fixed uniform sample of 1200 items (600 per half) so that an episode stays light; the paper used the full pools. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
+      "metrics": {
+        "cumulative_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -1.0,
+          "description": "Total excess error (percentage points summed over rounds 1-100) of the model selected in each round, over a 100-label budget. Lower is better."
+        },
+        "cumulative_regret_at_25": {
+          "higher_is_better": false,
+          "coefficient": -0.45,
+          "description": "Cumulative excess error over rounds 1-25: catches selectors that only recover late."
+        },
+        "cumulative_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.65,
+          "description": "Cumulative excess error over rounds 1-50."
+        },
+        "initial_regret": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Excess error of the model selected before any label is revealed."
+        },
+        "instant_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Excess error of the model selected after round 50."
+        },
+        "instant_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -0.3,
+          "description": "Excess error of the model selected after round 100 (end of budget)."
+        },
+        "near_optimal_at_100": {
+          "higher_is_better": true,
+          "coefficient": 0.35,
+          "description": "Fraction of seeds whose round-100 selection is within one percentage point of the best candidate."
+        },
+        "label_budget": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Labels actually revealed by the evaluator's oracle (mean over seeds); a selector may stop early and keep its selection. Cannot exceed 100."
+        }
+      },
+      "results": {
+        "random": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 222.7,
+          "instant_regret_at_100": 0.7,
+          "instant_regret_at_50": 1.3,
+          "label_budget": 100
+        },
+        "uncertainty": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 231.6,
+          "instant_regret_at_100": 0.0,
+          "instant_regret_at_50": 0.9,
+          "label_budget": 100
+        },
+        "ensv": {
+          "type": "baseline",
+          "initial_regret": 3.3
+        },
+        "coda": {
+          "type": "proposed",
+          "cumulative_regret_at_100": 120.4,
+          "instant_regret_at_100": 0.4,
+          "instant_regret_at_50": 0.0,
+          "initial_regret": 3.3,
+          "label_budget": 100
+        }
+      }
+    },
+    "glue_qqp_active_selection": {
+      "description": "Active model selection on GLUE QQP (101 candidates, 2 classes) with a 100-label budget (Table 1).",
+      "weight": 0.13,
+      "primary_metric": "cumulative_regret_at_100",
+      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. QNLI, QQP and MNLI are first cut to a fixed uniform sample of 1200 items (600 per half) so that an episode stays light; the paper used the full pools. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
+      "metrics": {
+        "cumulative_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -1.0,
+          "description": "Total excess error (percentage points summed over rounds 1-100) of the model selected in each round, over a 100-label budget. Lower is better."
+        },
+        "cumulative_regret_at_25": {
+          "higher_is_better": false,
+          "coefficient": -0.45,
+          "description": "Cumulative excess error over rounds 1-25: catches selectors that only recover late."
+        },
+        "cumulative_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.65,
+          "description": "Cumulative excess error over rounds 1-50."
+        },
+        "initial_regret": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Excess error of the model selected before any label is revealed."
+        },
+        "instant_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Excess error of the model selected after round 50."
+        },
+        "instant_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -0.3,
+          "description": "Excess error of the model selected after round 100 (end of budget)."
+        },
+        "near_optimal_at_100": {
+          "higher_is_better": true,
+          "coefficient": 0.35,
+          "description": "Fraction of seeds whose round-100 selection is within one percentage point of the best candidate."
+        },
+        "label_budget": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Labels actually revealed by the evaluator's oracle (mean over seeds); a selector may stop early and keep its selection. Cannot exceed 100."
+        }
+      },
+      "results": {
+        "random": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 136.7,
+          "instant_regret_at_100": 1.0,
+          "instant_regret_at_50": 1.4,
+          "label_budget": 100
+        },
+        "uncertainty": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 388.9,
+          "instant_regret_at_100": 0.2,
+          "instant_regret_at_50": 1.3,
+          "label_budget": 100
+        },
+        "ensv": {
+          "type": "baseline",
+          "initial_regret": 1.1
+        },
+        "coda": {
+          "type": "proposed",
+          "cumulative_regret_at_100": 4.8,
+          "instant_regret_at_100": 0.0,
+          "instant_regret_at_50": 0.0,
+          "initial_regret": 1.1,
+          "label_budget": 100
+        }
+      }
+    },
+    "glue_mnli_active_selection": {
+      "description": "Active model selection on GLUE MNLI (82 candidates, 3 classes) with a 100-label budget (Table 1).",
+      "weight": 0.13,
+      "primary_metric": "cumulative_regret_at_100",
+      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. QNLI, QQP and MNLI are first cut to a fixed uniform sample of 1200 items (600 per half) so that an episode stays light; the paper used the full pools. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
+      "metrics": {
+        "cumulative_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -1.0,
+          "description": "Total excess error (percentage points summed over rounds 1-100) of the model selected in each round, over a 100-label budget. Lower is better."
+        },
+        "cumulative_regret_at_25": {
+          "higher_is_better": false,
+          "coefficient": -0.45,
+          "description": "Cumulative excess error over rounds 1-25: catches selectors that only recover late."
+        },
+        "cumulative_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.65,
+          "description": "Cumulative excess error over rounds 1-50."
+        },
+        "initial_regret": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Excess error of the model selected before any label is revealed."
+        },
+        "instant_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Excess error of the model selected after round 50."
+        },
+        "instant_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -0.3,
+          "description": "Excess error of the model selected after round 100 (end of budget)."
+        },
+        "near_optimal_at_100": {
+          "higher_is_better": true,
+          "coefficient": 0.35,
+          "description": "Fraction of seeds whose round-100 selection is within one percentage point of the best candidate."
+        },
+        "label_budget": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Labels actually revealed by the evaluator's oracle (mean over seeds); a selector may stop early and keep its selection. Cannot exceed 100."
+        }
+      },
+      "results": {
+        "random": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 237.4,
+          "instant_regret_at_100": 0.3,
+          "instant_regret_at_50": 2.6,
+          "label_budget": 100
+        },
+        "uncertainty": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 80.8,
+          "instant_regret_at_100": 0.1,
+          "instant_regret_at_50": 0.1,
+          "label_budget": 100
+        },
+        "ensv": {
+          "type": "baseline",
+          "initial_regret": 3.0
+        },
+        "coda": {
+          "type": "proposed",
+          "cumulative_regret_at_100": 23.5,
+          "instant_regret_at_100": 0.2,
+          "instant_regret_at_50": 0.1,
+          "initial_regret": 3.0,
+          "label_budget": 100
+        }
+      }
+    },
     "glue_cola_active_selection": {
       "description": "Active model selection on GLUE CoLA (109 candidates, 2 classes, imbalanced labels) with a 100-label budget. This is the paper's own failure case (Table 1, Sec. 7 and Fig. 4): it scores where the reference method falls short.",
-      "weight": 0.06,
+      "weight": 0.02,
       "primary_metric": "cumulative_regret_at_100",
-      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
+      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. QNLI, QQP and MNLI are first cut to a fixed uniform sample of 1200 items (600 per half) so that an episode stays light; the paper used the full pools. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
       "metrics": {
         "cumulative_regret_at_100": {
           "higher_is_better": false,
@@ -306,9 +534,9 @@
     },
     "glue_rte_unsupervised_selection": {
       "description": "Zero-label model selection on GLUE RTE: the selector receives a 0-label budget and is scored on its only selection (Table 5).",
-      "weight": 0.14,
+      "weight": 0.1,
       "primary_metric": "initial_regret",
-      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
+      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. QNLI, QQP and MNLI are first cut to a fixed uniform sample of 1200 items (600 per half) so that an episode stays light; the paper used the full pools. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
       "metrics": {
         "initial_regret": {
           "higher_is_better": false,
@@ -337,7 +565,7 @@
       "description": "Zero-label model selection on GLUE SST2: the selector receives a 0-label budget and is scored on its only selection (Table 5).",
       "weight": 0.1,
       "primary_metric": "initial_regret",
-      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
+      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. QNLI, QQP and MNLI are first cut to a fixed uniform sample of 1200 items (600 per half) so that an episode stays light; the paper used the full pools. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
       "metrics": {
         "initial_regret": {
           "higher_is_better": false,

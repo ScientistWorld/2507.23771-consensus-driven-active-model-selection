@@ -4,6 +4,8 @@
     "source_labels": "https://raw.githubusercontent.com/RobustML-Lab/model-selector/main/resources/datasets/glue/rte/oracle.npy",
     "source_predictions_sha256": "118d98ce731596523e94994642961f72e3a6cc7eb2db320213b12377e872af8e",
     "source_labels_sha256": "740a0f0f0d81c9f9e17cbd8ec0f0d6031970d0ddc92f0d789796d3f8fc1f58dd",
+    "num_classes": 2,
+    "item_subsample": null,
     "train_file_sha256": "7fa84c73359e35a2aee510f208efd2d037cb924f8665bd03c99317315f50c05b",
     "test_file_sha256": "dd42565b52a38e93b9b5c5674c63229337d49a2384351d56cb62ce05b66513a1"
   },
@@ -12,6 +14,8 @@
     "source_labels": "https://raw.githubusercontent.com/RobustML-Lab/model-selector/main/resources/datasets/glue/sst2/oracle.npy",
     "source_predictions_sha256": "83ef13dbbcb8a4d1ef4113044fdd6a626ad77a1f66d78ecabcefd05de34e9595",
     "source_labels_sha256": "932b57d7ae373fe6fbc44207f04dc34590dcf19459a54101e839e8c9b496af05",
+    "num_classes": 2,
+    "item_subsample": null,
     "train_file_sha256": "f02c4b137710dbe3eab87a6aba4fa29fe8fd25c00ff71c246535faff5ee88555",
     "test_file_sha256": "b2319b8d7c35fbadf6a34656eb1625c9309b3bf0ecbbd3e29c7171516eadc2db"
   },
@@ -20,6 +24,8 @@
     "source_labels": "https://raw.githubusercontent.com/RobustML-Lab/model-selector/main/resources/datasets/glue/mrpc/oracle.npy",
     "source_predictions_sha256": "0af6f05f58d0061170d84bec17b182f0ef548d99ab694c1a0f10245386f22576",
     "source_labels_sha256": "75af27e2f6192983356556ec60b7ceecd5387fb25dbda77a525994b301387dfc",
+    "num_classes": 2,
+    "item_subsample": null,
     "train_file_sha256": "e0b86bb32287322d261922deac10013fbcf5d8ba69515729c78c89662269eddd",
     "test_file_sha256": "e9c3e738468f0cdc011da5858cebc9cb9a55e1d8220f7ec57169b2decda19f05"
   },
@@ -28,7 +34,39 @@
     "source_labels": "https://raw.githubusercontent.com/RobustML-Lab/model-selector/main/resources/datasets/glue/cola/oracle.npy",
     "source_predictions_sha256": "2c2469f0f98a058dfe41a0a9e3476a84c3db5f3609504319ecb16300402fe7b8",
     "source_labels_sha256": "ef77d59d742aa78c1771ba93f9891c616d803c4a53f975c423797ac75534310c",
+    "num_classes": 2,
+    "item_subsample": null,
     "train_file_sha256": "edfa637732f719c00e1084d4f929ac8fa127300cf880cd9e009cc081ff9146f4",
     "test_file_sha256": "159c25fce8e20c17bd22d923808e9ba62d7aaa4585259402299ea2bd86121737"
+  },
+  "glue_qnli": {
+    "source_predictions": "https://raw.githubusercontent.com/RobustML-Lab/model-selector/main/resources/datasets/glue/qnli/predictions.npy",
+    "source_labels": "https://raw.githubusercontent.com/RobustML-Lab/model-selector/main/resources/datasets/glue/qnli/oracle.npy",
+    "source_predictions_sha256": "4a7c396ab8e7024176d58d94aacd513e5d6855ccdc99c9b3eece8b36aeb04c63",
+    "source_labels_sha256": "836981f8fe1af9f2b37023a68b38df1bf8a19de64474323529e023bd8d0f3e5e",
+    "num_classes": 2,
+    "item_subsample": 1200,
+    "train_file_sha256": "0dd35d177f9179b1a54fc346c0b527daa07fa79ea735a7f921d4c1d47900dcaf",
+    "test_file_sha256": "83a8596ad7bcb7df83a969e855a0a45eef4c444cf1c3a8eb4f74e2d8ddf138c9"
+  },
+  "glue_qqp": {
+    "source_predictions": "https://raw.githubusercontent.com/RobustML-Lab/model-selector/main/resources/datasets/glue/qqp/predictions.npy",
+    "source_labels": "https://raw.githubusercontent.com/RobustML-Lab/model-selector/main/resources/datasets/glue/qqp/oracle.npy",
+    "source_predictions_sha256": "8ed775319d7533424b863c85dc54baa10bde69867ab32c045fe6d90f1fb73c39",
+    "source_labels_sha256": "00c785801e71cff1d742ebb87a7652f0ddbda140f2e71504b1cf1cb597f97dc7",
+    "num_classes": 2,
+    "item_subsample": 1200,
+    "train_file_sha256": "ad7e2c63a0a23b44e2946717638c6663754b7ff16cd111c46b76f1a20071f141",
+    "test_file_sha256": "ea492719e13712c003d83ae80969d2df83356061ab72935760d798f3acd58248"
+  },
+  "glue_mnli": {
+    "source_predictions": "https://raw.githubusercontent.com/RobustML-Lab/model-selector/main/resources/datasets/glue/mnli/predictions.npy",
+    "source_labels": "https://raw.githubusercontent.com/RobustML-Lab/model-selector/main/resources/datasets/glue/mnli/oracle.npy",
+    "source_predictions_sha256": "87ce5f3d24e49fe43cc9d9b4e35e272192bfd3b5233d4f85723c3f56d1d4432e",
+    "source_labels_sha256": "521e9ed6a8c7e1244fb34db5eba30975a3668ea2e7e45fc055d46c49b34c6d6d",
+    "num_classes": 3,
+    "item_subsample": 1200,
+    "train_file_sha256": "cc3a846cedeb530d46b0a99d0a9d10da57de02587976d1ace23f3718b8d9ddc6",
+    "test_file_sha256": "0589c076438609f7887308b070e8f41ff22a89e24cbdf138fe331b3c53eecf5c"
   }
 }

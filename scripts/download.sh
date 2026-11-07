@@ -6,7 +6,8 @@
 #
 # The benchmark inputs are small files derived from the public ModelSelector
 # release (https://github.com/RobustML-Lab/model-selector, resources/datasets/
-# glue/{rte,sst2,mrpc,cola}/{predictions,oracle}.npy) and are tracked in git:
+# glue/{rte,sst2,mrpc,cola,qnli,qqp,mnli}/{predictions,oracle}.npy; QNLI, QQP
+# and MNLI cut to a fixed 1200-item sample) and are tracked in git:
 # data/benchmarks/<task>_train.json holds the visible half of each task
 # (candidate predictions + labels). The held-out half is built and kept by
 # the hidden evaluator. The full-pool upstream arrays are deliberately NOT
@@ -27,6 +28,9 @@ expected = {
     "glue_sst2_train.json": "f02c4b137710dbe3eab87a6aba4fa29fe8fd25c00ff71c246535faff5ee88555",
     "glue_mrpc_train.json": "e0b86bb32287322d261922deac10013fbcf5d8ba69515729c78c89662269eddd",
     "glue_cola_train.json": "edfa637732f719c00e1084d4f929ac8fa127300cf880cd9e009cc081ff9146f4",
+    "glue_qnli_train.json": "0dd35d177f9179b1a54fc346c0b527daa07fa79ea735a7f921d4c1d47900dcaf",
+    "glue_qqp_train.json": "ad7e2c63a0a23b44e2946717638c6663754b7ff16cd111c46b76f1a20071f141",
+    "glue_mnli_train.json": "cc3a846cedeb530d46b0a99d0a9d10da57de02587976d1ace23f3718b8d9ddc6",
 }
 for name, digest in expected.items():
     path = Path("data/benchmarks") / name

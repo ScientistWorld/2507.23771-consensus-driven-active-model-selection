@@ -1,7 +1,8 @@
 """Build the visible (train) and hidden (test) benchmark halves.
 
 One-off provenance script; the hidden test never runs it. It fetches the
-public ModelSelector prediction/label arrays, splits each task's items into
+public ModelSelector prediction/label arrays (QNLI, QQP and MNLI cut to a
+fixed 1200-item sample to keep episodes light), splits each task's items into
 two halves that are balanced in class mix and per-model error, and writes
 
   data/benchmarks/<task>_train.json   visible half: predictions + labels
@@ -30,13 +31,17 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 BASE_URL = "https://raw.githubusercontent.com/RobustML-Lab/model-selector/main/resources/datasets"
+# task -> (upstream path, number of classes, item subsample size or None)
 TASKS = {
-    "glue_rte": "glue/rte",
-    "glue_sst2": "glue/sst2",
-    "glue_mrpc": "glue/mrpc",
-    "glue_cola": "glue/cola",
+    "glue_rte": ("glue/rte", 2, None),
+    "glue_sst2": ("glue/sst2", 2, None),
+    "glue_mrpc": ("glue/mrpc", 2, None),
+    "glue_cola": ("glue/cola", 2, None),
+    "glue_qnli": ("glue/qnli", 2, 1200),
+    "glue_qqp": ("glue/qqp", 2, 1200),
+    "glue_mnli": ("glue/mnli", 3, 1200),
 }
-NUM_CLASSES = 2
+SUBSAMPLE_SEED = 20250731  # fixed; large pools are cut to a uniform item sample
 SPLIT_SEED = 250723771
 SWAP_ITERATIONS = 30
 PAIR_LIMIT = 20000
@@ -166,7 +171,7 @@ def write_json(path: Path, payload: dict) -> str:
     return hashlib.sha256(text.encode()).hexdigest()
 
 
-def build_task(task: str, rel: str, workdir: Path) -> dict:
+def build_task(task: str, rel: str, num_classes: int, subsample: int | None, workdir: Path) -> dict:
     pred_raw = fetch(f"{BASE_URL}/{rel}/predictions.npy", workdir / task / "predictions.npy")
     label_raw = fetch(f"{BASE_URL}/{rel}/oracle.npy", workdir / task / "oracle.npy")
     pred_values, pred_shape = read_npy(pred_raw)
@@ -174,11 +179,15 @@ def build_task(task: str, rel: str, workdir: Path) -> dict:
     n_items, n_models = pred_shape
     if label_shape != (n_items,):
         raise ValueError((pred_shape, label_shape))
-    item_preds = [[int(pred_values[i * n_models + h]) for h in range(n_models)] for i in range(n_items)]
-    labels = [int(v) for v in label_values]
-    for row in item_preds:
-        if any(p < 0 or p >= NUM_CLASSES for p in row):
-            raise ValueError(f"{task}: prediction outside {NUM_CLASSES} classes")
+    keep = list(range(n_items))
+    if subsample is not None and subsample < n_items:
+        keep = sorted(random.Random(SUBSAMPLE_SEED + sum(map(ord, task))).sample(keep, subsample))
+    item_preds = [[int(pred_values[i * n_models + h]) for h in range(n_models)] for i in keep]
+    labels = [int(label_values[i]) for i in keep]
+    n_items = len(keep)
+    for row, y in zip(item_preds, labels):
+        if any(p < 0 or p >= num_classes for p in row) or not 0 <= y < num_classes:
+            raise ValueError(f"{task}: value outside {num_classes} classes")
     train = balanced_split(item_preds, labels)
 
     train_items = [i for i in range(n_items) if train[i]]
@@ -186,7 +195,7 @@ def build_task(task: str, rel: str, workdir: Path) -> dict:
     visible = {
         "task": task,
         "slice": "train",
-        "num_classes": NUM_CLASSES,
+        "num_classes": num_classes,
         "num_models": n_models,
         "num_items": len(train_items),
         "predicted_classes": [[item_preds[i][h] for i in train_items] for h in range(n_models)],
@@ -201,12 +210,12 @@ def build_task(task: str, rel: str, workdir: Path) -> dict:
     hidden = {
         "task": task,
         "slice": "test",
-        "num_classes": NUM_CLASSES,
+        "num_classes": num_classes,
         "num_models": n_models,
         "num_items": len(item_order),
         "predicted_classes": [[item_preds[i][h] for i in item_order] for h in model_order],
         "label_code": [
-            (labels[i] + label_offset(task, pos, NUM_CLASSES)) % NUM_CLASSES
+            (labels[i] + label_offset(task, pos, num_classes)) % num_classes
             for pos, i in enumerate(item_order)
         ],
     }
@@ -229,6 +238,8 @@ def build_task(task: str, rel: str, workdir: Path) -> dict:
         "source_labels": f"{BASE_URL}/{rel}/oracle.npy",
         "source_predictions_sha256": hashlib.sha256(pred_raw).hexdigest(),
         "source_labels_sha256": hashlib.sha256(label_raw).hexdigest(),
+        "num_classes": num_classes,
+        "item_subsample": subsample,
         "train_file_sha256": train_sha,
         "test_file_sha256": test_sha,
     }
@@ -241,7 +252,7 @@ def main() -> None:
     provenance = {}
     with tempfile.TemporaryDirectory() as tmp:
         for task in args.tasks:
-            provenance[task] = build_task(task, TASKS[task], Path(tmp))
+            provenance[task] = build_task(task, *TASKS[task], Path(tmp))
     (HERE / "benchmarks" / "PROVENANCE.json").write_text(json.dumps(provenance, indent=2) + "\n")
     print(json.dumps(provenance, indent=2))
 

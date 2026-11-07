@@ -36,7 +36,10 @@ SKIP_EVAL=1 bash scripts/baseline.sh
 SKIP_EVAL=1 bash scripts/method.sh
 step evaluate_test bash scripts/evaluate_test.sh
 step evaluate_train bash scripts/evaluate_train.sh
-step evaluate_main bash scripts/evaluate.sh
+# scripts/evaluate.sh runs exactly the visible-slice evaluation again; the
+# evaluation is deterministic, so reuse it for scores.json instead of
+# spending another ~25 CPU minutes.
+step evaluate_main python -c "import json; d = json.load(open('scoring/scores_train.json')); json.dump(d, open('scoring/scores.json', 'w'), indent=2)"
 step cases python redteam/hardening/run_cases.py
 echo "== validate $(date -u +%H:%M:%S)"
 python validate.py || echo "validate.py reported issues (see above)"

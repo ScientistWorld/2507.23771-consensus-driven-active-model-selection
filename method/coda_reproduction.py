@@ -30,6 +30,8 @@ Usage (as registered in outputs/selectors/coda.json):
     python method/coda_reproduction.py [--eta 0.01] [--grid 128]
 Optional label-saving variant: --stable-rounds R --min-labels M stops
 querying once the selection has been unchanged for R rounds after >= M labels.
+--acquisition uncertainty is the paper's Fig. 6 ablation (committee-entropy
+queries with CODA's posterior selection).
 """
 
 from __future__ import annotations
@@ -90,6 +92,7 @@ class CODASelector:
         num_grid: int = 128,
         seed: int = 0,
         chunk: int = 48,
+        acquisition: str = "eig",
     ) -> None:
         self.pred_classes = np.asarray(pred_classes, dtype=np.int64)  # (H, N)
         self.h_count, self.n_count = self.pred_classes.shape
@@ -97,6 +100,9 @@ class CODASelector:
         self.eta = float(eta)
         self.eig_update_weight = float(eig_update_weight)
         self.chunk = int(chunk)
+        if acquisition not in ("eig", "uncertainty"):
+            raise ValueError(f"unknown acquisition {acquisition}")
+        self.acquisition = acquisition
         self.rng = random.Random(seed)
         self.x = np.linspace(1e-5, 1.0 - 1e-5, int(num_grid), dtype=np.float64)
         self.onehot = np.eye(self.c_count, dtype=np.float64)[self.pred_classes]  # (H, N, C)
@@ -112,6 +118,8 @@ class CODASelector:
         np.fill_diagonal(beta, 1.0)
         self.dirichlet = (beta[None, :, :] + float(alpha) * empirical) / float(temperature)
 
+        mean_pred = self.onehot.mean(axis=0)  # (N, C) committee vote shares
+        self.committee_entropy = -(mean_pred * np.log(mean_pred + 1e-8)).sum(axis=-1)
         majority = self.onehot.sum(axis=0).argmax(axis=-1)
         self.disagreement = (self.pred_classes != majority[None, :]).any(axis=0)
         self.unlabeled: list[int] = list(range(self.n_count))
@@ -164,7 +172,10 @@ class CODASelector:
 
     def next_item(self) -> tuple[int, float]:
         cands = self.candidates()
-        if self.eta == 0.0:
+        if self.acquisition == "uncertainty":
+            # Ablation of Fig. 6: committee-entropy acquisition inside CODA.
+            q = self.committee_entropy[cands]
+        elif self.eta == 0.0:
             # Beliefs never change, so each item's EIG is fixed: compute once.
             if self._eig_cache is None:
                 self._eig_cache = dict(zip(cands, self.eig_scores(cands).tolist()))
@@ -191,7 +202,7 @@ class CODAPolicy:
         self.coda = CODASelector(
             episode["predicted_classes"], int(episode["num_classes"]),
             alpha=args.alpha, temperature=args.temperature, eta=args.eta,
-            num_grid=args.grid, seed=int(episode["seed"]),
+            num_grid=args.grid, seed=int(episode["seed"]), acquisition=args.acquisition,
         )
         self.stable_rounds = args.stable_rounds
         self.min_labels = args.min_labels
@@ -227,6 +238,7 @@ def main() -> None:
     parser.add_argument("--grid", type=int, default=128)
     parser.add_argument("--stable-rounds", type=int, default=0)
     parser.add_argument("--min-labels", type=int, default=0)
+    parser.add_argument("--acquisition", choices=["eig", "uncertainty"], default="eig")
     args = parser.parse_args()
     serve(lambda episode: CODAPolicy(episode, args))
 

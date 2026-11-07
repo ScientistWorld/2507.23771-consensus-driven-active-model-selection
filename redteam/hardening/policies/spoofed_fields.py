@@ -16,7 +16,8 @@ from method.coda_reproduction import CODAPolicy  # noqa: E402
 FORGED = {"budget": 1, "label_budget": 1, "num_items": 10**6, "num_models": 10**6,
           "regret": -1e9, "cumulative_regret_at_100": -1e9, "near_optimal_at_100": 1}
 
-args = argparse.Namespace(alpha=0.1, temperature=0.5, eta=0.01, grid=128, stable_rounds=0, min_labels=0)
+args = argparse.Namespace(alpha=0.1, temperature=0.5, eta=0.01, grid=128, stable_rounds=0, min_labels=0,
+                         acquisition="eig")
 channel, sys.stdout = sys.stdout, sys.stderr
 episode = json.loads(sys.stdin.readline())
 policy = CODAPolicy(episode, args)
