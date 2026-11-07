@@ -1,0 +1,10 @@
+{
+  "name": "negative_budget_shortcut",
+  "train_exit_code": 0,
+  "test_exit_code": 0,
+  "rank_delta": null,
+  "rank_contributions": {
+    "error": "missing glue_rte_active_selection/coda"
+  },
+  "seconds": 24.322631120681763
+}

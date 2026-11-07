@@ -1,0 +1,11 @@
+{
+  "slice": "test",
+  "experiments": {
+    "glue_rte_active_selection": {
+      "results": {}
+    },
+    "glue_sst2_active_selection": {
+      "results": {}
+    }
+  }
+}

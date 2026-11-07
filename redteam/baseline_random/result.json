@@ -1,0 +1,33 @@
+{
+  "name": "baseline_random",
+  "train_exit_code": 0,
+  "test_exit_code": 0,
+  "rank_delta": -223.8989695962415,
+  "rank_contributions": {
+    "glue_rte_active_selection": {
+      "cumulative_regret_at_100": -107.48599033816433,
+      "cumulative_regret_at_25": -6.208695652173891,
+      "cumulative_regret_at_50": -37.997053140096625,
+      "initial_regret": 0.14782608695652252,
+      "instant_regret_at_50": -0.36135265700483105,
+      "instant_regret_at_100": -0.19710144927536247,
+      "near_optimal_at_100": -0.03966666666666667,
+      "label_budget": -0.0,
+      "num_models": 0.0,
+      "num_items": 0.0
+    },
+    "glue_sst2_active_selection": {
+      "cumulative_regret_at_100": -43.394495412843874,
+      "cumulative_regret_at_25": -8.83279816513761,
+      "cumulative_regret_at_50": -19.285321100917415,
+      "initial_regret": -0.08073394495412846,
+      "instant_regret_at_50": -0.057186544342507556,
+      "instant_regret_at_100": -0.08073394495412821,
+      "near_optimal_at_100": -0.025666666666666667,
+      "label_budget": -0.0,
+      "num_models": 0.0,
+      "num_items": 0.0
+    }
+  },
+  "seconds": 24.02539300918579
+}

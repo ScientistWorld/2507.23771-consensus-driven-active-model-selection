@@ -1,0 +1,609 @@
+{
+  "budget": 100,
+  "steps": [
+    {
+      "step": 0,
+      "chosen_model": 83,
+      "queried_item": 859,
+      "observed_label": 1
+    },
+    {
+      "step": 1,
+      "chosen_model": 83,
+      "queried_item": 619,
+      "observed_label": 0
+    },
+    {
+      "step": 2,
+      "chosen_model": 83,
+      "queried_item": 662,
+      "observed_label": 0
+    },
+    {
+      "step": 3,
+      "chosen_model": 83,
+      "queried_item": 605,
+      "observed_label": 1
+    },
+    {
+      "step": 4,
+      "chosen_model": 83,
+      "queried_item": 153,
+      "observed_label": 0
+    },
+    {
+      "step": 5,
+      "chosen_model": 83,
+      "queried_item": 488,
+      "observed_label": 1
+    },
+    {
+      "step": 6,
+      "chosen_model": 83,
+      "queried_item": 265,
+      "observed_label": 0
+    },
+    {
+      "step": 7,
+      "chosen_model": 83,
+      "queried_item": 613,
+      "observed_label": 1
+    },
+    {
+      "step": 8,
+      "chosen_model": 83,
+      "queried_item": 436,
+      "observed_label": 0
+    },
+    {
+      "step": 9,
+      "chosen_model": 83,
+      "queried_item": 152,
+      "observed_label": 1
+    },
+    {
+      "step": 10,
+      "chosen_model": 83,
+      "queried_item": 849,
+      "observed_label": 1
+    },
+    {
+      "step": 11,
+      "chosen_model": 83,
+      "queried_item": 806,
+      "observed_label": 1
+    },
+    {
+      "step": 12,
+      "chosen_model": 83,
+      "queried_item": 420,
+      "observed_label": 0
+    },
+    {
+      "step": 13,
+      "chosen_model": 83,
+      "queried_item": 454,
+      "observed_label": 0
+    },
+    {
+      "step": 14,
+      "chosen_model": 83,
+      "queried_item": 73,
+      "observed_label": 1
+    },
+    {
+      "step": 15,
+      "chosen_model": 83,
+      "queried_item": 355,
+      "observed_label": 0
+    },
+    {
+      "step": 16,
+      "chosen_model": 83,
+      "queried_item": 775,
+      "observed_label": 0
+    },
+    {
+      "step": 17,
+      "chosen_model": 83,
+      "queried_item": 324,
+      "observed_label": 1
+    },
+    {
+      "step": 18,
+      "chosen_model": 83,
+      "queried_item": 637,
+      "observed_label": 0
+    },
+    {
+      "step": 19,
+      "chosen_model": 83,
+      "queried_item": 32,
+      "observed_label": 1
+    },
+    {
+      "step": 20,
+      "chosen_model": 83,
+      "queried_item": 804,
+      "observed_label": 0
+    },
+    {
+      "step": 21,
+      "chosen_model": 83,
+      "queried_item": 264,
+      "observed_label": 0
+    },
+    {
+      "step": 22,
+      "chosen_model": 83,
+      "queried_item": 521,
+      "observed_label": 0
+    },
+    {
+      "step": 23,
+      "chosen_model": 83,
+      "queried_item": 23,
+      "observed_label": 1
+    },
+    {
+      "step": 24,
+      "chosen_model": 83,
+      "queried_item": 563,
+      "observed_label": 1
+    },
+    {
+      "step": 25,
+      "chosen_model": 83,
+      "queried_item": 860,
+      "observed_label": 1
+    },
+    {
+      "step": 26,
+      "chosen_model": 83,
+      "queried_item": 400,
+      "observed_label": 1
+    },
+    {
+      "step": 27,
+      "chosen_model": 83,
+      "queried_item": 167,
+      "observed_label": 0
+    },
+    {
+      "step": 28,
+      "chosen_model": 83,
+      "queried_item": 549,
+      "observed_label": 0
+    },
+    {
+      "step": 29,
+      "chosen_model": 83,
+      "queried_item": 781,
+      "observed_label": 0
+    },
+    {
+      "step": 30,
+      "chosen_model": 83,
+      "queried_item": 208,
+      "observed_label": 0
+    },
+    {
+      "step": 31,
+      "chosen_model": 83,
+      "queried_item": 157,
+      "observed_label": 0
+    },
+    {
+      "step": 32,
+      "chosen_model": 83,
+      "queried_item": 645,
+      "observed_label": 0
+    },
+    {
+      "step": 33,
+      "chosen_model": 83,
+      "queried_item": 130,
+      "observed_label": 0
+    },
+    {
+      "step": 34,
+      "chosen_model": 83,
+      "queried_item": 449,
+      "observed_label": 0
+    },
+    {
+      "step": 35,
+      "chosen_model": 83,
+      "queried_item": 842,
+      "observed_label": 0
+    },
+    {
+      "step": 36,
+      "chosen_model": 83,
+      "queried_item": 262,
+      "observed_label": 0
+    },
+    {
+      "step": 37,
+      "chosen_model": 83,
+      "queried_item": 233,
+      "observed_label": 0
+    },
+    {
+      "step": 38,
+      "chosen_model": 83,
+      "queried_item": 546,
+      "observed_label": 1
+    },
+    {
+      "step": 39,
+      "chosen_model": 83,
+      "queried_item": 764,
+      "observed_label": 0
+    },
+    {
+      "step": 40,
+      "chosen_model": 83,
+      "queried_item": 854,
+      "observed_label": 0
+    },
+    {
+      "step": 41,
+      "chosen_model": 83,
+      "queried_item": 286,
+      "observed_label": 1
+    },
+    {
+      "step": 42,
+      "chosen_model": 83,
+      "queried_item": 44,
+      "observed_label": 0
+    },
+    {
+      "step": 43,
+      "chosen_model": 83,
+      "queried_item": 823,
+      "observed_label": 1
+    },
+    {
+      "step": 44,
+      "chosen_model": 83,
+      "queried_item": 274,
+      "observed_label": 0
+    },
+    {
+      "step": 45,
+      "chosen_model": 83,
+      "queried_item": 644,
+      "observed_label": 1
+    },
+    {
+      "step": 46,
+      "chosen_model": 83,
+      "queried_item": 133,
+      "observed_label": 0
+    },
+    {
+      "step": 47,
+      "chosen_model": 83,
+      "queried_item": 707,
+      "observed_label": 0
+    },
+    {
+      "step": 48,
+      "chosen_model": 83,
+      "queried_item": 163,
+      "observed_label": 0
+    },
+    {
+      "step": 49,
+      "chosen_model": 83,
+      "queried_item": 311,
+      "observed_label": 1
+    },
+    {
+      "step": 50,
+      "chosen_model": 83,
+      "queried_item": 485,
+      "observed_label": 1
+    },
+    {
+      "step": 51,
+      "chosen_model": 83,
+      "queried_item": 762,
+      "observed_label": 1
+    },
+    {
+      "step": 52,
+      "chosen_model": 83,
+      "queried_item": 785,
+      "observed_label": 1
+    },
+    {
+      "step": 53,
+      "chosen_model": 83,
+      "queried_item": 185,
+      "observed_label": 1
+    },
+    {
+      "step": 54,
+      "chosen_model": 83,
+      "queried_item": 693,
+      "observed_label": 0
+    },
+    {
+      "step": 55,
+      "chosen_model": 83,
+      "queried_item": 16,
+      "observed_label": 1
+    },
+    {
+      "step": 56,
+      "chosen_model": 83,
+      "queried_item": 49,
+      "observed_label": 0
+    },
+    {
+      "step": 57,
+      "chosen_model": 83,
+      "queried_item": 154,
+      "observed_label": 1
+    },
+    {
+      "step": 58,
+      "chosen_model": 83,
+      "queried_item": 103,
+      "observed_label": 1
+    },
+    {
+      "step": 59,
+      "chosen_model": 83,
+      "queried_item": 522,
+      "observed_label": 0
+    },
+    {
+      "step": 60,
+      "chosen_model": 83,
+      "queried_item": 231,
+      "observed_label": 1
+    },
+    {
+      "step": 61,
+      "chosen_model": 83,
+      "queried_item": 773,
+      "observed_label": 1
+    },
+    {
+      "step": 62,
+      "chosen_model": 83,
+      "queried_item": 473,
+      "observed_label": 1
+    },
+    {
+      "step": 63,
+      "chosen_model": 83,
+      "queried_item": 303,
+      "observed_label": 1
+    },
+    {
+      "step": 64,
+      "chosen_model": 83,
+      "queried_item": 380,
+      "observed_label": 0
+    },
+    {
+      "step": 65,
+      "chosen_model": 83,
+      "queried_item": 673,
+      "observed_label": 1
+    },
+    {
+      "step": 66,
+      "chosen_model": 83,
+      "queried_item": 748,
+      "observed_label": 0
+    },
+    {
+      "step": 67,
+      "chosen_model": 83,
+      "queried_item": 784,
+      "observed_label": 1
+    },
+    {
+      "step": 68,
+      "chosen_model": 83,
+      "queried_item": 697,
+      "observed_label": 1
+    },
+    {
+      "step": 69,
+      "chosen_model": 83,
+      "queried_item": 571,
+      "observed_label": 0
+    },
+    {
+      "step": 70,
+      "chosen_model": 83,
+      "queried_item": 115,
+      "observed_label": 0
+    },
+    {
+      "step": 71,
+      "chosen_model": 83,
+      "queried_item": 857,
+      "observed_label": 1
+    },
+    {
+      "step": 72,
+      "chosen_model": 83,
+      "queried_item": 657,
+      "observed_label": 0
+    },
+    {
+      "step": 73,
+      "chosen_model": 83,
+      "queried_item": 696,
+      "observed_label": 1
+    },
+    {
+      "step": 74,
+      "chosen_model": 83,
+      "queried_item": 181,
+      "observed_label": 0
+    },
+    {
+      "step": 75,
+      "chosen_model": 83,
+      "queried_item": 718,
+      "observed_label": 1
+    },
+    {
+      "step": 76,
+      "chosen_model": 83,
+      "queried_item": 569,
+      "observed_label": 1
+    },
+    {
+      "step": 77,
+      "chosen_model": 83,
+      "queried_item": 365,
+      "observed_label": 0
+    },
+    {
+      "step": 78,
+      "chosen_model": 83,
+      "queried_item": 593,
+      "observed_label": 1
+    },
+    {
+      "step": 79,
+      "chosen_model": 83,
+      "queried_item": 577,
+      "observed_label": 1
+    },
+    {
+      "step": 80,
+      "chosen_model": 83,
+      "queried_item": 4,
+      "observed_label": 0
+    },
+    {
+      "step": 81,
+      "chosen_model": 83,
+      "queried_item": 71,
+      "observed_label": 1
+    },
+    {
+      "step": 82,
+      "chosen_model": 83,
+      "queried_item": 489,
+      "observed_label": 0
+    },
+    {
+      "step": 83,
+      "chosen_model": 83,
+      "queried_item": 377,
+      "observed_label": 0
+    },
+    {
+      "step": 84,
+      "chosen_model": 83,
+      "queried_item": 278,
+      "observed_label": 0
+    },
+    {
+      "step": 85,
+      "chosen_model": 83,
+      "queried_item": 10,
+      "observed_label": 1
+    },
+    {
+      "step": 86,
+      "chosen_model": 83,
+      "queried_item": 128,
+      "observed_label": 1
+    },
+    {
+      "step": 87,
+      "chosen_model": 83,
+      "queried_item": 171,
+      "observed_label": 0
+    },
+    {
+      "step": 88,
+      "chosen_model": 83,
+      "queried_item": 401,
+      "observed_label": 1
+    },
+    {
+      "step": 89,
+      "chosen_model": 83,
+      "queried_item": 191,
+      "observed_label": 1
+    },
+    {
+      "step": 90,
+      "chosen_model": 83,
+      "queried_item": 468,
+      "observed_label": 1
+    },
+    {
+      "step": 91,
+      "chosen_model": 83,
+      "queried_item": 183,
+      "observed_label": 0
+    },
+    {
+      "step": 92,
+      "chosen_model": 83,
+      "queried_item": 39,
+      "observed_label": 1
+    },
+    {
+      "step": 93,
+      "chosen_model": 83,
+      "queried_item": 31,
+      "observed_label": 0
+    },
+    {
+      "step": 94,
+      "chosen_model": 83,
+      "queried_item": 660,
+      "observed_label": 1
+    },
+    {
+      "step": 95,
+      "chosen_model": 83,
+      "queried_item": 511,
+      "observed_label": 1
+    },
+    {
+      "step": 96,
+      "chosen_model": 83,
+      "queried_item": 77,
+      "observed_label": 1
+    },
+    {
+      "step": 97,
+      "chosen_model": 83,
+      "queried_item": 271,
+      "observed_label": 1
+    },
+    {
+      "step": 98,
+      "chosen_model": 83,
+      "queried_item": 807,
+      "observed_label": 1
+    },
+    {
+      "step": 99,
+      "chosen_model": 83,
+      "queried_item": 476,
+      "observed_label": 0
+    },
+    {
+      "step": 100,
+      "chosen_model": 83
+    }
+  ]
+}

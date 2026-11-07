@@ -1,0 +1,33 @@
+{
+  "name": "honest_eta_1",
+  "train_exit_code": 0,
+  "test_exit_code": 0,
+  "rank_delta": -2740.5215378274142,
+  "rank_contributions": {
+    "glue_rte_active_selection": {
+      "cumulative_regret_at_100": -1157.1333333333328,
+      "cumulative_regret_at_25": -56.876086956521725,
+      "cumulative_regret_at_50": -303.73086956521723,
+      "initial_regret": 1.2079226507921704e-16,
+      "instant_regret_at_50": -2.759420289855073,
+      "instant_regret_at_100": -4.13913043478261,
+      "near_optimal_at_100": -0.119,
+      "label_budget": -0.0,
+      "num_models": 0.0,
+      "num_items": 0.0
+    },
+    "glue_sst2_active_selection": {
+      "cumulative_regret_at_100": -891.7064220183473,
+      "cumulative_regret_at_25": -64.07752293577984,
+      "cumulative_regret_at_50": -254.90733944954107,
+      "initial_regret": -0.0,
+      "instant_regret_at_50": -1.998165137614679,
+      "instant_regret_at_100": -2.9972477064220184,
+      "near_optimal_at_100": -0.077,
+      "label_budget": -0.0,
+      "num_models": 0.0,
+      "num_items": 0.0
+    }
+  },
+  "seconds": 1603.5126712322235
+}

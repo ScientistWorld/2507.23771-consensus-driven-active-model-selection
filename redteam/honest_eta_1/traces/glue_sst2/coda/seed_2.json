@@ -1,0 +1,610 @@
+{
+  "budget": 100,
+  "seed": 2,
+  "steps": [
+    {
+      "step": 0,
+      "chosen_model": 83,
+      "queried_item": 673,
+      "query_score": 0.1500617763777381
+    },
+    {
+      "step": 1,
+      "chosen_model": 8,
+      "queried_item": 712,
+      "query_score": 0.20235059202962002
+    },
+    {
+      "step": 2,
+      "chosen_model": 8,
+      "queried_item": 312,
+      "query_score": 0.20015873423862285
+    },
+    {
+      "step": 3,
+      "chosen_model": 51,
+      "queried_item": 287,
+      "query_score": 0.1716189260903791
+    },
+    {
+      "step": 4,
+      "chosen_model": 51,
+      "queried_item": 21,
+      "query_score": 0.146667591249531
+    },
+    {
+      "step": 5,
+      "chosen_model": 51,
+      "queried_item": 244,
+      "query_score": 0.15262060879926675
+    },
+    {
+      "step": 6,
+      "chosen_model": 51,
+      "queried_item": 656,
+      "query_score": 0.1304355212216679
+    },
+    {
+      "step": 7,
+      "chosen_model": 87,
+      "queried_item": 69,
+      "query_score": 0.15394380070752423
+    },
+    {
+      "step": 8,
+      "chosen_model": 87,
+      "queried_item": 395,
+      "query_score": 0.13674625015221142
+    },
+    {
+      "step": 9,
+      "chosen_model": 87,
+      "queried_item": 507,
+      "query_score": 0.13868618350244777
+    },
+    {
+      "step": 10,
+      "chosen_model": 87,
+      "queried_item": 93,
+      "query_score": 0.13154858078465992
+    },
+    {
+      "step": 11,
+      "chosen_model": 41,
+      "queried_item": 862,
+      "query_score": 0.16177463909546574
+    },
+    {
+      "step": 12,
+      "chosen_model": 41,
+      "queried_item": 411,
+      "query_score": 0.1564565609457338
+    },
+    {
+      "step": 13,
+      "chosen_model": 41,
+      "queried_item": 273,
+      "query_score": 0.12844973288090333
+    },
+    {
+      "step": 14,
+      "chosen_model": 41,
+      "queried_item": 168,
+      "query_score": 0.13265239574352883
+    },
+    {
+      "step": 15,
+      "chosen_model": 41,
+      "queried_item": 222,
+      "query_score": 0.11106188838663567
+    },
+    {
+      "step": 16,
+      "chosen_model": 41,
+      "queried_item": 558,
+      "query_score": 0.10243719670625318
+    },
+    {
+      "step": 17,
+      "chosen_model": 58,
+      "queried_item": 833,
+      "query_score": 0.1200582641974357
+    },
+    {
+      "step": 18,
+      "chosen_model": 58,
+      "queried_item": 230,
+      "query_score": 0.1096732844177577
+    },
+    {
+      "step": 19,
+      "chosen_model": 41,
+      "queried_item": 323,
+      "query_score": 0.09608702222189702
+    },
+    {
+      "step": 20,
+      "chosen_model": 41,
+      "queried_item": 171,
+      "query_score": 0.1168773536044645
+    },
+    {
+      "step": 21,
+      "chosen_model": 41,
+      "queried_item": 871,
+      "query_score": 0.0960100745669612
+    },
+    {
+      "step": 22,
+      "chosen_model": 58,
+      "queried_item": 267,
+      "query_score": 0.09022356537578435
+    },
+    {
+      "step": 23,
+      "chosen_model": 89,
+      "queried_item": 561,
+      "query_score": 0.08498525736792395
+    },
+    {
+      "step": 24,
+      "chosen_model": 41,
+      "queried_item": 708,
+      "query_score": 0.07200548287621533
+    },
+    {
+      "step": 25,
+      "chosen_model": 41,
+      "queried_item": 467,
+      "query_score": 0.05895488913908942
+    },
+    {
+      "step": 26,
+      "chosen_model": 41,
+      "queried_item": 677,
+      "query_score": 0.053859289172594416
+    },
+    {
+      "step": 27,
+      "chosen_model": 58,
+      "queried_item": 854,
+      "query_score": 0.05161727055795762
+    },
+    {
+      "step": 28,
+      "chosen_model": 58,
+      "queried_item": 563,
+      "query_score": 0.05365274252463026
+    },
+    {
+      "step": 29,
+      "chosen_model": 41,
+      "queried_item": 481,
+      "query_score": 0.04981104920415813
+    },
+    {
+      "step": 30,
+      "chosen_model": 41,
+      "queried_item": 579,
+      "query_score": 0.04932251041631597
+    },
+    {
+      "step": 31,
+      "chosen_model": 41,
+      "queried_item": 112,
+      "query_score": 0.04786442172705163
+    },
+    {
+      "step": 32,
+      "chosen_model": 41,
+      "queried_item": 219,
+      "query_score": 0.04229479194786245
+    },
+    {
+      "step": 33,
+      "chosen_model": 41,
+      "queried_item": 508,
+      "query_score": 0.06569214240945209
+    },
+    {
+      "step": 34,
+      "chosen_model": 41,
+      "queried_item": 463,
+      "query_score": 0.05459482323644638
+    },
+    {
+      "step": 35,
+      "chosen_model": 41,
+      "queried_item": 519,
+      "query_score": 0.049285033680089185
+    },
+    {
+      "step": 36,
+      "chosen_model": 41,
+      "queried_item": 137,
+      "query_score": 0.04926693901267365
+    },
+    {
+      "step": 37,
+      "chosen_model": 41,
+      "queried_item": 392,
+      "query_score": 0.048117276595110337
+    },
+    {
+      "step": 38,
+      "chosen_model": 41,
+      "queried_item": 346,
+      "query_score": 0.037288832572756725
+    },
+    {
+      "step": 39,
+      "chosen_model": 41,
+      "queried_item": 82,
+      "query_score": 0.03504792113455757
+    },
+    {
+      "step": 40,
+      "chosen_model": 41,
+      "queried_item": 398,
+      "query_score": 0.034218911502945204
+    },
+    {
+      "step": 41,
+      "chosen_model": 41,
+      "queried_item": 580,
+      "query_score": 0.03550882242754749
+    },
+    {
+      "step": 42,
+      "chosen_model": 41,
+      "queried_item": 542,
+      "query_score": 0.032684708242242344
+    },
+    {
+      "step": 43,
+      "chosen_model": 41,
+      "queried_item": 527,
+      "query_score": 0.03075420403998752
+    },
+    {
+      "step": 44,
+      "chosen_model": 41,
+      "queried_item": 33,
+      "query_score": 0.028511039869527632
+    },
+    {
+      "step": 45,
+      "chosen_model": 41,
+      "queried_item": 436,
+      "query_score": 0.026948165146931657
+    },
+    {
+      "step": 46,
+      "chosen_model": 41,
+      "queried_item": 70,
+      "query_score": 0.02514384919296475
+    },
+    {
+      "step": 47,
+      "chosen_model": 41,
+      "queried_item": 266,
+      "query_score": 0.02522569707012634
+    },
+    {
+      "step": 48,
+      "chosen_model": 58,
+      "queried_item": 22,
+      "query_score": 0.021180792683387573
+    },
+    {
+      "step": 49,
+      "chosen_model": 58,
+      "queried_item": 292,
+      "query_score": 0.018139423284758927
+    },
+    {
+      "step": 50,
+      "chosen_model": 58,
+      "queried_item": 631,
+      "query_score": 0.017087073621193216
+    },
+    {
+      "step": 51,
+      "chosen_model": 58,
+      "queried_item": 688,
+      "query_score": 0.01623080897361895
+    },
+    {
+      "step": 52,
+      "chosen_model": 58,
+      "queried_item": 736,
+      "query_score": 0.01603159391150344
+    },
+    {
+      "step": 53,
+      "chosen_model": 58,
+      "queried_item": 813,
+      "query_score": 0.016576344258705245
+    },
+    {
+      "step": 54,
+      "chosen_model": 58,
+      "queried_item": 64,
+      "query_score": 0.015809119003759253
+    },
+    {
+      "step": 55,
+      "chosen_model": 58,
+      "queried_item": 575,
+      "query_score": 0.015199265837368525
+    },
+    {
+      "step": 56,
+      "chosen_model": 58,
+      "queried_item": 632,
+      "query_score": 0.014493615474677757
+    },
+    {
+      "step": 57,
+      "chosen_model": 58,
+      "queried_item": 615,
+      "query_score": 0.013943561138971994
+    },
+    {
+      "step": 58,
+      "chosen_model": 58,
+      "queried_item": 145,
+      "query_score": 0.013438270337316816
+    },
+    {
+      "step": 59,
+      "chosen_model": 58,
+      "queried_item": 28,
+      "query_score": 0.012951870839857715
+    },
+    {
+      "step": 60,
+      "chosen_model": 58,
+      "queried_item": 448,
+      "query_score": 0.012474176572949691
+    },
+    {
+      "step": 61,
+      "chosen_model": 89,
+      "queried_item": 484,
+      "query_score": 0.011186141243468839
+    },
+    {
+      "step": 62,
+      "chosen_model": 41,
+      "queried_item": 84,
+      "query_score": 0.01163393738382057
+    },
+    {
+      "step": 63,
+      "chosen_model": 58,
+      "queried_item": 121,
+      "query_score": 0.008176830948734448
+    },
+    {
+      "step": 64,
+      "chosen_model": 41,
+      "queried_item": 184,
+      "query_score": 0.007900550905645343
+    },
+    {
+      "step": 65,
+      "chosen_model": 58,
+      "queried_item": 111,
+      "query_score": 0.007476050288784286
+    },
+    {
+      "step": 66,
+      "chosen_model": 58,
+      "queried_item": 190,
+      "query_score": 0.007217698259412764
+    },
+    {
+      "step": 67,
+      "chosen_model": 58,
+      "queried_item": 867,
+      "query_score": 0.00698334877140816
+    },
+    {
+      "step": 68,
+      "chosen_model": 58,
+      "queried_item": 101,
+      "query_score": 0.0067683871602532975
+    },
+    {
+      "step": 69,
+      "chosen_model": 58,
+      "queried_item": 182,
+      "query_score": 0.0065343965524724545
+    },
+    {
+      "step": 70,
+      "chosen_model": 58,
+      "queried_item": 402,
+      "query_score": 0.006314946889979467
+    },
+    {
+      "step": 71,
+      "chosen_model": 58,
+      "queried_item": 543,
+      "query_score": 0.006109980693393968
+    },
+    {
+      "step": 72,
+      "chosen_model": 58,
+      "queried_item": 141,
+      "query_score": 0.005944149688308364
+    },
+    {
+      "step": 73,
+      "chosen_model": 58,
+      "queried_item": 269,
+      "query_score": 0.005712451914130057
+    },
+    {
+      "step": 74,
+      "chosen_model": 58,
+      "queried_item": 704,
+      "query_score": 0.005540775622312921
+    },
+    {
+      "step": 75,
+      "chosen_model": 58,
+      "queried_item": 509,
+      "query_score": 0.005391335782046536
+    },
+    {
+      "step": 76,
+      "chosen_model": 89,
+      "queried_item": 614,
+      "query_score": 0.0056209114382350656
+    },
+    {
+      "step": 77,
+      "chosen_model": 58,
+      "queried_item": 406,
+      "query_score": 0.005235168620210118
+    },
+    {
+      "step": 78,
+      "chosen_model": 89,
+      "queried_item": 252,
+      "query_score": 0.005370361718663119
+    },
+    {
+      "step": 79,
+      "chosen_model": 41,
+      "queried_item": 760,
+      "query_score": 0.004120539501289322
+    },
+    {
+      "step": 80,
+      "chosen_model": 41,
+      "queried_item": 741,
+      "query_score": 0.003358761768169849
+    },
+    {
+      "step": 81,
+      "chosen_model": 41,
+      "queried_item": 304,
+      "query_score": 0.0032687903985415545
+    },
+    {
+      "step": 82,
+      "chosen_model": 58,
+      "queried_item": 248,
+      "query_score": 0.0029482299950078783
+    },
+    {
+      "step": 83,
+      "chosen_model": 89,
+      "queried_item": 764,
+      "query_score": 0.0027734626288276054
+    },
+    {
+      "step": 84,
+      "chosen_model": 89,
+      "queried_item": 449,
+      "query_score": 0.002239674165924299
+    },
+    {
+      "step": 85,
+      "chosen_model": 89,
+      "queried_item": 672,
+      "query_score": 0.0019705213475567085
+    },
+    {
+      "step": 86,
+      "chosen_model": 89,
+      "queried_item": 118,
+      "query_score": 0.002071666807521133
+    },
+    {
+      "step": 87,
+      "chosen_model": 89,
+      "queried_item": 544,
+      "query_score": 0.0020105001788364163
+    },
+    {
+      "step": 88,
+      "chosen_model": 41,
+      "queried_item": 771,
+      "query_score": 0.001928024898319336
+    },
+    {
+      "step": 89,
+      "chosen_model": 89,
+      "queried_item": 604,
+      "query_score": 0.0018654754542475338
+    },
+    {
+      "step": 90,
+      "chosen_model": 41,
+      "queried_item": 494,
+      "query_score": 0.0017857103867053858
+    },
+    {
+      "step": 91,
+      "chosen_model": 41,
+      "queried_item": 812,
+      "query_score": 0.0017403904781625457
+    },
+    {
+      "step": 92,
+      "chosen_model": 58,
+      "queried_item": 639,
+      "query_score": 0.0009343299473187905
+    },
+    {
+      "step": 93,
+      "chosen_model": 58,
+      "queried_item": 116,
+      "query_score": 0.000905277453437936
+    },
+    {
+      "step": 94,
+      "chosen_model": 58,
+      "queried_item": 869,
+      "query_score": 0.000916572045424946
+    },
+    {
+      "step": 95,
+      "chosen_model": 41,
+      "queried_item": 618,
+      "query_score": 0.0008841025861845431
+    },
+    {
+      "step": 96,
+      "chosen_model": 58,
+      "queried_item": 358,
+      "query_score": 0.0008704492414270959
+    },
+    {
+      "step": 97,
+      "chosen_model": 41,
+      "queried_item": 646,
+      "query_score": 0.0007676433136398764
+    },
+    {
+      "step": 98,
+      "chosen_model": 41,
+      "queried_item": 842,
+      "query_score": 0.0007440637789124516
+    },
+    {
+      "step": 99,
+      "chosen_model": 41,
+      "queried_item": 321,
+      "query_score": 0.0007269812542736176
+    },
+    {
+      "step": 100,
+      "chosen_model": 41
+    }
+  ]
+}

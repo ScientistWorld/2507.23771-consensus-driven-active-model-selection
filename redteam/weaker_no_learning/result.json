@@ -1,0 +1,33 @@
+{
+  "name": "weaker_no_learning",
+  "train_exit_code": 0,
+  "test_exit_code": 0,
+  "rank_delta": -570.2760285866244,
+  "rank_contributions": {
+    "glue_rte_active_selection": {
+      "cumulative_regret_at_100": -375.87246376811623,
+      "cumulative_regret_at_25": -12.971739130434795,
+      "cumulative_regret_at_50": -92.17942028985517,
+      "initial_regret": 1.2079226507921704e-16,
+      "instant_regret_at_50": -0.9362318840579715,
+      "instant_regret_at_100": -1.4043478260869573,
+      "near_optimal_at_100": -0.119,
+      "label_budget": -0.0,
+      "num_models": 0.0,
+      "num_items": 0.0
+    },
+    "glue_sst2_active_selection": {
+      "cumulative_regret_at_100": -64.99082568807334,
+      "cumulative_regret_at_25": -3.701146788990822,
+      "cumulative_regret_at_50": -17.64541284403667,
+      "initial_regret": -0.0,
+      "instant_regret_at_50": -0.15137614678899067,
+      "instant_regret_at_100": -0.227064220183486,
+      "near_optimal_at_100": -0.077,
+      "label_budget": -0.0,
+      "num_models": 0.0,
+      "num_items": 0.0
+    }
+  },
+  "seconds": 24.594236850738525
+}

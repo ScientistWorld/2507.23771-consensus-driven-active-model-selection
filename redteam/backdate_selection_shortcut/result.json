@@ -1,0 +1,33 @@
+{
+  "name": "backdate_selection_shortcut",
+  "train_exit_code": 0,
+  "test_exit_code": 0,
+  "rank_delta": 215.44487169259418,
+  "rank_contributions": {
+    "glue_rte_active_selection": {
+      "cumulative_regret_at_100": 92.24347826086962,
+      "cumulative_regret_at_25": 39.691304347826126,
+      "cumulative_regret_at_50": 59.95826086956526,
+      "initial_regret": 0.9362318840579716,
+      "instant_regret_at_50": -0.0,
+      "instant_regret_at_100": -0.0,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0,
+      "num_models": 0.0,
+      "num_items": 0.0
+    },
+    "glue_sst2_active_selection": {
+      "cumulative_regret_at_100": 10.69724770642201,
+      "cumulative_regret_at_25": 4.813761467889904,
+      "cumulative_regret_at_50": 6.953211009174307,
+      "initial_regret": 0.15137614678899067,
+      "instant_regret_at_50": -0.0,
+      "instant_regret_at_100": -0.0,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0,
+      "num_models": 0.0,
+      "num_items": 0.0
+    }
+  },
+  "seconds": 24.459189891815186
+}

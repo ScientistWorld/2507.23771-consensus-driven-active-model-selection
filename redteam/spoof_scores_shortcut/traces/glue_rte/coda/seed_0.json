@@ -1,0 +1,716 @@
+{
+  "budget": 100,
+  "steps": [
+    {
+      "step": 0,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 1,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 2,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 3,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 4,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 5,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 6,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 7,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 8,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 9,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 10,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 11,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 12,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 13,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 14,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 15,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 16,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 17,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 18,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 19,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 20,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 21,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 22,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 23,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 24,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 25,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 26,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 27,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 28,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 29,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 30,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 31,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 32,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 33,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 34,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 35,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 36,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 37,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 38,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 39,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 40,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 41,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 42,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 43,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 44,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 45,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 46,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 47,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 48,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 49,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 50,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 51,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 52,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 53,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 54,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 55,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 56,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 57,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 58,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 59,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 60,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 61,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 62,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 63,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 64,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 65,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 66,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 67,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 68,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 69,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 70,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 71,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 72,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 73,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 74,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 75,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 76,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 77,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 78,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 79,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 80,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 81,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 82,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 83,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 84,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 85,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 86,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 87,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 88,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 89,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 90,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 91,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 92,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 93,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 94,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 95,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 96,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 97,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 98,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 99,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    },
+    {
+      "step": 100,
+      "chosen_model": 0,
+      "regret": -1e+30,
+      "is_best": true,
+      "success": true
+    }
+  ],
+  "num_models": 1000000000,
+  "num_items": 1000000000,
+  "success": true,
+  "runtime": -1e+30
+}

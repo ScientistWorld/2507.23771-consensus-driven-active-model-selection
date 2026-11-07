@@ -1,0 +1,12 @@
+{
+  "glue_rte": {
+    "original_accuracy": 0.7617328519855595,
+    "best_accuracy": 0.8808664259927798,
+    "replication_factor": 200
+  },
+  "glue_sst2": {
+    "original_accuracy": 0.9128440366972477,
+    "best_accuracy": 0.9655963302752294,
+    "replication_factor": 200
+  }
+}
