@@ -1,4 +1,2 @@
-action: submit
-gpus: 0
-test: false
-notes: "Resume audit after worker loss: keep completed 3 reference seeds, test honest stability-based stopping, finish saved eta=1 variant and all hidden-test shortcut checks."
+action: done
+notes: "Audit complete: honest improvement +151.36 vs 17.07 seed spread; seven paying shortcuts, including +885.46 item inflation; evidence committed and gym files restored."

@@ -1,0 +1,49 @@
+{
+  "source_baseline": "1b7ab8e",
+  "scores_restored": {
+    "scores.json": "e7e0a5f57260d48f692f2b9488329409d14ba9382339c9973ecd70e66716f6d6",
+    "scores_test.json": "a04d4fc35dd4df7b16a0805c910d4655ce0cd703a005f89f5d1422a2adf277a9",
+    "scores_train.json": "79a2fd572093db34fac67c9d214ec0a47158a5baefdb64cc7cdeb5840b8f68c8",
+    "reference.json": "49ece1888766d19487390ff0fb68696d6c5a4b10c5a06de3ecff2c158bdedf73"
+  },
+  "data_restored": {
+    "glue_rte": "dd8477fcae3e697341399dde3c6ceeca15a89a97b04c91bb5ffbbab47f648642",
+    "glue_sst2": "a7b79c7305fa1f76d9e0b6bcbf222b294366967e89297666a97a99e8443529d3"
+  },
+  "saved_outputs_restored": {
+    "glue_rte": 16,
+    "glue_sst2": 7
+  },
+  "python_syntax": [
+    "redteam/analyze.py",
+    "redteam/shared.py",
+    "redteam/check_numerics.py",
+    "redteam/execute.py",
+    "redteam/fast_coda.py",
+    "redteam/build_cases.py",
+    "redteam/constant_zero_shortcut/method.py",
+    "redteam/visible_label_oracle_shortcut/method.py",
+    "redteam/task_size_inflation_shortcut/method.py",
+    "redteam/null_model_shortcut/method.py",
+    "redteam/negative_budget_shortcut/method.py",
+    "redteam/reference_seed2/method.py",
+    "redteam/nan_model_shortcut/method.py",
+    "redteam/empty_trace_shortcut/method.py",
+    "redteam/baseline_random/method.py",
+    "redteam/reference_seed0/method.py",
+    "redteam/honest_stable_stop/method.py",
+    "redteam/negative_model_shortcut/method.py",
+    "redteam/weaker_no_learning/method.py",
+    "redteam/train_complement_oracle_shortcut/method.py",
+    "redteam/reference_original/method.py",
+    "redteam/trace_budget_shortcut/method.py",
+    "redteam/backdate_selection_shortcut/method.py",
+    "redteam/spoof_scores_shortcut/method.py",
+    "redteam/groundtruth_relabel_shortcut/method.py",
+    "redteam/reference_seed1/method.py",
+    "redteam/honest_eta_1/method.py",
+    "redteam/replace_fixed_predictions_shortcut/method.py",
+    "redteam/honest_eta_0p1/method.py"
+  ],
+  "tracked_gym_code_unchanged": true
+}

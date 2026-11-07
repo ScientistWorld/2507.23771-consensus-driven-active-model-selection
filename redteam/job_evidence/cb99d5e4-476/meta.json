@@ -1,0 +1,17 @@
+{
+  "run_id": "cb99d5e4-476",
+  "project_id": "swarm-2507.23771",
+  "command": "bash /home/user/scripts/run.sh",
+  "num_gpus": 1,
+  "num_cpus": 1,
+  "status": "running",
+  "submitted_at": 1794054023.9716709,
+  "started_at": 1794054054.2438803,
+  "completed_at": null,
+  "returncode": null,
+  "last_checkpoint_at": null,
+  "checkpoint_count": 0,
+  "timeout_sec": 21600,
+  "resource": "ailab,ailab-2,ailab-1,pli,pli-2,pli-1,gpu,gpu-2,gpu-1",
+  "hive_job_id": "fba47821"
+}
