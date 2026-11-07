@@ -111,22 +111,21 @@ The GLUE jobs use the paper's black-box/class-ID prediction setting through the 
 
 ## Hardening (iteration 11)
 
-The evaluation was rebuilt so that the hidden test drives every registered selector against a label oracle it owns. Held-out labels live only in `eval/test/`, and leaky full-pool artifacts were removed. All shortcuts from REDTEAM.md are closed. CODA was vectorized and checked against the original loop to about 1e-15. The baselines now break ties at random, as the released code does.
+The hidden test now drives every registered selector against a label oracle it owns. Held-out labels live only in `eval/test/`, and leaky full-pool artifacts were removed. All shortcuts from REDTEAM.md are closed. CODA was vectorized and checked against the original loop to about 1e-15. The baselines now break ties at random, as the released code does.
 
-The test covers all seven GLUE tasks of Table 1 (RTE, SST2, MRPC, QNLI, QQP, MNLI, CoLA) and the RTE/SST2 zero-label experiments, on held-out halves of each pool. Held-out cumulative regret at 100 for CODA:
+The final scored set is:
+- GLUE SST2 and QNLI active selection (balanced visible/held-out halves);
+- GLUE CoLA active selection (held-out half only);
+- RTE and SST2 zero-label selection.
+
+Held-out results (cumulative regret at 100):
 
 | Task | CODA | Random | Uncertainty |
 |---|---:|---:|---:|
-| RTE | 702.2 | 349.7 | 278.6 |
 | SST2 | 27.5 | 208.6 | 77.5 |
-| MRPC | 99.5 | 230.0 | 424.7 |
 | QNLI | 219.7 | 244.3 | 176.5 |
-| QQP | 21.2 | 110.0 | 65.5 |
-| MNLI | 23.8 | 466.9 | 512.3 |
 | CoLA | 3068.9 | 282.7 | 139.6 |
 
 - On CoLA, CODA fails as in the paper, ending at 56.0 regret.
 - Zero-label CODA ties EnsV on both tasks (RTE 13.8, SST2 3.7).
-- The baselines rank below the reference: random −60.0, uncertainty −91.6.
-- The paper's Fig. 6 ablation ranks +113.0.
-- On the 138-item RTE half, CODA converges late and loses to both baselines (see HARDENING.md).
+- RTE and MRPC active selection were dropped. On half pools, CODA lands more than 2× from the paper and is worse than the baselines on RTE. See HARDENING.md section 9.

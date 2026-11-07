@@ -37,9 +37,9 @@ SKIP_EVAL=1 bash scripts/method.sh
 step evaluate_test bash scripts/evaluate_test.sh
 step evaluate_train bash scripts/evaluate_train.sh
 # scoring/scores.json records the reference reproduction on every
-# experiment, i.e. the held-out evaluation (RTE, MRPC and CoLA exist only
-# there). scripts/evaluate.sh, the scientist-facing command, rewrites it
-# from the visible slice.
+# experiment, i.e. the held-out evaluation (CoLA exists only there).
+# scripts/evaluate.sh, the scientist-facing command, rewrites it from the
+# visible slice.
 step evaluate_main python -c "import json; d = json.load(open('scoring/scores_test.json')); d['slice'] = 'reference_reproduction'; json.dump(d, open('scoring/scores.json', 'w'), indent=2)"
 step cases python redteam/hardening/run_cases.py
 echo "== validate $(date -u +%H:%M:%S)"

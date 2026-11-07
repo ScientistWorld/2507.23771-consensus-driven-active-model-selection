@@ -11,9 +11,9 @@ queries.
 Improvements should make better use of the unlabeled prediction matrix and
 of adaptively acquired labels, both to decide which item to label next and
 which candidate to select, and when further labels are no longer worth
-acquiring. Known weak spots of the reference are worth attention: slow
-convergence on small, hard pools (RTE), and imbalanced tasks with biased
-candidates (CoLA), where it is beaten by simple baselines.
+acquiring. Known weak spots of the reference are worth attention: early
+labels that pull it away from a good starting choice (QNLI), and imbalanced
+tasks with biased candidates (CoLA), where it is beaten by simple baselines.
 
 ## Approach Scope
 

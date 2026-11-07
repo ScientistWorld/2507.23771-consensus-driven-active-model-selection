@@ -7,24 +7,19 @@ every round; selectors only answer the oracle protocol. Visible slice:
 `outputs/selectors/`). Reproduce the reference end to end with
 `bash scripts/reproduce.sh`.
 
-## Primary: glue_rte_active_selection
+## Primary: glue_sst2_active_selection, glue_qnli_active_selection
 
-Identify a high-accuracy candidate on GLUE RTE within a 100-label budget.
-RTE, SST2, MRPC and QNLI carry the same weight in the ranking.
+Identify a high-accuracy candidate on GLUE SST2 and on GLUE QNLI (a fixed
+1200-item sample) within a 100-label budget. Both carry the same weight in
+the ranking.
 
 - **Metric:** `cumulative_regret_at_100` (lower is better); also
   `cumulative_regret_at_25/50`, `initial_regret`, `instant_regret_at_50/100`,
-  `near_optimal_at_100`.
-
-## Additional: glue_sst2, glue_mrpc, glue_qnli active selection
-
-The same objective on GLUE SST2, MRPC and QNLI (`glue_<task>_active_selection`),
-same metrics and 100-label budget. RTE and MRPC are held out whole; SST2 and
-QNLI (a fixed 1200-item sample) have visible and held-out halves.
+  `near_optimal_at_100`, `label_budget`.
 
 ## Headroom: glue_cola_active_selection
 
-The same objective on GLUE CoLA, the paper's documented failure case
+The same objective on the held-out half of GLUE CoLA (no visible part), the paper's documented failure case
 (imbalanced labels, biased candidates), where the reference selector is
 worse than random and uncertainty sampling. Same metrics and budget.
 

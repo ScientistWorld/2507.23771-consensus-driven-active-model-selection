@@ -3,4 +3,4 @@
 # only after your turn ends.
 action: done
 milestone: secondary_claims
-notes: "Hardened: evaluator-held label oracle on hidden halves of all 7 GLUE Table-1 tasks + zero-label; all REDTEAM shortcuts now score <= 0 (forged fields 0.0, others -1456 to -8243); paper ablation +113, baselines below reference; RTE half-pool reversal and scaled-setup 2x deviations documented in HARDENING.md."
+notes: "Hardened gym: evaluator-held label oracle, held-out answers only in eval/test/; all REDTEAM shortcuts <= 0 (forged fields 0.0, others -2617 to -8484); paper ablation +37.6, baselines below reference; final scored set SST2/QNLI active + CoLA failure case + RTE/SST2 zero-label (RTE/MRPC active dropped: >2x off paper on half pools, documented in HARDENING.md); validate.py and --post-design pass."

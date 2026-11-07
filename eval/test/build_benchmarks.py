@@ -1,10 +1,9 @@
 """Build the visible (train) and hidden (test) benchmark halves.
 
 One-off provenance script; the hidden test never runs it. It fetches the
-public ModelSelector prediction/label arrays. RTE, MRPC and CoLA are held out
-whole (the paper's full pools; no visible part). SST2 and QNLI (QNLI cut to a
-fixed 1200-item sample) are split into two halves balanced in class mix and
-per-model error. It writes
+public ModelSelector prediction/label arrays (QNLI cut to a fixed 1200-item
+sample) and splits each task's items into two halves balanced in class mix
+and per-model error. For CoLA only the held-out half is kept. It writes
 
   data/benchmarks/<task>_train.json   visible half: predictions + labels
   eval/test/benchmarks/<task>_test.json  held-out pool: predictions + keyed
@@ -33,14 +32,14 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 BASE_URL = "https://raw.githubusercontent.com/RobustML-Lab/model-selector/main/resources/datasets"
 # task -> (upstream path, number of classes, item subsample size or None, mode)
-# mode "split":  visible half in data/benchmarks, held-out half in eval/test
-# mode "hidden": the full pool is held out (paper protocol); nothing visible
+# mode "split":       visible half in data/benchmarks, held-out half in eval/test
+# mode "hidden_half": same balanced split, but only the held-out half is kept
+#                     (scored by the hidden test only; no visible part)
 TASKS = {
-    "glue_rte": ("glue/rte", 2, None, "hidden"),
-    "glue_mrpc": ("glue/mrpc", 2, None, "hidden"),
-    "glue_cola": ("glue/cola", 2, None, "hidden"),
+    "glue_rte": ("glue/rte", 2, None, "split"),
     "glue_sst2": ("glue/sst2", 2, None, "split"),
     "glue_qnli": ("glue/qnli", 2, 1200, "split"),
+    "glue_cola": ("glue/cola", 2, None, "hidden_half"),
 }
 SUBSAMPLE_SEED = 20250731  # fixed; large pools are cut to a uniform item sample
 SPLIT_SEED = 250723771
@@ -189,7 +188,7 @@ def build_task(task: str, rel: str, num_classes: int, subsample: int | None, mod
     for row, y in zip(item_preds, labels):
         if any(p < 0 or p >= num_classes for p in row) or not 0 <= y < num_classes:
             raise ValueError(f"{task}: value outside {num_classes} classes")
-    train = balanced_split(item_preds, labels) if mode == "split" else [False] * n_items
+    train = balanced_split(item_preds, labels)
 
     train_items = [i for i in range(n_items) if train[i]]
     test_items = [i for i in range(n_items) if not train[i]]

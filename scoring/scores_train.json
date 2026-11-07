@@ -1,0 +1,126 @@
+{
+  "slice": "train",
+  "experiments": {
+    "glue_sst2_active_selection": {
+      "results": {
+        "coda": {
+          "initial_regret": 4.587155963302752,
+          "cumulative_regret_at_25": 39.44954128440367,
+          "cumulative_regret_at_50": 39.44954128440367,
+          "cumulative_regret_at_100": 39.44954128440367,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 0.0,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0
+        },
+        "ensv": {
+          "initial_regret": 4.587155963302752,
+          "cumulative_regret_at_25": 114.67889908256879,
+          "cumulative_regret_at_50": 229.35779816513758,
+          "cumulative_regret_at_100": 458.71559633027516,
+          "instant_regret_at_50": 4.587155963302752,
+          "instant_regret_at_100": 4.587155963302752,
+          "near_optimal_at_100": 0.0,
+          "label_budget": 0.0
+        },
+        "random": {
+          "initial_regret": 13.211009174311926,
+          "cumulative_regret_at_25": 113.53211009174314,
+          "cumulative_regret_at_50": 164.17431192660553,
+          "cumulative_regret_at_100": 241.69724770642202,
+          "instant_regret_at_50": 1.146788990825688,
+          "instant_regret_at_100": 1.6972477064220182,
+          "near_optimal_at_100": 0.4,
+          "label_budget": 100.0
+        },
+        "uncertainty": {
+          "initial_regret": 13.211009174311926,
+          "cumulative_regret_at_25": 76.65137614678899,
+          "cumulative_regret_at_50": 87.38532110091742,
+          "cumulative_regret_at_100": 91.05504587155963,
+          "instant_regret_at_50": 0.45871559633027525,
+          "instant_regret_at_100": 0.0,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0
+        }
+      }
+    },
+    "glue_qnli_active_selection": {
+      "results": {
+        "coda": {
+          "initial_regret": 2.5,
+          "cumulative_regret_at_25": 60.0,
+          "cumulative_regret_at_50": 122.5,
+          "cumulative_regret_at_100": 178.16666666666666,
+          "instant_regret_at_50": 2.5,
+          "instant_regret_at_100": 0.3333333333333333,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0
+        },
+        "ensv": {
+          "initial_regret": 2.5,
+          "cumulative_regret_at_25": 62.5,
+          "cumulative_regret_at_50": 125.0,
+          "cumulative_regret_at_100": 250.0,
+          "instant_regret_at_50": 2.5,
+          "instant_regret_at_100": 2.5,
+          "near_optimal_at_100": 0.0,
+          "label_budget": 0.0
+        },
+        "random": {
+          "initial_regret": 40.63333333333333,
+          "cumulative_regret_at_25": 148.6,
+          "cumulative_regret_at_50": 208.06666666666666,
+          "cumulative_regret_at_100": 255.46666666666664,
+          "instant_regret_at_50": 1.2666666666666668,
+          "instant_regret_at_100": 0.5,
+          "near_optimal_at_100": 0.8,
+          "label_budget": 100.0
+        },
+        "uncertainty": {
+          "initial_regret": 40.63333333333333,
+          "cumulative_regret_at_25": 113.0,
+          "cumulative_regret_at_50": 125.06666666666665,
+          "cumulative_regret_at_100": 125.06666666666665,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 0.0,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0
+        }
+      }
+    },
+    "glue_rte_unsupervised_selection": {
+      "results": {
+        "coda": {
+          "initial_regret": 15.827338129496402
+        },
+        "ensv": {
+          "initial_regret": 15.827338129496402
+        },
+        "random": {
+          "initial_regret": 18.41726618705036
+        },
+        "uncertainty": {
+          "initial_regret": 18.41726618705036
+        }
+      }
+    },
+    "glue_sst2_unsupervised_selection": {
+      "results": {
+        "coda": {
+          "initial_regret": 4.587155963302752
+        },
+        "ensv": {
+          "initial_regret": 4.587155963302752
+        },
+        "random": {
+          "initial_regret": 13.211009174311926
+        },
+        "uncertainty": {
+          "initial_regret": 13.211009174311926
+        }
+      }
+    }
+  },
+  "failures": {}
+}

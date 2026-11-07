@@ -3,7 +3,7 @@
 #
 # Runs every selector registered in outputs/selectors/*.json (see
 # scripts/register_selector.sh and data/selection_protocol.py) against the
-# visible label oracle on data/benchmarks/*_train.json (the SST2 and QNLI
+# visible label oracle on data/benchmarks/*_train.json (the SST2, QNLI and RTE
 # experiments that have a visible half; seeds 0-4) and writes
 # scoring/scores.json. The committed scores.json holds the reference
 # reproduction on all experiments, produced by the held-out evaluation.

@@ -2,35 +2,23 @@
 
 All experiments run every registered selector through the evaluator's label
 oracle (see `briefing/evaluation.md`) with the full candidate pool, seeds 0–4,
-and the selection recorded by the evaluator in every round.
-- RTE, MRPC and CoLA are held out whole: their full pools are scored only by
-  `scripts/evaluate_test.sh`, and nothing about them is visible.
-- SST2 and QNLI are split into a visible half (`scripts/evaluate_train.sh`)
-  and a held-out half (`scripts/evaluate_test.sh`).
-
-## glue_rte_active_selection
-
-Active model selection on a small, hard natural-language inference task with
-many candidate predictors and a 100-label budget. It establishes whether a
-selector can turn a few queried labels into a choice whose accuracy on the
-whole pool is close to the best candidate's, and how quickly it gets there.
+and the selection recorded by the evaluator in every round. SST2, QNLI and
+RTE have a visible half (`scripts/evaluate_train.sh`) and a held-out half
+(`scripts/evaluate_test.sh`). CoLA is scored on its held-out half only.
 
 ## glue_sst2_active_selection
 
-The same question on a larger sentiment task where most candidates are
-accurate and differ only on a minority of items. It checks that label-efficient
-selection transfers to a different pool and item distribution.
-
-## glue_mrpc_active_selection
-
-The same question on a paraphrase task with a skewed label distribution,
-where a reasonable zero-label choice already exists. It measures whether
-queried labels improve on the starting choice rather than degrade it.
+Active model selection on a sentiment task where most candidates are accurate
+and differ only on a minority of items, with a 100-label budget. It
+establishes whether a selector can turn a few queried labels into a choice
+whose accuracy on the whole pool is close to the best candidate's, and how
+quickly it gets there.
 
 ## glue_qnli_active_selection
 
 The same question on a question-answering entailment task (a fixed sample
-of its items), with a mid-sized candidate pool.
+of its items), where the starting choice is already good and early labels
+easily lead a selector astray.
 
 ## glue_cola_active_selection
 

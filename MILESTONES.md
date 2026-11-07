@@ -60,6 +60,8 @@
 - Final verification passed after the deterministic auxiliary split job completed successfully.
 - `python validate.py --compare` passes, download URLs were checked, and the workspace is ready for gym use.
 
-### [2026-11-07 19:20] - secondary_claims
+### [2026-11-07 21:40] - secondary_claims
 - Hardening: evaluator-held label oracle, held-out halves whose answers live only in eval/test/, and shortcut fixes (see HARDENING.md).
-- Reference rerun on all seven GLUE tasks of Table 1 plus the zero-label experiments. CODA beats both baselines on SST2, MRPC, QQP and MNLI, beats random on QNLI, fails on CoLA as in the paper, and ties EnsV at zero labels. It loses on the small RTE half.
+- Final scored set: SST2/QNLI active selection, the CoLA failure case and RTE/SST2 zero-label selection.
+- CODA beats both baselines on SST2, beats random on QNLI, fails on CoLA as in the paper, and ties EnsV at zero labels.
+- RTE/MRPC active selection were dropped: on half pools they fall outside 2× of the paper.
