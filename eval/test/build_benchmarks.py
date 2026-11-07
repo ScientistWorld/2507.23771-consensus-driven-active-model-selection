@@ -1,12 +1,13 @@
 """Build the visible (train) and hidden (test) benchmark halves.
 
 One-off provenance script; the hidden test never runs it. It fetches the
-public ModelSelector prediction/label arrays (QNLI, QQP and MNLI cut to a
-fixed 1200-item sample to keep episodes light), splits each task's items into
-two halves that are balanced in class mix and per-model error, and writes
+public ModelSelector prediction/label arrays. RTE, MRPC and CoLA are held out
+whole (the paper's full pools; no visible part). SST2 and QNLI (QNLI cut to a
+fixed 1200-item sample) are split into two halves balanced in class mix and
+per-model error. It writes
 
   data/benchmarks/<task>_train.json   visible half: predictions + labels
-  eval/test/benchmarks/<task>_test.json  hidden half: predictions + keyed
+  eval/test/benchmarks/<task>_test.json  held-out pool: predictions + keyed
                                          label codes; candidate order and
                                          item order shuffled with a fixed
                                          secret seed
@@ -31,15 +32,15 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 BASE_URL = "https://raw.githubusercontent.com/RobustML-Lab/model-selector/main/resources/datasets"
-# task -> (upstream path, number of classes, item subsample size or None)
+# task -> (upstream path, number of classes, item subsample size or None, mode)
+# mode "split":  visible half in data/benchmarks, held-out half in eval/test
+# mode "hidden": the full pool is held out (paper protocol); nothing visible
 TASKS = {
-    "glue_rte": ("glue/rte", 2, None),
-    "glue_sst2": ("glue/sst2", 2, None),
-    "glue_mrpc": ("glue/mrpc", 2, None),
-    "glue_cola": ("glue/cola", 2, None),
-    "glue_qnli": ("glue/qnli", 2, 1200),
-    "glue_qqp": ("glue/qqp", 2, 1200),
-    "glue_mnli": ("glue/mnli", 3, 1200),
+    "glue_rte": ("glue/rte", 2, None, "hidden"),
+    "glue_mrpc": ("glue/mrpc", 2, None, "hidden"),
+    "glue_cola": ("glue/cola", 2, None, "hidden"),
+    "glue_sst2": ("glue/sst2", 2, None, "split"),
+    "glue_qnli": ("glue/qnli", 2, 1200, "split"),
 }
 SUBSAMPLE_SEED = 20250731  # fixed; large pools are cut to a uniform item sample
 SPLIT_SEED = 250723771
@@ -171,7 +172,7 @@ def write_json(path: Path, payload: dict) -> str:
     return hashlib.sha256(text.encode()).hexdigest()
 
 
-def build_task(task: str, rel: str, num_classes: int, subsample: int | None, workdir: Path) -> dict:
+def build_task(task: str, rel: str, num_classes: int, subsample: int | None, mode: str, workdir: Path) -> dict:
     pred_raw = fetch(f"{BASE_URL}/{rel}/predictions.npy", workdir / task / "predictions.npy")
     label_raw = fetch(f"{BASE_URL}/{rel}/oracle.npy", workdir / task / "oracle.npy")
     pred_values, pred_shape = read_npy(pred_raw)
@@ -188,7 +189,7 @@ def build_task(task: str, rel: str, num_classes: int, subsample: int | None, wor
     for row, y in zip(item_preds, labels):
         if any(p < 0 or p >= num_classes for p in row) or not 0 <= y < num_classes:
             raise ValueError(f"{task}: value outside {num_classes} classes")
-    train = balanced_split(item_preds, labels)
+    train = balanced_split(item_preds, labels) if mode == "split" else [False] * n_items
 
     train_items = [i for i in range(n_items) if train[i]]
     test_items = [i for i in range(n_items) if not train[i]]
@@ -220,19 +221,18 @@ def build_task(task: str, rel: str, num_classes: int, subsample: int | None, wor
         ],
     }
 
-    train_sha = write_json(ROOT / "data" / "benchmarks" / f"{task}_train.json", visible)
+    train_sha = write_json(ROOT / "data" / "benchmarks" / f"{task}_train.json", visible) if mode == "split" else None
     test_sha = write_json(HERE / "benchmarks" / f"{task}_test.json", hidden)
 
     def err_rates(items):
         return [sum(item_preds[i][h] != labels[i] for i in items) / len(items) for h in range(n_models)]
 
-    tr, te = err_rates(train_items), err_rates(test_items)
-    print(
-        f"{task}: models={n_models} items={n_items} train={len(train_items)} test={len(test_items)} "
-        f"max|err gap|={max(abs(a - b) for a, b in zip(tr, te)):.4f} "
-        f"best train={min(range(n_models), key=tr.__getitem__)} best test={min(range(n_models), key=te.__getitem__)}",
-        flush=True,
-    )
+    te = err_rates(test_items)
+    msg = f"{task}: mode={mode} models={n_models} items={n_items} train={len(train_items)} test={len(test_items)}"
+    if train_items:
+        tr = err_rates(train_items)
+        msg += f" max|err gap|={max(abs(a - b) for a, b in zip(tr, te)):.4f}"
+    print(msg, flush=True)
     return {
         "source_predictions": f"{BASE_URL}/{rel}/predictions.npy",
         "source_labels": f"{BASE_URL}/{rel}/oracle.npy",
@@ -240,6 +240,7 @@ def build_task(task: str, rel: str, num_classes: int, subsample: int | None, wor
         "source_labels_sha256": hashlib.sha256(label_raw).hexdigest(),
         "num_classes": num_classes,
         "item_subsample": subsample,
+        "mode": mode,
         "train_file_sha256": train_sha,
         "test_file_sha256": test_sha,
     }

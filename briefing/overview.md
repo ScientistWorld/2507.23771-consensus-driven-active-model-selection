@@ -16,4 +16,4 @@ The paper studies how to select the best model from a pool of pretrained classif
 - On GLUE MRPC, the paper reports cumulative regret 49.0 for CODA versus 318.2 for random sampling and 301.1 for uncertainty sampling.
 - The consensus prior alone is also reported to be competitive for unsupervised model selection on many tasks.
 - The paper's documented failure case is GLUE CoLA (imbalanced labels, biased candidates): CODA's cumulative regret is 2226.7 versus 368.1 for random sampling and 169.5 for uncertainty sampling.
-- In this gym, labels come only from an evaluator-held oracle that records the selected model every round; each task is evaluated on half of its items (visible and held-out halves).
+- In this gym, labels come only from an evaluator-held oracle that records the selected model every round; RTE, MRPC and CoLA are held out whole on their full pools, and SST2 and QNLI have visible and held-out halves.

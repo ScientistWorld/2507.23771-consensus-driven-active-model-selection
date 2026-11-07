@@ -1,11 +1,12 @@
 # Experiment Overview
 
 All experiments run every registered selector through the evaluator's label
-oracle (see `briefing/evaluation.md`) on one half of each task's items, with
-the full candidate pool, seeds 0–4, and the selection recorded by the
-evaluator in every round. The visible half is scored by
-`scripts/evaluate_train.sh`; the held-out half, whose labels and candidate
-order are not in the workspace, by `scripts/evaluate_test.sh`.
+oracle (see `briefing/evaluation.md`) with the full candidate pool, seeds 0–4,
+and the selection recorded by the evaluator in every round.
+- RTE, MRPC and CoLA are held out whole: their full pools are scored only by
+  `scripts/evaluate_test.sh`, and nothing about them is visible.
+- SST2 and QNLI are split into a visible half (`scripts/evaluate_train.sh`)
+  and a held-out half (`scripts/evaluate_test.sh`).
 
 ## glue_rte_active_selection
 
@@ -30,18 +31,6 @@ queried labels improve on the starting choice rather than degrade it.
 
 The same question on a question-answering entailment task (a fixed sample
 of its items), with a mid-sized candidate pool.
-
-## glue_qqp_active_selection
-
-The same question on a paraphrase task (a fixed sample of its items) where
-candidates are close in accuracy, so a selector must separate near-ties
-without wasting labels.
-
-## glue_mnli_active_selection
-
-The same question on a three-class inference task (a fixed sample of its
-items), checking that label-efficient selection is not limited to binary
-classification.
 
 ## glue_cola_active_selection
 

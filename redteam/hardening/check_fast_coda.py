@@ -116,7 +116,7 @@ def compare(task: str, labels_to_add: list[int], grid: int = 128, eta: float = 0
 
 def main() -> None:
     out = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "redteam" / "hardening" / "fast_coda_check.json"
-    rows = compare("glue_rte", [0, 5, 20]) + compare("glue_rte", [10], eta=1.0) + compare("glue_mrpc", [0, 8])
+    rows = compare("glue_sst2", [0, 5, 20]) + compare("glue_sst2", [10], eta=1.0) + compare("glue_qnli", [0, 8])
     ok = all(
         r["max_abs_pbest_diff"] < 1e-10 and r["max_abs_eig_diff"] < 1e-10 and r["same_best_model"] and r["same_argmax_set"]
         for r in rows

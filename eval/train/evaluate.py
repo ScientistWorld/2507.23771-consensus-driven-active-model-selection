@@ -1,7 +1,8 @@
 """Visible train-slice evaluator for active model selection.
 
-Same protocol and metrics as the held-out test, on the visible item half in
-data/benchmarks/. Every registered selector (``outputs/selectors/<name>.json`` holding
+Same protocol and metrics as the held-out test, on the visible item halves in
+data/benchmarks/ (SST2 and QNLI; RTE, MRPC and CoLA are held out whole and
+have no visible part). Every registered selector (``outputs/selectors/<name>.json`` holding
 ``{"command": [...]}``) is run as a subprocess against a label oracle that
 this evaluator answers from the visible labels. The selector receives the
 candidate predictions for the visible item pool, and in every round must commit the model it
@@ -37,27 +38,16 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 BENCHMARK_DIR = ROOT / "data" / "benchmarks"
 BENCHMARK_SHA256 = {
-    "glue_rte": "7fa84c73359e35a2aee510f208efd2d037cb924f8665bd03c99317315f50c05b",
     "glue_sst2": "f02c4b137710dbe3eab87a6aba4fa29fe8fd25c00ff71c246535faff5ee88555",
-    "glue_mrpc": "e0b86bb32287322d261922deac10013fbcf5d8ba69515729c78c89662269eddd",
-    "glue_cola": "edfa637732f719c00e1084d4f929ac8fa127300cf880cd9e009cc081ff9146f4",
     "glue_qnli": "0dd35d177f9179b1a54fc346c0b527daa07fa79ea735a7f921d4c1d47900dcaf",
-    "glue_qqp": "ad7e2c63a0a23b44e2946717638c6663754b7ff16cd111c46b76f1a20071f141",
-    "glue_mnli": "cc3a846cedeb530d46b0a99d0a9d10da57de02587976d1ace23f3718b8d9ddc6",
 }
 SEEDS = (0, 1, 2, 3, 4)
 ACTIVE_BUDGET = 100
 NEAR_OPTIMAL_PP = 1.0
 EPISODE_TIMEOUT_SEC = 1800
 EXPERIMENTS = {
-    "glue_rte_active_selection": ("glue_rte", ACTIVE_BUDGET),
     "glue_sst2_active_selection": ("glue_sst2", ACTIVE_BUDGET),
-    "glue_mrpc_active_selection": ("glue_mrpc", ACTIVE_BUDGET),
     "glue_qnli_active_selection": ("glue_qnli", ACTIVE_BUDGET),
-    "glue_qqp_active_selection": ("glue_qqp", ACTIVE_BUDGET),
-    "glue_mnli_active_selection": ("glue_mnli", ACTIVE_BUDGET),
-    "glue_cola_active_selection": ("glue_cola", ACTIVE_BUDGET),
-    "glue_rte_unsupervised_selection": ("glue_rte", 0),
     "glue_sst2_unsupervised_selection": ("glue_sst2", 0),
 }
 NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.\-]*$")

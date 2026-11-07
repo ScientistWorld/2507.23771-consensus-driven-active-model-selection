@@ -34,14 +34,20 @@ candidate in every round and spent the whole budget.
 
 ## Slices
 
-Each task's items are split into two halves balanced in class mix and
-per-candidate error rate. The visible half is `data/benchmarks/<task>_train.json`
-(predictions and labels); `scripts/evaluate_train.sh` (and
-`scripts/evaluate.sh`) run the protocol on it. The held-out half is scored by
-`scripts/evaluate_test.sh`; its labels are not in the workspace, and its
-candidate order and item order differ from the visible half, so nothing
-learned about particular candidate indices on the visible half carries over.
-Both slices use the same experiments, budgets, seeds and metrics.
+- **Held out whole: RTE, MRPC and CoLA.** These run on their full item pools,
+  the paper's protocol. Their labels are not in the workspace at all, and
+  there is no visible slice for them: they also test that a selector
+  generalizes to tasks it was not developed on.
+- **Split: SST2 and QNLI (a fixed 1200-item sample of QNLI).** The items are
+  split into two halves balanced in class mix and per-candidate error rate.
+  - The visible half, `data/benchmarks/<task>_train.json` (predictions and
+    labels), is scored by `scripts/evaluate_train.sh` and `scripts/evaluate.sh`.
+  - The held-out half is scored by `scripts/evaluate_test.sh`.
+
+In every held-out pool, candidate order and item order differ from any
+public or visible ordering, so nothing learned about particular candidate
+indices carries over. All slices use the same budgets, seeds, metrics and
+protocol.
 
 ## Metrics
 
@@ -71,23 +77,18 @@ experiment, its weight times each metric's coefficient (both in
 
 | Experiment | Pool | Paper cumulative regret at 100 (random / uncertainty / reference selector) |
 |---|---|---|
-| `glue_rte_active_selection` | 87 candidates | 375.7 / 390.3 / 283.8 |
-| `glue_sst2_active_selection` | 97 candidates | 219.9 / 89.6 / 51.7 |
-| `glue_mrpc_active_selection` | 95 candidates | 318.2 / 301.1 / 49.0 |
-| `glue_qnli_active_selection` | 90 candidates, 1200-item sample | 222.7 / 231.6 / 120.4 |
-| `glue_qqp_active_selection` | 101 candidates, 1200-item sample | 136.7 / 388.9 / 4.8 |
-| `glue_mnli_active_selection` | 82 candidates, 3 classes, 1200-item sample | 237.4 / 80.8 / 23.5 |
-| `glue_cola_active_selection` | 109 candidates, imbalanced | 368.1 / 169.5 / 2226.7 |
-| `glue_rte_unsupervised_selection` | zero labels | initial regret 14.8 (ensemble validation and reference selector) |
-| `glue_sst2_unsupervised_selection` | zero labels | initial regret 3.6 (both) |
+| `glue_rte_active_selection` | 87 candidates, 277 items, held out whole | 375.7 / 390.3 / 283.8 |
+| `glue_sst2_active_selection` | 97 candidates, 436-item halves | 219.9 / 89.6 / 51.7 |
+| `glue_mrpc_active_selection` | 95 candidates, 408 items, held out whole | 318.2 / 301.1 / 49.0 |
+| `glue_qnli_active_selection` | 90 candidates, 600-item halves of a 1200-item sample | 222.7 / 231.6 / 120.4 |
+| `glue_cola_active_selection` | 109 candidates, 1043 items, imbalanced, held out whole | 368.1 / 169.5 / 2226.7 |
+| `glue_rte_unsupervised_selection` | zero labels, held out whole | initial regret 14.8 (ensemble validation and reference selector) |
+| `glue_sst2_unsupervised_selection` | zero labels, halves | initial regret 3.6 (both) |
 
-The paper's numbers are full-pool values; the gym runs each task on one
-half of its items (of a 1200-item sample for QNLI, QQP and MNLI) with the
-same 100-label budget, so absolute values differ, sometimes by more than a
-factor of two, and on the smallest pool (RTE, 138 held-out items) the
-reference selector converges much later than in the paper. On CoLA the paper's
-reference selector is far worse than both baselines; that experiment
-measures progress where the reference falls short.
+The paper's numbers are full-pool values. RTE, MRPC and CoLA are run exactly
+at that scale; SST2 and QNLI run on half pools, so their absolute values differ
+somewhat. On CoLA the paper's reference selector is far worse than both
+baselines; that experiment measures progress where the reference falls short.
 
 Registered baselines: `random` (random queries, empirical-risk selection),
 `uncertainty` (highest committee-entropy queries, empirical-risk selection;

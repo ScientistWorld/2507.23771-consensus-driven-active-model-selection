@@ -3,9 +3,10 @@
 #
 # Runs every selector registered in outputs/selectors/*.json (see
 # scripts/register_selector.sh and data/selection_protocol.py) against the
-# visible label oracle on data/benchmarks/*_train.json, for the six
-# experiments of scoring/reference.json and seeds 0-4, and writes
-# scoring/scores.json (the reproduction numbers, visible slice).
+# visible label oracle on data/benchmarks/*_train.json (the SST2 and QNLI
+# experiments that have a visible half; seeds 0-4) and writes
+# scoring/scores.json. The committed scores.json holds the reference
+# reproduction on all experiments, produced by the held-out evaluation.
 # The evaluator drives the label queries itself, records the selected model
 # in every round and recomputes all metrics; it never imports method/.
 #

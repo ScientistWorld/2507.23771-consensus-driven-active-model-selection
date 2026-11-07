@@ -3,8 +3,8 @@
 ## Data
 
 Use the candidate predictions the evaluator sends in each episode. The
-visible benchmark files `data/benchmarks/<task>_train.json` are for
-development; do not modify them (the evaluators verify their checksums).
+visible benchmark files `data/benchmarks/<task>_train.json` (SST2 and QNLI
+halves) are for development; RTE, MRPC and CoLA have no visible data; do not modify them (the evaluators verify their checksums).
 Do not add external labeled data, other candidate models, or the upstream
 full-pool label files, and do not read anything under `eval/test/` or any
 other file holding held-out labels or candidate orders.

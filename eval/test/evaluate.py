@@ -3,7 +3,8 @@
 Every registered selector (``outputs/selectors/<name>.json`` holding
 ``{"command": [...]}``) is run as a subprocess against a label oracle that
 only this evaluator holds. The selector receives the candidate predictions
-for the held-out item pool, and in every round must commit the model it
+for the held-out item pool (the full
+pool for RTE, MRPC and CoLA; the held-out half for SST2 and QNLI), and in every round must commit the model it
 currently selects before it is told the label of the item it queries next.
 The evaluator records those selections itself, counts the labels it reveals,
 and recomputes every metric from the held-out labels. Nothing the selector
@@ -36,13 +37,11 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 BENCHMARK_DIR = HERE / "benchmarks"
 BENCHMARK_SHA256 = {
-    "glue_rte": "dd42565b52a38e93b9b5c5674c63229337d49a2384351d56cb62ce05b66513a1",
+    "glue_rte": "5f94e68847927488da094dd8ca12e52b579cae183c6b4b50b5c48f6345ef80cf",
     "glue_sst2": "b2319b8d7c35fbadf6a34656eb1625c9309b3bf0ecbbd3e29c7171516eadc2db",
-    "glue_mrpc": "e9c3e738468f0cdc011da5858cebc9cb9a55e1d8220f7ec57169b2decda19f05",
-    "glue_cola": "159c25fce8e20c17bd22d923808e9ba62d7aaa4585259402299ea2bd86121737",
+    "glue_mrpc": "22ced391031d6d69363a2764916754d27ba55865dfb0e10f4936cde559c72c6c",
     "glue_qnli": "83a8596ad7bcb7df83a969e855a0a45eef4c444cf1c3a8eb4f74e2d8ddf138c9",
-    "glue_qqp": "ea492719e13712c003d83ae80969d2df83356061ab72935760d798f3acd58248",
-    "glue_mnli": "0589c076438609f7887308b070e8f41ff22a89e24cbdf138fe331b3c53eecf5c",
+    "glue_cola": "be2dba8c8e53ba847e733a99b5f34e00170198a49d3cee615abe5e3d5db15588",
 }
 SEEDS = (0, 1, 2, 3, 4)
 ACTIVE_BUDGET = 100
@@ -53,8 +52,6 @@ EXPERIMENTS = {
     "glue_sst2_active_selection": ("glue_sst2", ACTIVE_BUDGET),
     "glue_mrpc_active_selection": ("glue_mrpc", ACTIVE_BUDGET),
     "glue_qnli_active_selection": ("glue_qnli", ACTIVE_BUDGET),
-    "glue_qqp_active_selection": ("glue_qqp", ACTIVE_BUDGET),
-    "glue_mnli_active_selection": ("glue_mnli", ACTIVE_BUDGET),
     "glue_cola_active_selection": ("glue_cola", ACTIVE_BUDGET),
     "glue_rte_unsupervised_selection": ("glue_rte", 0),
     "glue_sst2_unsupervised_selection": ("glue_sst2", 0),
