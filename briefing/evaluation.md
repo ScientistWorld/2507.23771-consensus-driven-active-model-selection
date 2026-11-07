@@ -1,25 +1,90 @@
 # Evaluation
 
+## How a selector is evaluated
+
+A selector is a program registered in `outputs/selectors/<name>.json` as
+`{"command": ["python", "path/to/policy.py", ...]}` (use
+`bash scripts/register_selector.sh <name> <command...>`). The evaluator, not
+the selector, owns the labels. For each experiment and each of the seeds
+0–4 it starts the command once (working directory = repository root, one CPU
+core, at most 30 minutes per episode) and exchanges one JSON object per line
+over stdin/stdout:
+
+1. The evaluator sends the episode: the candidate pool's predicted classes
+   on every item of the pool (`predicted_classes`, H lists of N ints),
+   `num_classes`, the label `budget` (100, or 0 for zero-label experiments)
+   and the `seed`.
+2. In every round t = 0, 1, …, budget the selector sends
+   `{"select": k, "query": i}`: `k` is the model it selects having seen t
+   labels, `i` the next item whose label it wants, or `null` to stop
+   querying (its last selection is then held for every remaining round). At
+   round `budget` the query must be `null`.
+3. After each query the evaluator replies `{"label": y}`.
+
+`data/selection_protocol.py` implements the client side for any object with
+`select()`, `query()` and `observe(item, label)`.
+
+The evaluator records the selection of every round before it reveals the
+next label, counts the labels it reveals, and computes every metric itself
+from the labels it holds. Nothing else the selector prints or writes is
+read. A selector that crashes, times out, sends a malformed message or a
+non-integer / out-of-range index, queries an item twice or queries past the
+budget fails that experiment: it is scored as if it had selected the worst
+candidate in every round and spent the whole budget.
+
+## Slices
+
+Each task's items are split into two halves balanced in class mix and
+per-candidate error rate. The visible half is `data/benchmarks/<task>_train.json`
+(predictions and labels); `scripts/evaluate_train.sh` (and
+`scripts/evaluate.sh`) run the protocol on it. The held-out half is scored by
+`scripts/evaluate_test.sh`; its labels are not in the workspace, and its
+candidate order and item order differ from the visible half, so nothing
+learned about particular candidate indices on the visible half carries over.
+Both slices use the same experiments, budgets, seeds and metrics.
+
 ## Metrics
 
-The primary metric is cumulative regret at 100 label queries. At each step, regret is the difference between the empirical 0-1 loss of the selected model and the empirical 0-1 loss of the true best model on the full benchmark labels. Lower is better.
+Regret in round t is the difference, in percentage points, between the 0-1
+error of the selected model on the pool and the error of the best candidate
+on that pool.
 
-Secondary metrics include instantaneous regret at step 100 and fixed-resource checks: the label budget, number of candidate models, and number of evaluated items.
+- `cumulative_regret_at_100` (primary): regret summed over rounds 1–100.
+- `cumulative_regret_at_25`, `cumulative_regret_at_50`: the same over the
+  first 25 / 50 rounds.
+- `initial_regret`: regret of the round-0 selection (no labels).
+- `instant_regret_at_50`, `instant_regret_at_100`: regret after round 50 /
+  100.
+- `near_optimal_at_100`: fraction of seeds whose round-100 selection is
+  within one percentage point of the best candidate.
+- `label_budget`: labels actually revealed (mean over seeds). Stopping early
+  saves labels; it can never exceed the budget.
 
-For zero-label selection, the metric is initial regret before any queried labels. It uses the same full benchmark labels only for scoring, not for method selection.
+Zero-label experiments use only `initial_regret` with a budget of 0.
 
-## Baselines and Targets
+Every metric is the mean over seeds 0–4. The ranking adds, for every
+experiment, its weight times each metric's coefficient (both in
+`scoring/reference.json`) times the change against the reference run in
+`scoring/scores_test.json`.
 
-The core reproduced benchmark uses GLUE RTE from the fixed ModelSelector-derived task suite. Reference targets are taken from the published active model selection tables:
+## Experiments and paper targets
 
-- Random sampling: cumulative regret 375.7 at step 100; instantaneous regret 1.2 at step 100.
-- Uncertainty sampling: cumulative regret 390.3 at step 100; instantaneous regret 0.0 at step 100.
-- Reference active selector: cumulative regret 283.8 at step 100; instantaneous regret 0.0 at step 100.
+| Experiment | Pool | Paper cumulative regret at 100 (random / uncertainty / reference selector) |
+|---|---|---|
+| `glue_rte_active_selection` | 87 candidates | 375.7 / 390.3 / 283.8 |
+| `glue_sst2_active_selection` | 97 candidates | 219.9 / 89.6 / 51.7 |
+| `glue_mrpc_active_selection` | 95 candidates | 318.2 / 301.1 / 49.0 |
+| `glue_cola_active_selection` | 109 candidates, imbalanced | 368.1 / 169.5 / 2226.7 |
+| `glue_rte_unsupervised_selection` | zero labels | initial regret 14.8 (ensemble validation and reference selector) |
+| `glue_sst2_unsupervised_selection` | zero labels | initial regret 3.6 (both) |
 
-The secondary zero-label targets reproduced here are GLUE RTE initial regret 14.8 and GLUE SST2 initial regret 3.6 for both the reference zero-label selector and the unsupervised ensemble-validation baseline.
+The paper's numbers are full-pool values; the gym runs each task on one
+half of its items with the same 100-label budget, so absolute values differ
+somewhat while the comparisons keep their direction. On CoLA the paper's
+reference selector is far worse than both baselines; that experiment
+measures progress where the reference falls short.
 
-The next active expansion target is GLUE MRPC. Reference targets are cumulative regret 318.2 for random sampling, 301.1 for uncertainty sampling, and 49.0 for the reference active selector at a 100-label budget.
-
-## Evaluation Protocol
-
-Evaluation reads method-produced JSON traces from `outputs/coda/<task>/<method>/seed_*.json`. It does not call implementation code from `method/`. Each trace records the selected model at each active labeling step, and the evaluator aggregates metrics across seeds into `scoring/scores.json`.
+Registered baselines: `random` (random queries, empirical-risk selection),
+`uncertainty` (highest committee-entropy queries, empirical-risk selection;
+both break ties at random), and `ensv` (zero-label agreement with the
+committee majority).

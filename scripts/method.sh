@@ -1,35 +1,18 @@
 #!/bin/bash
-# Run the paper's proposed method.
+# Run the paper's proposed method (CODA) through the evaluator.
 #
-# This script trains/runs the paper's method using code in method/.
+# Registers the CODA selector (method/coda_reproduction.py, paper defaults
+# alpha=0.1, T=0.5, eta=0.01) and scores all registered selectors with
+# scripts/evaluate.sh. Set SKIP_EVAL=1 to only register.
 #
-# Usage:
-#   bash scripts/method.sh
+# Usage: bash scripts/method.sh
 
-set -e
+set -euo pipefail
 
 cd /home/user
 
-TASK="${1:-glue_rte}"
-BUDGET="${2:-100}"
-SEEDS="${3:-5}"
-GRID="${4:-128}"
-DATA_DIR="${DATA_DIR:-data/downloads/modelselector}"
-START_SEED="${START_SEED:-0}"
-SKIP_ARGS=()
-if [ "${SKIP_EXISTING:-0}" = "1" ]; then
-  SKIP_ARGS=(--skip-existing)
+bash scripts/register_selector.sh coda python method/coda_reproduction.py
+
+if [ "${SKIP_EVAL:-0}" != "1" ]; then
+  bash scripts/evaluate.sh
 fi
-
-python method/coda_reproduction.py \
-  --data-dir "$DATA_DIR" \
-  --task "$TASK" \
-  --method coda \
-  --budget "$BUDGET" \
-  --seeds "$SEEDS" \
-  --start-seed "$START_SEED" \
-  "${SKIP_ARGS[@]}" \
-  --coda-grid "$GRID" \
-  --output-dir outputs/coda
-
-bash scripts/evaluate.sh outputs/coda "$TASK" "${TASK}_active_selection"

@@ -1,30 +1,37 @@
 #!/bin/bash
 # Download all data and models needed for this environment.
 #
-# Run on a node with internet access BEFORE building the container
-# or submitting compute jobs.
+# Estimated total download size: 0 MB. Python packages (numpy, scipy) are
+# installed by environment/setup.sh.
 #
-# This script should be idempotent — safe to run multiple times.
-# It should skip files that already exist.
+# The benchmark inputs are small files derived from the public ModelSelector
+# release (https://github.com/RobustML-Lab/model-selector, resources/datasets/
+# glue/{rte,sst2,mrpc,cola}/{predictions,oracle}.npy) and are tracked in git:
+# data/benchmarks/<task>_train.json holds the visible half of each task
+# (candidate predictions + labels). The held-out half is built and kept by
+# the hidden evaluator. The full-pool upstream arrays are deliberately NOT
+# fetched into this workspace: they contain the held-out labels.
 #
-# Update the storage estimate below as you add downloads.
-#
-# Estimated total download size: 3.25 GB
-# Estimated disk usage after selected extraction: 3.26 GB for the default
-# small tasks, up to about 10 GB if all released tensors are extracted.
-#
-# This script is intentionally workspace-local: it writes only under
-# data/downloads/ so a fresh clone can reproduce the benchmark inputs.
+# This script is idempotent and verifies the tracked benchmark files.
 
-set -e
+set -euo pipefail
 
 cd /home/user
 
-mkdir -p data/downloads
+python3 - <<'PY'
+import hashlib
+from pathlib import Path
 
-if [ ! -e data/downloads/coda_data.zip ]; then
-  gdown '1H8zXwAGkkAQP5L1gofpeF69jeIZqzPaW' -O data/downloads/coda_data.zip
-fi
-
-python data/extract_coda_release.py --tasks glue_rte glue_sst2 cifar10_5592
-python data/prepare_modelselector.py --tasks glue_rte glue_sst2 glue_mrpc cifar10_5592
+expected = {
+    "glue_rte_train.json": "7fa84c73359e35a2aee510f208efd2d037cb924f8665bd03c99317315f50c05b",
+    "glue_sst2_train.json": "f02c4b137710dbe3eab87a6aba4fa29fe8fd25c00ff71c246535faff5ee88555",
+    "glue_mrpc_train.json": "e0b86bb32287322d261922deac10013fbcf5d8ba69515729c78c89662269eddd",
+    "glue_cola_train.json": "edfa637732f719c00e1084d4f929ac8fa127300cf880cd9e009cc081ff9146f4",
+}
+for name, digest in expected.items():
+    path = Path("data/benchmarks") / name
+    actual = hashlib.sha256(path.read_bytes()).hexdigest()
+    if actual != digest:
+        raise SystemExit(f"{path}: checksum mismatch ({actual}); restore it with git checkout")
+    print(f"ok {path}")
+PY

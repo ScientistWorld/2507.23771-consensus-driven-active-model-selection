@@ -1,333 +1,234 @@
-"""Reproduction implementation of Consensus-Driven Active Model Selection.
+"""CODA: consensus-driven active model selection (Kay et al., 2025).
 
-This module implements the computational steps described in the paper:
-consensus confusion priors, Beta-mixture probability of being best, expected
-information gain acquisition, and Dirichlet-categorical updates.
+Implements the paper's computational steps as an oracle-protocol selector
+(see data/selection_protocol.py):
+
+* Sec. 4.2  consensus labels from summed candidate predictions, per-model
+            empirical confusion matrices against them, and Dirichlet priors
+            theta = (beta + alpha * M_hat) / T with the diagonal-weighted beta
+* Sec. 4.3  P_best: per confusion-matrix row, the diagonal entry is
+            Beta(alpha_kc, beta_kc); P(model k is best | row c) is the
+            integral of f_k(x) * prod_{l != k} F_l(x), approximated with the
+            trapezoid rule on a grid; rows are mixed with the class marginal
+            pi_hat (Eq. 10)
+* Sec. 4.4  expected information gain of P_best for every unlabeled item
+            whose candidates disagree (as in the released code), using a unit
+            hypothetical observation, weighted by pi_hat(c | x_i)
+* Sec. 4.5  partial Dirichlet-categorical update with learning rate eta
+
+Defaults are the paper's fixed values alpha=0.1, T=0.5, eta=0.01.
+
+The EIG step is vectorized: a hypothetical label c changes only row c, and
+in that row each model's Beta gains either +1 on the diagonal (it predicted
+c) or +1 off the diagonal, so the two possible PDFs/CDFs per model are
+computed once and selected per item; products over the other models use
+prefix/suffix cumulative products instead of one deletion per model.
+redteam/hardening/check_fast_coda.py checks this against the original
+per-model loop.
+
+Usage (as registered in outputs/selectors/coda.json):
+    python method/coda_reproduction.py [--eta 0.01] [--grid 128]
+Optional label-saving variant: --stable-rounds R --min-labels M stops
+querying once the selection has been unchanged for R rounds after >= M labels.
 """
 
 from __future__ import annotations
 
 import argparse
-import json
-import math
 import random
-from dataclasses import dataclass
+import sys
 from pathlib import Path
 
 import numpy as np
 from scipy.special import betainc, betaln
 
-import sys
-
-sys.path.append(str(Path(__file__).resolve().parents[1]))
-from data.benchmark_io import PredictionBenchmark, load_prediction_benchmark
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from data.selection_protocol import serve  # noqa: E402
 
 
-def entropy(prob: np.ndarray) -> float:
-    prob = np.clip(prob, 1e-12, 1.0)
-    return float(-(prob * np.log2(prob)).sum())
-
-
-def beta_pdf_grid(a: np.ndarray, b: np.ndarray, x: np.ndarray) -> np.ndarray:
+def beta_grid(a: np.ndarray, b: np.ndarray, x: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """PDF and CDF of Beta(a, b) on grid x; output shape a.shape + (G,)."""
     log_pdf = (a[..., None] - 1.0) * np.log(x)
-    log_pdf += (b[..., None] - 1.0) * np.log1p(-x)
-    log_pdf -= betaln(a, b)[..., None]
-    return np.nan_to_num(np.exp(log_pdf), nan=0.0, posinf=0.0, neginf=0.0)
+    log_pdf = log_pdf + (b[..., None] - 1.0) * np.log1p(-x)
+    log_pdf = log_pdf - betaln(a, b)[..., None]
+    pdf = np.nan_to_num(np.exp(log_pdf), nan=0.0, posinf=0.0, neginf=0.0)
+    cdf = betainc(a[..., None], b[..., None], x)
+    return pdf, cdf
 
 
-def pbest_from_betas(alpha_diag: np.ndarray, beta_rest: np.ndarray, num_grid: int) -> np.ndarray:
-    """Approximate P(model is best) for each row-specific Beta distribution.
-
-    alpha_diag and beta_rest have shape (H, C). The return value has shape
-    (C, H), where each class row has a distribution over the best model.
-    """
-
-    h_count, c_count = alpha_diag.shape
-    x = np.linspace(1e-5, 1.0 - 1e-5, num_grid, dtype=np.float64)
-    out = np.zeros((c_count, h_count), dtype=np.float64)
-    for c in range(c_count):
-        a = alpha_diag[:, c]
-        b = beta_rest[:, c]
-        pdf = beta_pdf_grid(a, b, x)
-        cdf = betainc(a[:, None], b[:, None], x[None, :])
-        for h in range(h_count):
-            prod = np.prod(np.delete(cdf, h, axis=0), axis=0)
-            out[c, h] = np.trapezoid(pdf[h] * prod, x)
-        total = out[c].sum()
-        if total > 0:
-            out[c] /= total
-        else:
-            out[c] = 1.0 / h_count
-    return out
+def product_of_others(cdf: np.ndarray) -> np.ndarray:
+    """prod_{l != k} cdf[..., l, :] for every k (model axis is -2)."""
+    left = np.ones_like(cdf)
+    right = np.ones_like(cdf)
+    left[..., 1:, :] = np.cumprod(cdf[..., :-1, :], axis=-2)
+    right[..., :-1, :] = np.cumprod(cdf[..., :0:-1, :], axis=-2)[..., ::-1, :]
+    return left * right
 
 
-@dataclass
+def row_pbest(pdf: np.ndarray, cdf: np.ndarray, x: np.ndarray) -> np.ndarray:
+    """P(model k has the largest draw) per row; (..., H, G) -> (..., H)."""
+    probs = np.trapezoid(pdf * product_of_others(cdf), x, axis=-1)
+    total = probs.sum(axis=-1, keepdims=True)
+    uniform = np.full_like(probs, 1.0 / probs.shape[-1])
+    return np.where(total > 0, probs / np.where(total > 0, total, 1.0), uniform)
+
+
+def entropy_bits(p: np.ndarray) -> np.ndarray:
+    q = np.clip(p, 1e-12, 1.0)
+    return -(q * np.log2(q)).sum(axis=-1)
+
+
 class CODASelector:
-    benchmark: PredictionBenchmark
-    alpha: float = 0.1
-    temperature: float = 0.5
-    eta: float = 0.01
-    eig_update_weight: float = 1.0
-    num_grid: int = 128
-    acquisition: str = "eig"
+    def __init__(
+        self,
+        pred_classes,
+        num_classes: int,
+        alpha: float = 0.1,
+        temperature: float = 0.5,
+        eta: float = 0.01,
+        eig_update_weight: float = 1.0,
+        num_grid: int = 128,
+        seed: int = 0,
+        chunk: int = 48,
+    ) -> None:
+        self.pred_classes = np.asarray(pred_classes, dtype=np.int64)  # (H, N)
+        self.h_count, self.n_count = self.pred_classes.shape
+        self.c_count = int(num_classes)
+        self.eta = float(eta)
+        self.eig_update_weight = float(eig_update_weight)
+        self.chunk = int(chunk)
+        self.rng = random.Random(seed)
+        self.x = np.linspace(1e-5, 1.0 - 1e-5, int(num_grid), dtype=np.float64)
+        self.onehot = np.eye(self.c_count, dtype=np.float64)[self.pred_classes]  # (H, N, C)
 
-    def __post_init__(self) -> None:
-        self.predictions = self.benchmark.predictions
-        self.pred_classes = self.benchmark.pred_classes
-        self.h_count, self.n_count, self.c_count = self.predictions.shape
-        consensus = self.predictions.sum(axis=0).argmax(axis=-1)
+        consensus = self.onehot.sum(axis=0).argmax(axis=-1)
         empirical = np.zeros((self.h_count, self.c_count, self.c_count), dtype=np.float64)
         for c in range(self.c_count):
             mask = consensus == c
             if mask.any():
-                empirical[:, c, :] = self.predictions[:, mask, :].sum(axis=1)
+                empirical[:, c, :] = self.onehot[:, mask, :].sum(axis=1)
                 empirical[:, c, :] /= np.clip(empirical[:, c, :].sum(axis=1, keepdims=True), 1e-12, None)
-
         beta = np.full((self.c_count, self.c_count), 1.0 / max(self.c_count - 1, 1), dtype=np.float64)
         np.fill_diagonal(beta, 1.0)
-        # Eq. (6): blend empirical consensus and static diagonal prior; T controls pseudo-count scale.
-        self.dirichlet = (beta[None, :, :] + self.alpha * empirical) / self.temperature
-        self.unlabeled = list(range(self.n_count))
+        self.dirichlet = (beta[None, :, :] + float(alpha) * empirical) / float(temperature)
+
+        majority = self.onehot.sum(axis=0).argmax(axis=-1)
+        self.disagreement = (self.pred_classes != majority[None, :]).any(axis=0)
+        self.unlabeled: list[int] = list(range(self.n_count))
         self.labeled: list[int] = []
-        self.observed_labels: list[int] = []
-        self._update_class_beliefs()
+        self._eig_cache: dict[int, float] | None = None
+        self._refresh()
 
-    def _update_class_beliefs(self) -> None:
-        adjusted = np.einsum("hcs,hns->hnc", self.dirichlet, self.predictions)
-        self.pi_x = adjusted.sum(axis=0)
-        self.pi_x /= np.clip(self.pi_x.sum(axis=-1, keepdims=True), 1e-12, None)
-        self.pi = self.pi_x.mean(axis=0)
-        self.pi /= np.clip(self.pi.sum(), 1e-12, None)
-
-    def _pbest(self, dirichlet: np.ndarray | None = None) -> np.ndarray:
-        d = self.dirichlet if dirichlet is None else dirichlet
-        diag = np.diagonal(d, axis1=1, axis2=2)
-        rest = d.sum(axis=-1) - diag
-        row_pbest = pbest_from_betas(diag, np.clip(rest, 1e-9, None), self.num_grid)
-        pbest = (self.pi[:, None] * row_pbest).sum(axis=0)
-        pbest /= np.clip(pbest.sum(), 1e-12, None)
-        return pbest
+    def _refresh(self) -> None:
+        adjusted = np.einsum("hcs,hns->hnc", self.dirichlet, self.onehot)
+        pi_x = adjusted.sum(axis=0)
+        self.pi_x = pi_x / np.clip(pi_x.sum(axis=-1, keepdims=True), 1e-12, None)
+        pi = self.pi_x.mean(axis=0)
+        self.pi = pi / np.clip(pi.sum(), 1e-12, None)
+        diag = np.diagonal(self.dirichlet, axis1=1, axis2=2)  # (H, C)
+        self.a = diag.T.copy()  # (C, H)
+        self.b = (self.dirichlet.sum(axis=-1) - diag).T.copy()
+        pdf, cdf = beta_grid(self.a, np.clip(self.b, 1e-9, None), self.x)
+        self.rows = row_pbest(pdf, cdf, self.x)  # (C, H)
+        pbest = (self.pi[:, None] * self.rows).sum(axis=0)
+        self.pbest = pbest / np.clip(pbest.sum(), 1e-12, None)
 
     def best_model(self) -> int:
-        return int(self._pbest().argmax())
+        return int(np.argmax(self.pbest))
 
-    def _eig_scores(self, candidates: list[int]) -> np.ndarray:
-        diag_before = np.diagonal(self.dirichlet, axis1=1, axis2=2)
-        rest_before = self.dirichlet.sum(axis=-1) - diag_before
-        row_pbest_before = pbest_from_betas(diag_before, np.clip(rest_before, 1e-9, None), self.num_grid)
-        current_pbest = (self.pi[:, None] * row_pbest_before).sum(axis=0)
-        current_pbest /= np.clip(current_pbest.sum(), 1e-12, None)
-        before = entropy(current_pbest)
-        scores = np.zeros(len(candidates), dtype=np.float64)
-        for pos, item_idx in enumerate(candidates):
-            after = 0.0
-            for c in range(self.c_count):
-                d = self.dirichlet.copy()
-                for h, pred_c in enumerate(self.pred_classes[:, item_idx]):
-                    # The released CODA implementation evaluates information
-                    # gain under a unit hypothetical observation, while the
-                    # committed label update below uses the smaller online
-                    # learning rate. Keeping these separate is material: using
-                    # eta here makes EIG almost flat on small benchmarks.
-                    d[h, c, pred_c] += self.eig_update_weight
-                diag = np.diagonal(d, axis1=1, axis2=2)
-                rest = d.sum(axis=-1) - diag
-                row_pbest = pbest_from_betas(diag, np.clip(rest, 1e-9, None), self.num_grid)
-                # Paper Eq. (17): the hypothetical true class changes one row's
-                # contribution to the mixture over row-wise P(best).
-                p = current_pbest + self.pi[c] * (row_pbest[c] - row_pbest_before[c])
-                p /= np.clip(p.sum(), 1e-12, None)
-                after += self.pi_x[item_idx, c] * entropy(p)
-            scores[pos] = before - after
-        return scores
+    def eig_scores(self, candidates: list[int]) -> np.ndarray:
+        cand = np.asarray(candidates, dtype=np.int64)
+        before = float(entropy_bits(self.pbest))
+        expected = np.zeros(len(cand), dtype=np.float64)
+        w = self.eig_update_weight
+        for c in range(self.c_count):
+            a, b = self.a[c], self.b[c]
+            pdf_same, cdf_same = beta_grid(a + w, np.clip(b, 1e-9, None), self.x)
+            pdf_diff, cdf_diff = beta_grid(a, np.clip(b + w, 1e-9, None), self.x)
+            for start in range(0, len(cand), self.chunk):
+                ids = cand[start:start + self.chunk]
+                same = (self.pred_classes[:, ids].T == c)[:, :, None]  # (n, H, 1)
+                updated = row_pbest(
+                    np.where(same, pdf_same, pdf_diff),
+                    np.where(same, cdf_same, cdf_diff),
+                    self.x,
+                )
+                p = self.pbest[None, :] + self.pi[c] * (updated - self.rows[c][None, :])
+                p = p / np.clip(p.sum(axis=-1, keepdims=True), 1e-12, None)
+                expected[start:start + len(ids)] += self.pi_x[ids, c] * entropy_bits(p)
+        return before - expected
+
+    def candidates(self) -> list[int]:
+        cands = [i for i in self.unlabeled if self.disagreement[i]]
+        return cands if cands else list(self.unlabeled)
 
     def next_item(self) -> tuple[int, float]:
-        if self.acquisition == "eig":
-            candidates = self._disagreement_candidates()
-            q_values = self._eig_scores(candidates)
-        elif self.acquisition == "uncertainty":
-            candidates = self.unlabeled
-            mean_pred = self.predictions.mean(axis=0)
-            q_values = -(mean_pred[candidates] * np.log(np.clip(mean_pred[candidates], 1e-12, 1.0))).sum(axis=1)
-        elif self.acquisition == "random":
-            idx = random.choice(self.unlabeled)
-            return idx, 1.0 / len(self.unlabeled)
+        cands = self.candidates()
+        if self.eta == 0.0:
+            # Beliefs never change, so each item's EIG is fixed: compute once.
+            if self._eig_cache is None:
+                self._eig_cache = dict(zip(cands, self.eig_scores(cands).tolist()))
+            q = np.array([self._eig_cache[i] for i in cands])
         else:
-            raise ValueError(f"Unknown acquisition: {self.acquisition}")
-        max_q = q_values.max()
-        ties = np.flatnonzero(np.isclose(q_values, max_q))
-        local = int(random.choice(ties))
-        return int(candidates[local]), float(q_values[local])
+            q = self.eig_scores(cands)
+        ties = np.flatnonzero(np.isclose(q, q.max()))
+        local = int(self.rng.choice(ties))
+        return cands[local], float(q[local])
 
-    def _disagreement_candidates(self) -> list[int]:
-        candidates = []
-        for item_idx in self.unlabeled:
-            votes = np.bincount(self.pred_classes[:, item_idx], minlength=self.c_count)
-            majority_class = int(votes.argmax())
-            if np.any(self.pred_classes[:, item_idx] != majority_class):
-                candidates.append(item_idx)
-        return candidates if candidates else self.unlabeled
-
-    def add_label(self, idx: int, true_class: int) -> None:
-        for h, pred_c in enumerate(self.pred_classes[:, idx]):
-            self.dirichlet[h, true_class, pred_c] += self.eta
-        self.unlabeled.remove(idx)
-        self.labeled.append(idx)
-        self.observed_labels.append(true_class)
-        self._update_class_beliefs()
+    def add_label(self, item: int, label: int) -> None:
+        if not 0 <= label < self.c_count:
+            raise ValueError(f"label {label} outside {self.c_count} classes")
+        self.dirichlet[np.arange(self.h_count), label, self.pred_classes[:, item]] += self.eta
+        self.unlabeled.remove(item)
+        self.labeled.append(item)
+        self._refresh()
 
 
-class EmpiricalRiskSelector:
-    def __init__(self, benchmark: PredictionBenchmark, acquisition: str, seed: int):
-        self.benchmark = benchmark
-        self.predictions = benchmark.predictions
-        self.pred_classes = benchmark.pred_classes
-        self.h_count, self.n_count, _ = self.predictions.shape
-        self.acquisition = acquisition
-        self.rng = random.Random(seed)
-        self.unlabeled = list(range(self.n_count))
-        self.labeled: list[int] = []
-        self.observed_labels: list[int] = []
+class CODAPolicy:
+    """Oracle-protocol wrapper: one CODASelector per episode."""
 
-    def best_model(self) -> int:
-        if not self.labeled:
-            return 0
-        labels = np.asarray(self.observed_labels)
-        preds = self.pred_classes[:, self.labeled]
-        losses = 1.0 - (preds == labels[None, :]).mean(axis=1)
-        return int(losses.argmin())
-
-    def next_item(self) -> tuple[int, float]:
-        if self.acquisition == "random":
-            idx = self.rng.choice(self.unlabeled)
-            return idx, 1.0 / len(self.unlabeled)
-        if self.acquisition == "uncertainty":
-            mean_pred = self.predictions.mean(axis=0)
-            ent = -(mean_pred[self.unlabeled] * np.log(np.clip(mean_pred[self.unlabeled], 1e-12, 1.0))).sum(axis=1)
-            local = int(ent.argmax())
-            return int(self.unlabeled[local]), float(ent[local])
-        raise ValueError(self.acquisition)
-
-    def add_label(self, idx: int, true_class: int) -> None:
-        self.unlabeled.remove(idx)
-        self.labeled.append(idx)
-        self.observed_labels.append(true_class)
-
-
-class EnsembleValidationSelector:
-    """Unsupervised ensemble-validation baseline from Hu et al.
-
-    Accuracy for each candidate is estimated against the ensemble consensus
-    labels, using only the prediction matrix and no ground-truth labels.
-    """
-
-    def __init__(self, benchmark: PredictionBenchmark):
-        self.benchmark = benchmark
-        self.predictions = benchmark.predictions
-        self.pred_classes = benchmark.pred_classes
-        self.consensus = self.predictions.mean(axis=0).argmax(axis=-1)
-
-    def best_model(self) -> int:
-        estimated_acc = (self.pred_classes == self.consensus[None, :]).mean(axis=1)
-        return int(estimated_acc.argmax())
-
-    def next_item(self) -> tuple[int, float]:
-        raise RuntimeError("Ensemble validation is an unsupervised selector; use --budget 0")
-
-    def add_label(self, idx: int, true_class: int) -> None:
-        raise RuntimeError("Ensemble validation does not consume labels")
-
-
-def run_selector(benchmark: PredictionBenchmark, method: str, budget: int, seed: int, coda_grid: int) -> dict:
-    random.seed(seed)
-    np.random.seed(seed)
-    if method == "coda":
-        selector = CODASelector(benchmark, num_grid=coda_grid)
-    elif method == "coda_uncertainty":
-        selector = CODASelector(benchmark, num_grid=coda_grid, acquisition="uncertainty")
-    elif method in {"random", "uncertainty"}:
-        selector = EmpiricalRiskSelector(benchmark, method, seed)
-    elif method == "ensv":
-        if budget != 0:
-            raise ValueError("ensv is an unsupervised baseline and requires --budget 0")
-        selector = EnsembleValidationSelector(benchmark)
-    else:
-        raise ValueError(method)
-
-    true_losses = benchmark.true_losses
-    best_loss = float(true_losses.min())
-    best_true_model = int(true_losses.argmin())
-    steps = []
-
-    for t in range(budget + 1):
-        pred_model = selector.best_model()
-        regret = float((true_losses[pred_model] - best_loss) * 100.0)
-        steps.append(
-            {
-                "step": t,
-                "chosen_model": pred_model,
-                "regret": regret,
-                "is_best": pred_model == best_true_model,
-            }
+    def __init__(self, episode: dict, args: argparse.Namespace) -> None:
+        self.coda = CODASelector(
+            episode["predicted_classes"], int(episode["num_classes"]),
+            alpha=args.alpha, temperature=args.temperature, eta=args.eta,
+            num_grid=args.grid, seed=int(episode["seed"]),
         )
-        if t == budget:
-            break
-        item_idx, q = selector.next_item()
-        selector.add_label(item_idx, int(benchmark.labels[item_idx]))
-        steps[-1]["queried_item"] = item_idx
-        steps[-1]["query_score"] = q
+        self.stable_rounds = args.stable_rounds
+        self.min_labels = args.min_labels
+        self.history: list[int] = []
 
-    return {
-        "task": benchmark.name,
-        "method": method,
-        "seed": seed,
-        "budget": budget,
-        "num_models": benchmark.predictions.shape[0],
-        "num_items": benchmark.predictions.shape[1],
-        "num_classes": benchmark.predictions.shape[2],
-        "true_best_model": best_true_model,
-        "true_best_accuracy": float(benchmark.true_accuracies.max()),
-        "model_accuracies": benchmark.true_accuracies.tolist(),
-        "steps": steps,
-    }
+    def select(self) -> int:
+        choice = self.coda.best_model()
+        self.history.append(choice)
+        return choice
 
+    def query(self) -> int | None:
+        if not self.coda.unlabeled:
+            return None
+        if (
+            self.stable_rounds > 0
+            and len(self.coda.labeled) >= self.min_labels
+            and len(self.history) >= self.stable_rounds
+            and len(set(self.history[-self.stable_rounds:])) == 1
+        ):
+            return None
+        item, _ = self.coda.next_item()
+        return item
 
-def trace_is_complete(path: Path, budget: int) -> bool:
-    try:
-        trace = json.loads(path.read_text())
-    except (OSError, json.JSONDecodeError):
-        return False
-    return trace.get("budget") == budget and len(trace.get("steps", [])) == budget + 1
+    def observe(self, item: int, label: int) -> None:
+        self.coda.add_label(item, label)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data-dir", default="data/downloads/modelselector")
-    parser.add_argument("--task", default="cifar10_5592")
-    parser.add_argument("--method", default="coda")
-    parser.add_argument("--budget", type=int, default=100)
-    parser.add_argument("--seeds", type=int, default=5)
-    parser.add_argument("--start-seed", type=int, default=0)
-    parser.add_argument("--skip-existing", action="store_true")
-    parser.add_argument("--coda-grid", type=int, default=256)
-    parser.add_argument("--output-dir", default="outputs/coda")
+    parser.add_argument("--alpha", type=float, default=0.1)
+    parser.add_argument("--temperature", type=float, default=0.5)
+    parser.add_argument("--eta", type=float, default=0.01)
+    parser.add_argument("--grid", type=int, default=128)
+    parser.add_argument("--stable-rounds", type=int, default=0)
+    parser.add_argument("--min-labels", type=int, default=0)
     args = parser.parse_args()
-
-    benchmark = load_prediction_benchmark(args.data_dir, args.task)
-    out_dir = Path(args.output_dir) / args.task / args.method
-    out_dir.mkdir(parents=True, exist_ok=True)
-    for seed in range(args.start_seed, args.seeds):
-        out_path = out_dir / f"seed_{seed}.json"
-        if args.skip_existing and trace_is_complete(out_path, args.budget):
-            print(f"skip existing complete trace: {out_path}", flush=True)
-            continue
-        print(
-            f"running {args.method} task={args.task} seed={seed} budget={args.budget} grid={args.coda_grid}",
-            flush=True,
-        )
-        result = run_selector(benchmark, args.method, args.budget, seed, args.coda_grid)
-        out_path.write_text(json.dumps(result, indent=2))
-        print(f"wrote {out_path}", flush=True)
+    serve(lambda episode: CODAPolicy(episode, args))
 
 
 if __name__ == "__main__":

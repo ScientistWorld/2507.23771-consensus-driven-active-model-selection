@@ -10,4 +10,4 @@ Selecting among many pretrained or domain-adapted models normally requires a lab
 
 ## Success Criteria
 
-A successful solution should choose a near-best or best candidate model early in the label acquisition process. It should achieve low instantaneous and cumulative regret under a fixed label budget, on the same prediction tensors and hidden labels used by all compared methods.
+A successful selector picks a best or near-best candidate early in the label acquisition process and keeps it, giving low cumulative regret over a 100-label budget, and does so across tasks with different numbers of candidates, difficulty and class balance (including an imbalanced task where simple baselines currently do better). It also picks a good candidate before any label is revealed. Labels are obtained only from the evaluator's oracle, one query per round, so every improvement is measured under the same annotation budget, the same candidate predictions and the same hidden labels for all methods.

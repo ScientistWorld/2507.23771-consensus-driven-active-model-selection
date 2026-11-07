@@ -1,339 +1,323 @@
-"""Visible train-slice evaluator for active model selection traces.
+"""Visible train-slice evaluator for active model selection.
 
-This evaluator reads method-produced JSON traces and rescoring data only. It
-does not import or execute code from method/.
+Same protocol and metrics as the held-out test, on the visible item half in
+data/benchmarks/. Every registered selector (``outputs/selectors/<name>.json`` holding
+``{"command": [...]}``) is run as a subprocess against a label oracle that
+this evaluator answers from the visible labels. The selector receives the
+candidate predictions for the visible item pool, and in every round must commit the model it
+currently selects before it is told the label of the item it queries next.
+The evaluator records those selections itself, counts the labels it reveals,
+and recomputes every metric from the visible labels. Nothing the selector
+writes besides its per-round ``select``/``query`` choices is used.
+
+Any protocol violation (crash, timeout, malformed message, out-of-range or
+repeated query, querying past the budget) fails that selector on that
+experiment: it is scored as if it had chosen the worst candidate in every
+round and spent the whole budget. Standard library only; never imports
+method code.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import math
+import os
+import queue
 import re
+import subprocess
+import sys
+import threading
+import time
+from dataclasses import dataclass
 from pathlib import Path
 
-import numpy as np
-
-
-SPLIT_SEED = 250723771
-AUXILIARY_SPLIT_EXPERIMENTS = {
-    "glue_rte_active_selection",
-    "glue_sst2_active_selection",
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parents[1]
+BENCHMARK_DIR = ROOT / "data" / "benchmarks"
+BENCHMARK_SHA256 = {
+    "glue_rte": "7fa84c73359e35a2aee510f208efd2d037cb924f8665bd03c99317315f50c05b",
+    "glue_sst2": "f02c4b137710dbe3eab87a6aba4fa29fe8fd25c00ff71c246535faff5ee88555",
+    "glue_mrpc": "e0b86bb32287322d261922deac10013fbcf5d8ba69515729c78c89662269eddd",
+    "glue_cola": "edfa637732f719c00e1084d4f929ac8fa127300cf880cd9e009cc081ff9146f4",
 }
+SEEDS = (0, 1, 2, 3, 4)
+ACTIVE_BUDGET = 100
+NEAR_OPTIMAL_PP = 1.0
+EPISODE_TIMEOUT_SEC = 1800
+EXPERIMENTS = {
+    "glue_rte_active_selection": ("glue_rte", ACTIVE_BUDGET),
+    "glue_sst2_active_selection": ("glue_sst2", ACTIVE_BUDGET),
+    "glue_mrpc_active_selection": ("glue_mrpc", ACTIVE_BUDGET),
+    "glue_cola_active_selection": ("glue_cola", ACTIVE_BUDGET),
+    "glue_rte_unsupervised_selection": ("glue_rte", 0),
+    "glue_sst2_unsupervised_selection": ("glue_sst2", 0),
+}
+NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.\-]*$")
 
 
-def deterministic_jitter(count: int) -> np.ndarray:
-    """Stable tie-breaker in [0, 1) without runtime randomness."""
-
-    idx = np.arange(count, dtype=np.uint64) + np.uint64(SPLIT_SEED)
-    idx ^= idx >> np.uint64(33)
-    idx *= np.uint64(0xff51afd7ed558ccd)
-    idx ^= idx >> np.uint64(33)
-    idx *= np.uint64(0xc4ceb9fe1a85ec53)
-    idx ^= idx >> np.uint64(33)
-    return (idx & np.uint64((1 << 53) - 1)).astype(np.float64) / float(1 << 53)
+class Violation(Exception):
+    """The selector broke the oracle protocol."""
 
 
-def deterministic_pairs(train_items: np.ndarray, test_items: np.ndarray, limit: int):
-    """Yield a bounded, deterministic coverage sample of cross-split swaps."""
+@dataclass
+class Benchmark:
+    task: str
+    num_classes: int
+    predicted_classes: list[list[int]]
+    labels: list[int]
+    errors: list[int]
 
-    pair_count = len(train_items) * len(test_items)
-    if pair_count <= limit:
-        yield from ((a, b) for a in train_items for b in test_items)
-        return
+    @property
+    def num_models(self) -> int:
+        return len(self.predicted_classes)
 
-    step = max(1, pair_count // limit)
-    offset = SPLIT_SEED % pair_count
-    for pos in range(limit):
-        flat = (offset + pos * step) % pair_count
-        yield train_items[flat // len(test_items)], test_items[flat % len(test_items)]
+    @property
+    def num_items(self) -> int:
+        return len(self.labels)
 
-
-def load_benchmark(data_dir: Path, task: str) -> tuple[np.ndarray, np.ndarray]:
-    npz_path = data_dir / f"{task}.npz"
-    if not npz_path.exists():
-        raise FileNotFoundError(f"Missing benchmark file: {npz_path}")
-    data = np.load(npz_path)
-    predictions = np.asarray(data["predictions"], dtype=np.float64)
-    labels = np.asarray(data["labels"], dtype=np.int64)
-    if predictions.ndim != 3:
-        raise ValueError(f"Expected predictions with shape (H,N,C), got {predictions.shape}")
-    if labels.ndim != 1 or labels.shape[0] != predictions.shape[1]:
-        raise ValueError(f"Expected labels shape ({predictions.shape[1]},), got {labels.shape}")
-    return predictions, labels
+    def regret(self, model: int) -> float:
+        return 100.0 * (self.errors[model] - min(self.errors)) / self.num_items
 
 
-def balanced_split_mask(predictions: np.ndarray, labels: np.ndarray) -> np.ndarray:
-    pred_classes = predictions.argmax(axis=-1)
-    correct = pred_classes == labels[None, :]
-    item_error = 1.0 - correct.mean(axis=0)
-    signatures = [np.packbits(correct[:, item]).tobytes() for item in range(labels.shape[0])]
-    jitter = deterministic_jitter(labels.shape[0])
-    order = np.array(
-        sorted(
-            range(labels.shape[0]),
-            key=lambda item: (int(labels[item]), float(item_error[item]), signatures[item], float(jitter[item])),
-        )
-    )
-    train_mask = np.zeros(labels.shape[0], dtype=bool)
-    train_mask[order[np.arange(order.shape[0]) % 2 == 0]] = True
-
-    errors = (~correct).astype(np.float64)
-    train_n = int(train_mask.sum())
-    test_n = int((~train_mask).sum())
-    if train_n == 0 or test_n == 0:
-        return train_mask
-
-    train_sum = errors[:, train_mask].sum(axis=1)
-    test_sum = errors[:, ~train_mask].sum(axis=1)
-    diff = train_sum / train_n - test_sum / test_n
-    objective = float(np.mean(diff * diff))
-    unique_labels = np.unique(labels)
-    pair_limit = 20000
-
-    for _ in range(30):
-        best = None
-        best_objective = objective
-        for label in unique_labels:
-            train_items = np.where(train_mask & (labels == label))[0]
-            test_items = np.where((~train_mask) & (labels == label))[0]
-            if len(train_items) == 0 or len(test_items) == 0:
-                continue
-            for train_item, test_item in deterministic_pairs(train_items, test_items, pair_limit):
-                delta = (errors[:, test_item] - errors[:, train_item]) * (1.0 / train_n + 1.0 / test_n)
-                new_diff = diff + delta
-                new_objective = float(np.mean(new_diff * new_diff))
-                if new_objective < best_objective - 1e-12:
-                    best_objective = new_objective
-                    best = (int(train_item), int(test_item), delta)
-        if best is None:
-            break
-        train_item, test_item, delta = best
-        train_mask[train_item] = False
-        train_mask[test_item] = True
-        diff = diff + delta
-        objective = best_objective
-    return train_mask
+def load_benchmark(task: str) -> Benchmark:
+    path = BENCHMARK_DIR / f"{task}_train.json"
+    raw = path.read_bytes()
+    digest = hashlib.sha256(raw).hexdigest()
+    if digest != BENCHMARK_SHA256[task]:
+        raise SystemExit(f"{path} does not match its recorded checksum ({digest})")
+    data = json.loads(raw)
+    preds = data["predicted_classes"]
+    labels = data["labels"]
+    num_classes = int(data["num_classes"])
+    if not preds or any(len(row) != len(labels) for row in preds):
+        raise SystemExit(f"{path}: malformed prediction matrix")
+    errors = [sum(1 for p, y in zip(row, labels) if p != y) for row in preds]
+    return Benchmark(task, num_classes, preds, labels, errors)
 
 
-def train_item_indices(predictions: np.ndarray, labels: np.ndarray) -> np.ndarray:
-    return np.sort(np.where(balanced_split_mask(predictions, labels))[0])
+def discover_selectors(selectors_dir: Path) -> dict[str, object]:
+    selectors: dict[str, object] = {}
+    if not selectors_dir.is_dir():
+        return selectors
+    for path in sorted(selectors_dir.glob("*.json")):
+        name = path.stem
+        if not NAME_RE.match(name):
+            print(f"skip selector manifest with unusable name: {path}", file=sys.stderr)
+            continue
+        try:
+            spec = json.loads(path.read_text())
+            command = spec["command"]
+            if not isinstance(command, list) or not command or not all(isinstance(x, str) and x for x in command):
+                raise ValueError("'command' must be a non-empty list of strings")
+            selectors[name] = command
+        except Exception as exc:  # broken manifest: the method is on disk and fails
+            selectors[name] = Violation(f"invalid manifest {path}: {exc}")
+    return selectors
 
 
-def subset_losses(predictions: np.ndarray, labels: np.ndarray, indices: np.ndarray) -> np.ndarray:
-    pred_classes = predictions[:, indices, :].argmax(axis=-1)
-    return 1.0 - (pred_classes == labels[indices][None, :]).mean(axis=1)
+def _reject_constant(token: str):
+    raise ValueError(f"non-finite number {token}")
 
 
-def trace_paths(method_dir: Path) -> list[Path]:
-    def seed_number(path: Path) -> int:
-        match = re.search(r"seed_(\d+)\.json$", path.name)
-        return int(match.group(1)) if match else -1
-
-    return sorted(method_dir.glob("seed_*.json"), key=seed_number)
-
-
-def regret_at(regrets: list[float], step: int) -> float:
-    if step < len(regrets):
-        return regrets[step]
-    return regrets[-1]
+def _parse(line: str) -> dict:
+    try:
+        msg = json.loads(line, parse_constant=_reject_constant)
+    except ValueError as exc:
+        raise Violation(f"malformed message {line[:120]!r}: {exc}") from None
+    if not isinstance(msg, dict):
+        raise Violation(f"message is not an object: {line[:120]!r}")
+    return msg
 
 
-def cumulative_regret(regrets: list[float], horizon: int) -> float:
-    return float(sum(regret_at(regrets, step) for step in range(1, horizon + 1)))
+def _index(value, bound: int, what: str) -> int:
+    if type(value) is not int or not 0 <= value < bound:
+        raise Violation(f"{what} must be an integer in [0, {bound}), got {value!r}")
+    return value
 
 
-def summarize_trace(
-    trace: dict,
-    losses: np.ndarray,
-    slice_size: int,
-    cumulative_horizon: int,
-    oracle_loss: float,
-) -> dict[str, float]:
-    steps = trace.get("steps", [])
-    if not steps:
-        raise ValueError("Trace has no steps")
+def _child_env() -> dict[str, str]:
+    env = dict(os.environ)
+    env["PYTHONHASHSEED"] = "0"
+    env["PYTHONUNBUFFERED"] = "1"
+    for var in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
+        env.setdefault(var, "1")
+    return env
 
-    regrets = []
-    for step in steps:
-        chosen_model = int(step["chosen_model"])
-        if chosen_model < 0 or chosen_model >= losses.shape[0]:
-            raise ValueError(f"chosen_model out of range: {chosen_model}")
-        regrets.append(float(max(0.0, losses[chosen_model] - oracle_loss) * 100.0))
 
-    budget = int(trace.get("budget", len(steps) - 1))
-    final_regret = float(regrets[-1])
+def _resolve(command: list[str]) -> list[str]:
+    if command[0] in ("python", "python3"):
+        return [sys.executable, *command[1:]]
+    return list(command)
+
+
+def run_episode(command: list[str], bench: Benchmark, budget: int, seed: int, log_path: Path):
+    """Drive one selector episode. Returns (selections, labels_revealed)."""
+    episode = {
+        "protocol": 1,
+        "num_models": bench.num_models,
+        "num_items": bench.num_items,
+        "num_classes": bench.num_classes,
+        "budget": budget,
+        "seed": seed,
+        "predicted_classes": bench.predicted_classes,
+    }
+    deadline = time.monotonic() + EPISODE_TIMEOUT_SEC
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    with log_path.open("w") as log:
+        try:
+            proc = subprocess.Popen(
+                _resolve(command), cwd=ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                stderr=log, text=True, bufsize=1, env=_child_env(),
+            )
+        except OSError as exc:
+            raise Violation(f"cannot start selector: {exc}") from None
+        lines: queue.Queue = queue.Queue()
+
+        def pump() -> None:
+            try:
+                for line in proc.stdout:
+                    lines.put(line)
+            finally:
+                lines.put(None)
+
+        threading.Thread(target=pump, daemon=True).start()
+
+        def send(obj: dict) -> None:
+            try:
+                proc.stdin.write(json.dumps(obj) + "\n")
+                proc.stdin.flush()
+            except (BrokenPipeError, OSError, ValueError):
+                raise Violation("selector closed its input early") from None
+
+        def receive(round_index: int) -> dict:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise Violation(f"timeout after {EPISODE_TIMEOUT_SEC}s")
+            try:
+                line = lines.get(timeout=remaining)
+            except queue.Empty:
+                raise Violation(f"timeout after {EPISODE_TIMEOUT_SEC}s") from None
+            if line is None:
+                raise Violation(f"selector exited before answering round {round_index}")
+            return _parse(line)
+
+        selections: list[int] = []
+        queried: set[int] = set()
+        try:
+            send(episode)
+            for round_index in range(budget + 1):
+                msg = receive(round_index)
+                selections.append(_index(msg.get("select"), bench.num_models, "select"))
+                query = msg.get("query")
+                if query is None:
+                    break
+                if round_index == budget:
+                    raise Violation(f"query beyond the {budget}-label budget")
+                item = _index(query, bench.num_items, "query")
+                if item in queried:
+                    raise Violation(f"item {item} queried twice")
+                queried.add(item)
+                send({"label": bench.labels[item]})
+            send({"type": "end"})
+            try:
+                proc.stdin.close()
+            except OSError:
+                pass
+            try:
+                code = proc.wait(timeout=max(1.0, deadline - time.monotonic()))
+            except subprocess.TimeoutExpired:
+                raise Violation("selector did not exit after the episode ended") from None
+            if code != 0:
+                raise Violation(f"selector exited with status {code}")
+        finally:
+            if proc.poll() is None:
+                proc.kill()
+                proc.wait()
+    return selections, len(queried)
+
+
+def episode_metrics(bench: Benchmark, budget: int, selections: list[int], labels_revealed: int) -> dict[str, float]:
+    rounds = selections + [selections[-1]] * (budget + 1 - len(selections))
+    regret = [bench.regret(model) for model in rounds]
+    if budget == 0:
+        return {"initial_regret": regret[0]}
     return {
-        "initial_regret": float(regrets[0]),
-        "cumulative_regret_at_25": cumulative_regret(regrets, min(25, cumulative_horizon)),
-        "cumulative_regret_at_50": cumulative_regret(regrets, min(50, cumulative_horizon)),
-        "cumulative_regret_at_100": cumulative_regret(regrets, min(100, cumulative_horizon)),
-        "instant_regret_at_50": regret_at(regrets, 50),
-        "instant_regret_at_100": regret_at(regrets, 100),
-        "near_optimal_at_100": float(final_regret <= 1.0),
-        "label_budget": float(budget),
-        "num_models": float(losses.shape[0]),
-        "num_items": float(slice_size),
+        "initial_regret": regret[0],
+        "cumulative_regret_at_25": math.fsum(regret[1:26]),
+        "cumulative_regret_at_50": math.fsum(regret[1:51]),
+        "cumulative_regret_at_100": math.fsum(regret[1:101]),
+        "instant_regret_at_50": regret[50],
+        "instant_regret_at_100": regret[100],
+        "near_optimal_at_100": 1.0 if regret[100] <= NEAR_OPTIMAL_PP else 0.0,
+        "label_budget": float(labels_revealed),
     }
 
 
-def trace_budget(path: Path) -> int:
-    trace = json.loads(path.read_text())
-    return int(trace.get("budget", len(trace.get("steps", [])) - 1))
+def failed_metrics(bench: Benchmark, budget: int) -> dict[str, float]:
+    worst = max(range(bench.num_models), key=bench.errors.__getitem__)
+    return episode_metrics(bench, budget, [worst] * (budget + 1), budget)
 
 
-def experiment_trace_paths(method_dir: Path, cumulative_horizon: int) -> list[Path]:
-    paths = trace_paths(method_dir)
-    if not paths:
-        raise FileNotFoundError(f"No seed_*.json traces found in {method_dir}")
-    if cumulative_horizon > 0:
-        active_paths = [path for path in paths if trace_budget(path) > 0]
-        if active_paths:
-            return active_paths
-    return paths
-
-
-def aggregate_method(
-    method_dir: Path,
-    losses: np.ndarray,
-    slice_size: int,
-    cumulative_horizon: int,
-    oracle_loss: float,
-) -> dict[str, float]:
-    paths = experiment_trace_paths(method_dir, cumulative_horizon)
-    per_seed = [
-        summarize_trace(json.loads(path.read_text()), losses, slice_size, cumulative_horizon, oracle_loss)
-        for path in paths
-    ]
-    keys = per_seed[0].keys()
-    return {key: float(sum(row[key] for row in per_seed) / len(per_seed)) for key in keys}
-
-
-def enumerate_methods(results_dir: Path, task: str) -> list[str]:
-    task_dir = results_dir / task
-    if not task_dir.exists():
-        raise FileNotFoundError(f"Missing task results directory: {task_dir}")
-    methods = [
-        path.name
-        for path in sorted(task_dir.iterdir())
-        if path.is_dir() and any(path.glob("seed_*.json"))
-    ]
-    if not methods:
-        raise FileNotFoundError(f"No method directories with seed_*.json traces found in {task_dir}")
-    return methods
-
-
-def has_active_trace(method_dir: Path) -> bool:
-    return any(trace_budget(path) > 0 for path in trace_paths(method_dir))
-
-
-def reference_metric_names(reference_path: Path, experiment: str) -> set[str] | None:
-    if not reference_path.exists():
-        return None
-    reference = json.loads(reference_path.read_text())
-    metrics = reference.get("experiments", {}).get(experiment, {}).get("metrics")
-    if not isinstance(metrics, dict):
-        return None
-    return set(metrics)
-
-
-def filter_known_metrics(scores: dict[str, float], known_metrics: set[str] | None) -> dict[str, float]:
-    if known_metrics is None:
-        return scores
-    return {name: value for name, value in scores.items() if name in known_metrics}
-
-
-def reference_experiments(reference_path: Path) -> list[str]:
-    if not reference_path.exists():
-        raise FileNotFoundError(f"Missing reference file: {reference_path}")
-    reference = json.loads(reference_path.read_text())
-    experiments = reference.get("experiments", {})
-    if not isinstance(experiments, dict) or not experiments:
-        raise ValueError(f"No experiments found in {reference_path}")
-    # Train/test slices are the visible optimization target for future methods.
-    # They use the stable active-selection settings with enough corrected traces
-    # for split rescoring. Other reproduced claims remain in the main scores.
-    return [name for name in experiments if name in AUXILIARY_SPLIT_EXPERIMENTS]
-
-
-def experiment_task(experiment: str, task_override: str | None) -> str:
-    if task_override:
-        return task_override
-    for suffix in ("_active_selection", "_unsupervised_selection"):
-        if experiment.endswith(suffix):
-            return experiment[: -len(suffix)]
-    raise ValueError(f"Cannot infer task from experiment name: {experiment}")
-
-
-def selected_experiments(args: argparse.Namespace) -> list[str]:
-    if args.experiment:
-        return [args.experiment]
-    if args.task:
-        return [f"{args.task}_active_selection"]
-    return reference_experiments(Path(args.reference))
-
-
-def result_dir_for_experiment(args: argparse.Namespace, experiment: str) -> Path:
-    if experiment.endswith("_unsupervised_selection"):
-        return Path(args.unsupervised_results_dir)
-    return Path(args.results_dir)
-
-
-def evaluate_experiment(args: argparse.Namespace, experiment: str) -> dict[str, dict[str, float]]:
-    task = experiment_task(experiment, args.task)
-    results_dir = result_dir_for_experiment(args, experiment)
-    cumulative_horizon = 0 if experiment.endswith("_unsupervised_selection") else 100
-    predictions, labels = load_benchmark(Path(args.data_dir), task)
-    indices = train_item_indices(predictions, labels)
-    losses = subset_losses(predictions, labels, indices)
-    full_losses = subset_losses(predictions, labels, np.arange(labels.shape[0]))
-    oracle_model = int(full_losses.argmin())
-    oracle_loss = float(losses[oracle_model])
-    methods = args.methods if args.methods else enumerate_methods(results_dir, task)
-    if cumulative_horizon > 0:
-        methods = [
-            method
-            for method in methods
-            if has_active_trace(results_dir / task / method)
-        ]
-    known_metrics = reference_metric_names(Path(args.reference), experiment)
-
-    results = {}
-    for method in methods:
-        method_dir = results_dir / task / method
-        results[method] = filter_known_metrics(
-            aggregate_method(method_dir, losses, len(indices), cumulative_horizon, oracle_loss),
-            known_metrics,
-        )
-    return results
+def evaluate(selectors_dir: Path, log_dir: Path) -> tuple[dict, dict, list]:
+    selectors = discover_selectors(selectors_dir)
+    if not selectors:
+        raise SystemExit(f"no selector manifests found in {selectors_dir}")
+    benchmarks = {task: load_benchmark(task) for task, _ in EXPERIMENTS.values()}
+    experiments: dict[str, dict] = {}
+    failures: dict[str, dict[str, list[str]]] = {}
+    episodes: list[dict] = []
+    for experiment, (task, budget) in EXPERIMENTS.items():
+        bench = benchmarks[task]
+        results = {}
+        for name, command in selectors.items():
+            rows, problems = [], []
+            if isinstance(command, Violation):
+                problems.append(str(command))
+            else:
+                for seed in SEEDS:
+                    start = time.monotonic()
+                    log_path = log_dir / name / f"{experiment}_seed{seed}.log"
+                    try:
+                        selections, revealed = run_episode(command, bench, budget, seed, log_path)
+                    except Violation as exc:
+                        problems.append(f"seed {seed}: {exc}")
+                        break
+                    metrics = episode_metrics(bench, budget, selections, revealed)
+                    rows.append(metrics)
+                    episodes.append({
+                        "experiment": experiment, "method": name, "seed": seed,
+                        "selections": selections, "labels_revealed": revealed,
+                        "metrics": metrics, "seconds": round(time.monotonic() - start, 2),
+                    })
+            if problems:
+                failures.setdefault(experiment, {})[name] = problems
+                results[name] = failed_metrics(bench, budget)
+            else:
+                results[name] = {key: math.fsum(r[key] for r in rows) / len(rows) for key in rows[0]}
+            print(f"[train] {experiment} {name}: " + json.dumps(results[name]), flush=True)
+        experiments[experiment] = {"results": results}
+    return experiments, failures, episodes
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--results-dir", default="outputs/coda")
-    parser.add_argument("--unsupervised-results-dir", default="outputs/coda_unsupervised")
-    parser.add_argument("--data-dir", default="data/downloads/modelselector")
-    parser.add_argument("--task")
-    parser.add_argument("--experiment")
-    parser.add_argument("--methods", nargs="+")
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--selectors-dir", default=os.environ.get("SELECTORS_DIR", "outputs/selectors"))
     parser.add_argument("--output", default="scoring/scores_train.json")
-    parser.add_argument("--reference", default="scoring/reference.json")
-    parser.add_argument("--merge-existing", action="store_true")
+    parser.add_argument("--episodes-output", default="logs/eval_train/episodes.json")
+    parser.add_argument("--log-dir", default="logs/eval_train")
     args = parser.parse_args()
 
-    out_path = Path(args.output)
-    if args.merge_existing and out_path.exists():
-        scores = json.loads(out_path.read_text())
-    else:
-        scores = {"slice": "train", "experiments": {}}
-    scores["slice"] = "train"
-    scores.setdefault("experiments", {})
-
-    for experiment in selected_experiments(args):
-        scores["experiments"][experiment] = {"results": evaluate_experiment(args, experiment)}
-
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(scores, indent=2))
-    print(json.dumps(scores, indent=2))
+    experiments, failures, episodes = evaluate(ROOT / args.selectors_dir, ROOT / args.log_dir)
+    scores = {"slice": "train", "experiments": experiments, "failures": failures}
+    out = ROOT / args.output
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(scores, indent=2) + "\n")
+    episodes_out = ROOT / args.episodes_output
+    episodes_out.parent.mkdir(parents=True, exist_ok=True)
+    episodes_out.write_text(json.dumps(episodes) + "\n")
+    print(f"wrote {out}")
 
 
 if __name__ == "__main__":

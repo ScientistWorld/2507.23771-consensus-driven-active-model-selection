@@ -1,37 +1,43 @@
 # Evaluation Targets
 
+All targets are produced by the evaluator from the selections it records in
+every round; selectors only answer the oracle protocol. Visible slice:
+`bash scripts/evaluate_train.sh` (or `scripts/evaluate.sh`). Hidden slice:
+`bash scripts/evaluate_test.sh` (no arguments; scores every selector in
+`outputs/selectors/`). Reproduce the reference end to end with
+`bash scripts/reproduce.sh`.
+
 ## Primary: glue_rte_active_selection
 
-Tests whether an active model selector can identify a high-accuracy candidate classifier on GLUE RTE using a fixed 100-label budget.
+Identify a high-accuracy candidate on GLUE RTE within a 100-label budget.
 
-- **Metric:** `cumulative_regret_at_100` (lower is better)
-- **Run:** `bash scripts/reproduce.sh glue_rte 100 5`
+- **Metric:** `cumulative_regret_at_100` (lower is better); also
+  `cumulative_regret_at_25/50`, `initial_regret`, `instant_regret_at_50/100`,
+  `near_optimal_at_100`.
 
-## Additional: glue_sst2_active_selection
+## Additional: glue_sst2_active_selection, glue_mrpc_active_selection
 
-Tests the same active model selection objective on GLUE SST2, which has a larger item set and a different candidate pool.
+The same objective on GLUE SST2 and GLUE MRPC, same metrics and budget.
 
-- **Metric:** `cumulative_regret_at_100` (lower is better)
-- **Run:** `MERGE_EXISTING=1 bash scripts/method.sh glue_sst2 100 2 64`
+## Headroom: glue_cola_active_selection
 
-## Additional: glue_mrpc_active_selection
+The same objective on GLUE CoLA, the paper's documented failure case
+(imbalanced labels, biased candidates), where the reference selector is
+worse than random and uncertainty sampling. Same metrics and budget.
 
-Tests the active model selection objective on another ModelSelector-derived GLUE task, using the same 100-label budget and fixed candidate pool.
+## Secondary: zero-label selection
 
-- **Metric:** `cumulative_regret_at_100` (lower is better)
-- **Run:** `MERGE_EXISTING=1 bash scripts/method.sh glue_mrpc 100 5 128`
+`glue_rte_unsupervised_selection`, `glue_sst2_unsupervised_selection`:
+selection with a 0-label budget, scored by `initial_regret` (lower is better).
 
-## Secondary: zero_label_selection
+## Constraints (scored, and enforced by the evaluator)
 
-Tests whether a selector can choose a strong model before querying any labels, matching the paper's Table 5 setup.
-
-- **Experiments:** `glue_rte_unsupervised_selection`, `glue_sst2_unsupervised_selection`
-- **Metric:** `initial_regret` (lower is better)
-- **Runs:** `MERGE_EXISTING=1 bash scripts/unsupervised.sh glue_rte 128` and `MERGE_EXISTING=1 bash scripts/unsupervised.sh glue_sst2 64`
-
-## Constraint: fixed_budget_and_task_size
-
-Ensures improvements are obtained under the same annotation budget and benchmark scale rather than by querying more labels or changing the candidate pool.
-
-- **Metrics:** `label_budget` (lower is better when performance is comparable), `num_models` and `num_items` (must match the benchmark)
-- **Run:** `bash scripts/evaluate.sh outputs/coda glue_rte glue_rte_active_selection`
+- **Label budget:** `label_budget` is the number of labels the oracle
+  actually revealed (lower is better at equal regret). The oracle refuses to
+  go past 100 labels (0 for zero-label experiments).
+- **Fixed pool and data:** the candidate predictions, the item pool, the
+  labels, the seeds and the best-candidate reference are fixed by `eval/`;
+  a selector cannot change them, and the evaluators check data checksums.
+- **Valid protocol:** a crash, timeout, malformed or out-of-range answer,
+  repeated query, or query past the budget scores the selector as failed on
+  that experiment (worst candidate every round, full budget spent).

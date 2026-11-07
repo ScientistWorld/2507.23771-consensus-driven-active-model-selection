@@ -1,21 +1,45 @@
 # Experiment Overview
 
+All experiments run every registered selector through the evaluator's label
+oracle (see `briefing/evaluation.md`) on one half of each task's items, with
+the full candidate pool, seeds 0–4, and the selection recorded by the
+evaluator in every round. The visible half is scored by
+`scripts/evaluate_train.sh`; the held-out half, whose labels and candidate
+order are not in the workspace, by `scripts/evaluate_test.sh`.
+
 ## glue_rte_active_selection
 
-This experiment tests active model selection on a small natural-language classification benchmark with many candidate predictors and a limited label budget. It measures whether the selector can use a small number of queried labels to choose a model whose full-test-set accuracy is close to the true best model in the candidate pool.
+Active model selection on a small, hard natural-language inference task with
+many candidate predictors and a 100-label budget. It establishes whether a
+selector can turn a few queried labels into a choice whose accuracy on the
+whole pool is close to the best candidate's, and how quickly it gets there.
 
 ## glue_sst2_active_selection
 
-This experiment repeats the active model selection test on a larger sentiment-classification benchmark. It checks whether the same label-efficient selection behavior transfers to a different GLUE task while keeping the candidate pool and label budget fixed.
+The same question on a larger sentiment task where most candidates are
+accurate and differ only on a minority of items. It checks that label-efficient
+selection transfers to a different pool and item distribution.
 
 ## glue_mrpc_active_selection
 
-This experiment adds a paraphrase-classification benchmark from the same prediction-suite family. It broadens the active-selection score beyond the two completed GLUE settings while preserving the fixed prediction pool and fixed annotation budget.
+The same question on a paraphrase task with a skewed label distribution,
+where a reasonable zero-label choice already exists. It measures whether
+queried labels improve on the starting choice rather than degrade it.
+
+## glue_cola_active_selection
+
+The same question on an acceptability task with imbalanced labels and some
+strongly biased candidates. Here simple label-driven baselines beat the
+paper's reference selector by a wide margin, so this experiment measures
+progress where the reference falls short.
 
 ## glue_rte_unsupervised_selection
 
-This experiment tests model selection on GLUE RTE before any labels are queried. It measures whether the selected candidate is close to the best model in the pool under a strict zero-label budget.
+Zero-label selection on RTE: the selector gets a budget of 0 and is scored on
+its single choice. It measures how much can be inferred about candidate
+quality from the unlabeled prediction matrix alone.
 
 ## glue_sst2_unsupervised_selection
 
-This experiment repeats the zero-label model selection test on GLUE SST2. It checks whether no-query selection behavior transfers to a larger sentiment-classification benchmark while keeping the same fixed candidate pool and evaluation labels.
+Zero-label selection on SST2, checking the same capability on a larger,
+easier pool.

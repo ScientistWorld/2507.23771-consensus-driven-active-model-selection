@@ -2,16 +2,31 @@
 
 ## Research Problem
 
-This benchmark concerns active model selection: choosing the best classifier from a fixed candidate pool for a target dataset while minimizing label queries.
+This benchmark concerns active model selection: choosing the best classifier
+from a fixed candidate pool for a target dataset while minimizing label
+queries.
 
 ## Core Contribution Scope
 
-Improvements should focus on better use of the unlabeled prediction matrix and adaptively acquired labels to decide both which item to label next and which candidate model to select.
+Improvements should make better use of the unlabeled prediction matrix and
+of adaptively acquired labels, both to decide which item to label next and
+which candidate to select, and when further labels are no longer worth
+acquiring. Known weak spots of the reference are worth attention: slow early
+progress on hard pools, and imbalanced tasks with biased candidates (CoLA),
+where it is beaten by simple baselines.
 
 ## Approach Scope
 
-In-bounds approaches may redesign the probabilistic model over candidate performance, improve the acquisition function, change uncertainty estimation, or add principled priors derived from the same prediction matrix. They must remain active model selection methods operating on fixed candidate predictions.
+In-bounds approaches may redesign the probabilistic model of candidate
+performance, the acquisition function, the uncertainty estimates, the
+selection rule, stopping rules, or priors derived from the same prediction
+matrix. They must remain active model selection methods operating on the
+fixed candidate predictions through the label oracle, with one configuration
+for all tasks.
 
 ## Out of Bounds
 
-Replacing the task with supervised training of a new classifier is out of bounds. Adding new candidate models, using external labeled validation data, or querying beyond the stated budget is also out of bounds for the primary experiment because these changes sidestep the paper's label-efficiency claim.
+Training new classifiers, adding candidate models, using external or visible
+labels as a stand-in for queried ones, reading held-out evaluation files,
+per-task tuning, and exceeding the label budget are out of bounds: they
+sidestep the label-efficiency question the benchmark measures.

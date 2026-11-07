@@ -1,59 +1,50 @@
 {
   "experiments": {
     "glue_rte_active_selection": {
-      "description": "Active model selection on the GLUE RTE benchmark at a 100-label budget, matching the paper's main cumulative-regret comparison for this task.",
-      "weight": 0.34,
+      "description": "Active model selection on GLUE RTE (87 candidates, 2 classes) with a 100-label budget: the paper's main cumulative-regret comparison (Table 1).",
+      "weight": 0.3,
       "primary_metric": "cumulative_regret_at_100",
+      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
       "metrics": {
         "cumulative_regret_at_100": {
           "higher_is_better": false,
           "coefficient": -1.0,
-          "description": "Total excess error incurred over the queried-label trajectory through the 100-label budget."
+          "description": "Total excess error (percentage points summed over rounds 1-100) of the model selected in each round, over a 100-label budget. Lower is better."
         },
         "cumulative_regret_at_25": {
           "higher_is_better": false,
           "coefficient": -0.45,
-          "description": "Early-label cumulative excess error through 25 queried labels, catching methods that only recover late."
+          "description": "Cumulative excess error over rounds 1-25: catches selectors that only recover late."
         },
         "cumulative_regret_at_50": {
           "higher_is_better": false,
           "coefficient": -0.65,
-          "description": "Mid-budget cumulative excess error through 50 queried labels."
+          "description": "Cumulative excess error over rounds 1-50."
         },
         "initial_regret": {
           "higher_is_better": false,
           "coefficient": -0.2,
-          "description": "Zero-query excess error of the initially selected model."
+          "description": "Excess error of the model selected before any label is revealed."
         },
         "instant_regret_at_50": {
           "higher_is_better": false,
           "coefficient": -0.2,
-          "description": "Excess error of the selected model after 50 queried labels."
+          "description": "Excess error of the model selected after round 50."
         },
         "instant_regret_at_100": {
           "higher_is_better": false,
           "coefficient": -0.3,
-          "description": "Excess error of the selected model after the full 100-label budget."
+          "description": "Excess error of the model selected after round 100 (end of budget)."
         },
         "near_optimal_at_100": {
           "higher_is_better": true,
           "coefficient": 0.35,
-          "description": "Whether the selected model is within one percentage point of the best candidate at the 100-label budget."
+          "description": "Fraction of seeds whose round-100 selection is within one percentage point of the best candidate."
         },
         "label_budget": {
           "higher_is_better": false,
           "coefficient": -0.2,
-          "description": "Number of ground-truth labels consumed; improvements should not come from querying more labels."
-        },
-        "num_models": {
-          "higher_is_better": true,
-          "coefficient": 0.05,
-          "description": "Candidate pool size covered by the run, guarding against selecting from an easier reduced pool."
-        },
-        "num_items": {
-          "higher_is_better": true,
-          "coefficient": 0.05,
-          "description": "Evaluation item count covered by the run, guarding against scoring on a smaller benchmark."
+          "description": "Labels actually revealed by the evaluator's oracle (mean over seeds); a selector may stop early and keep its selection. Cannot exceed 100."
         }
       },
       "results": {
@@ -61,82 +52,75 @@
           "type": "baseline",
           "cumulative_regret_at_100": 375.7,
           "instant_regret_at_100": 1.2,
-          "label_budget": 100,
-          "num_models": 87,
-          "num_items": 277
+          "instant_regret_at_50": 3.2,
+          "label_budget": 100
         },
         "uncertainty": {
           "type": "baseline",
           "cumulative_regret_at_100": 390.3,
           "instant_regret_at_100": 0.0,
-          "label_budget": 100,
-          "num_models": 87,
-          "num_items": 277
+          "instant_regret_at_50": 0.0,
+          "label_budget": 100
+        },
+        "ensv": {
+          "type": "baseline",
+          "initial_regret": 14.8
         },
         "coda": {
           "type": "proposed",
           "cumulative_regret_at_100": 283.8,
           "instant_regret_at_100": 0.0,
-          "label_budget": 100,
-          "num_models": 87,
-          "num_items": 277
+          "instant_regret_at_50": 0.0,
+          "initial_regret": 14.8,
+          "label_budget": 100
         }
       }
     },
     "glue_sst2_active_selection": {
-      "description": "Active model selection on the GLUE SST2 benchmark at a 100-label budget, matching the paper's main cumulative-regret comparison for this additional GLUE task.",
-      "weight": 0.22,
+      "description": "Active model selection on GLUE SST2 (97 candidates, 2 classes) with a 100-label budget (Table 1).",
+      "weight": 0.2,
       "primary_metric": "cumulative_regret_at_100",
+      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
       "metrics": {
         "cumulative_regret_at_100": {
           "higher_is_better": false,
           "coefficient": -1.0,
-          "description": "Total excess error incurred over the queried-label trajectory through the 100-label budget."
+          "description": "Total excess error (percentage points summed over rounds 1-100) of the model selected in each round, over a 100-label budget. Lower is better."
         },
         "cumulative_regret_at_25": {
           "higher_is_better": false,
           "coefficient": -0.45,
-          "description": "Early-label cumulative excess error through 25 queried labels, catching methods that only recover late."
+          "description": "Cumulative excess error over rounds 1-25: catches selectors that only recover late."
         },
         "cumulative_regret_at_50": {
           "higher_is_better": false,
           "coefficient": -0.65,
-          "description": "Mid-budget cumulative excess error through 50 queried labels."
+          "description": "Cumulative excess error over rounds 1-50."
         },
         "initial_regret": {
           "higher_is_better": false,
           "coefficient": -0.2,
-          "description": "Zero-query excess error of the initially selected model."
+          "description": "Excess error of the model selected before any label is revealed."
         },
         "instant_regret_at_50": {
           "higher_is_better": false,
           "coefficient": -0.2,
-          "description": "Excess error of the selected model after 50 queried labels."
+          "description": "Excess error of the model selected after round 50."
         },
         "instant_regret_at_100": {
           "higher_is_better": false,
           "coefficient": -0.3,
-          "description": "Excess error of the selected model after the full 100-label budget."
+          "description": "Excess error of the model selected after round 100 (end of budget)."
         },
         "near_optimal_at_100": {
           "higher_is_better": true,
           "coefficient": 0.35,
-          "description": "Whether the selected model is within one percentage point of the best candidate at the 100-label budget."
+          "description": "Fraction of seeds whose round-100 selection is within one percentage point of the best candidate."
         },
         "label_budget": {
           "higher_is_better": false,
           "coefficient": -0.2,
-          "description": "Number of ground-truth labels consumed; improvements should not come from querying more labels."
-        },
-        "num_models": {
-          "higher_is_better": true,
-          "coefficient": 0.05,
-          "description": "Candidate pool size covered by the run, guarding against selecting from an easier reduced pool."
-        },
-        "num_items": {
-          "higher_is_better": true,
-          "coefficient": 0.05,
-          "description": "Evaluation item count covered by the run, guarding against scoring on a smaller benchmark."
+          "description": "Labels actually revealed by the evaluator's oracle (mean over seeds); a selector may stop early and keep its selection. Cannot exceed 100."
         }
       },
       "results": {
@@ -144,82 +128,75 @@
           "type": "baseline",
           "cumulative_regret_at_100": 219.9,
           "instant_regret_at_100": 0.8,
-          "label_budget": 100,
-          "num_models": 97,
-          "num_items": 872
+          "instant_regret_at_50": 1.9,
+          "label_budget": 100
         },
         "uncertainty": {
           "type": "baseline",
           "cumulative_regret_at_100": 89.6,
           "instant_regret_at_100": 0.1,
-          "label_budget": 100,
-          "num_models": 97,
-          "num_items": 872
+          "instant_regret_at_50": 0.2,
+          "label_budget": 100
+        },
+        "ensv": {
+          "type": "baseline",
+          "initial_regret": 3.6
         },
         "coda": {
           "type": "proposed",
           "cumulative_regret_at_100": 51.7,
           "instant_regret_at_100": 0.0,
-          "label_budget": 100,
-          "num_models": 97,
-          "num_items": 872
+          "instant_regret_at_50": 0.0,
+          "initial_regret": 3.6,
+          "label_budget": 100
         }
       }
     },
     "glue_mrpc_active_selection": {
-      "description": "Active model selection on the GLUE MRPC benchmark at a 100-label budget, adding another paper-reported ModelSelector text task.",
-      "weight": 0.20,
+      "description": "Active model selection on GLUE MRPC (95 candidates, 2 classes) with a 100-label budget (Table 1).",
+      "weight": 0.2,
       "primary_metric": "cumulative_regret_at_100",
+      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
       "metrics": {
         "cumulative_regret_at_100": {
           "higher_is_better": false,
           "coefficient": -1.0,
-          "description": "Total excess error incurred over the queried-label trajectory through the 100-label budget."
+          "description": "Total excess error (percentage points summed over rounds 1-100) of the model selected in each round, over a 100-label budget. Lower is better."
         },
         "cumulative_regret_at_25": {
           "higher_is_better": false,
           "coefficient": -0.45,
-          "description": "Early-label cumulative excess error through 25 queried labels, catching methods that only recover late."
+          "description": "Cumulative excess error over rounds 1-25: catches selectors that only recover late."
         },
         "cumulative_regret_at_50": {
           "higher_is_better": false,
           "coefficient": -0.65,
-          "description": "Mid-budget cumulative excess error through 50 queried labels."
+          "description": "Cumulative excess error over rounds 1-50."
         },
         "initial_regret": {
           "higher_is_better": false,
           "coefficient": -0.2,
-          "description": "Zero-query excess error of the initially selected model."
+          "description": "Excess error of the model selected before any label is revealed."
         },
         "instant_regret_at_50": {
           "higher_is_better": false,
           "coefficient": -0.2,
-          "description": "Excess error of the selected model after 50 queried labels."
+          "description": "Excess error of the model selected after round 50."
         },
         "instant_regret_at_100": {
           "higher_is_better": false,
           "coefficient": -0.3,
-          "description": "Excess error of the selected model after the full 100-label budget."
+          "description": "Excess error of the model selected after round 100 (end of budget)."
         },
         "near_optimal_at_100": {
           "higher_is_better": true,
           "coefficient": 0.35,
-          "description": "Whether the selected model is within one percentage point of the best candidate at the 100-label budget."
+          "description": "Fraction of seeds whose round-100 selection is within one percentage point of the best candidate."
         },
         "label_budget": {
           "higher_is_better": false,
           "coefficient": -0.2,
-          "description": "Number of ground-truth labels consumed; improvements should not come from querying more labels."
-        },
-        "num_models": {
-          "higher_is_better": true,
-          "coefficient": 0.05,
-          "description": "Candidate pool size covered by the run, guarding against selecting from an easier reduced pool."
-        },
-        "num_items": {
-          "higher_is_better": true,
-          "coefficient": 0.05,
-          "description": "Evaluation item count covered by the run, guarding against scoring on a smaller benchmark."
+          "description": "Labels actually revealed by the evaluator's oracle (mean over seeds); a selector may stop early and keep its selection. Cannot exceed 100."
         }
       },
       "results": {
@@ -227,139 +204,161 @@
           "type": "baseline",
           "cumulative_regret_at_100": 318.2,
           "instant_regret_at_100": 0.2,
-          "label_budget": 100,
-          "num_models": 95,
-          "num_items": 408
+          "instant_regret_at_50": 2.0,
+          "label_budget": 100
         },
         "uncertainty": {
           "type": "baseline",
           "cumulative_regret_at_100": 301.1,
           "instant_regret_at_100": 0.2,
-          "label_budget": 100,
-          "num_models": 95,
-          "num_items": 408
+          "instant_regret_at_50": 1.6,
+          "label_budget": 100
+        },
+        "ensv": {
+          "type": "baseline",
+          "initial_regret": 1.0
         },
         "coda": {
           "type": "proposed",
           "cumulative_regret_at_100": 49.0,
           "instant_regret_at_100": 0.5,
-          "label_budget": 100,
-          "num_models": 95,
-          "num_items": 408
+          "instant_regret_at_50": 0.5,
+          "initial_regret": 1.0,
+          "label_budget": 100
+        }
+      }
+    },
+    "glue_cola_active_selection": {
+      "description": "Active model selection on GLUE CoLA (109 candidates, 2 classes, imbalanced labels) with a 100-label budget. This is the paper's own failure case (Table 1, Sec. 7 and Fig. 4): it scores where the reference method falls short.",
+      "weight": 0.06,
+      "primary_metric": "cumulative_regret_at_100",
+      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
+      "metrics": {
+        "cumulative_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -1.0,
+          "description": "Total excess error (percentage points summed over rounds 1-100) of the model selected in each round, over a 100-label budget. Lower is better."
+        },
+        "cumulative_regret_at_25": {
+          "higher_is_better": false,
+          "coefficient": -0.45,
+          "description": "Cumulative excess error over rounds 1-25: catches selectors that only recover late."
+        },
+        "cumulative_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.65,
+          "description": "Cumulative excess error over rounds 1-50."
+        },
+        "initial_regret": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Excess error of the model selected before any label is revealed."
+        },
+        "instant_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Excess error of the model selected after round 50."
+        },
+        "instant_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -0.3,
+          "description": "Excess error of the model selected after round 100 (end of budget)."
+        },
+        "near_optimal_at_100": {
+          "higher_is_better": true,
+          "coefficient": 0.35,
+          "description": "Fraction of seeds whose round-100 selection is within one percentage point of the best candidate."
+        },
+        "label_budget": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Labels actually revealed by the evaluator's oracle (mean over seeds); a selector may stop early and keep its selection. Cannot exceed 100."
+        }
+      },
+      "results": {
+        "random": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 368.1,
+          "instant_regret_at_100": 2.9,
+          "instant_regret_at_50": 3.6,
+          "label_budget": 100
+        },
+        "uncertainty": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 169.5,
+          "instant_regret_at_100": 0.2,
+          "instant_regret_at_50": 2.0,
+          "label_budget": 100
+        },
+        "ensv": {
+          "type": "baseline",
+          "initial_regret": 5.3
+        },
+        "coda": {
+          "type": "proposed",
+          "cumulative_regret_at_100": 2226.7,
+          "instant_regret_at_100": 56.0,
+          "instant_regret_at_50": 0.4,
+          "initial_regret": 5.0,
+          "label_budget": 100
         }
       }
     },
     "glue_rte_unsupervised_selection": {
-      "description": "Unsupervised model selection on GLUE RTE using no queried labels, matching the paper's Table 5 step-0 regret comparison.",
+      "description": "Zero-label model selection on GLUE RTE: the selector receives a 0-label budget and is scored on its only selection (Table 5).",
       "weight": 0.14,
       "primary_metric": "initial_regret",
+      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
       "metrics": {
         "initial_regret": {
           "higher_is_better": false,
           "coefficient": -1.0,
-          "description": "Zero-query excess error of the selected model."
-        },
-        "label_budget": {
-          "higher_is_better": false,
-          "coefficient": -0.2,
-          "description": "Number of ground-truth labels consumed; this zero-label experiment should stay at budget 0."
-        },
-        "num_models": {
-          "higher_is_better": true,
-          "coefficient": 0.05,
-          "description": "Candidate pool size covered by the run, guarding against selecting from an easier reduced pool."
-        },
-        "num_items": {
-          "higher_is_better": true,
-          "coefficient": 0.05,
-          "description": "Evaluation item count covered by the run, guarding against scoring on a smaller benchmark."
-        },
-        "cumulative_regret_at_100": {
-          "higher_is_better": false,
-          "coefficient": 0.0,
-          "description": "Unscored compatibility metric for the shared trace format; should remain zero when no labels are queried."
-        },
-        "instant_regret_at_100": {
-          "higher_is_better": false,
-          "coefficient": -0.2,
-          "description": "Compatibility metric for the shared trace format; equals initial regret in zero-label runs."
+          "description": "Excess error (percentage points) of the model selected with no labels."
         }
       },
       "results": {
         "ensv": {
           "type": "baseline",
-          "initial_regret": 14.8,
-          "label_budget": 0,
-          "num_models": 87,
-          "num_items": 277,
-          "cumulative_regret_at_100": 0.0,
-          "instant_regret_at_100": 14.8
+          "initial_regret": 14.8
         },
         "coda": {
           "type": "proposed",
-          "initial_regret": 14.8,
-          "label_budget": 0,
-          "num_models": 87,
-          "num_items": 277,
-          "cumulative_regret_at_100": 0.0,
-          "instant_regret_at_100": 14.8
+          "initial_regret": 14.8
+        },
+        "random": {
+          "type": "baseline"
+        },
+        "uncertainty": {
+          "type": "baseline"
         }
       }
     },
     "glue_sst2_unsupervised_selection": {
-      "description": "Unsupervised model selection on GLUE SST2 using no queried labels, matching the paper's Table 5 step-0 regret comparison.",
-      "weight": 0.10,
+      "description": "Zero-label model selection on GLUE SST2: the selector receives a 0-label budget and is scored on its only selection (Table 5).",
+      "weight": 0.1,
       "primary_metric": "initial_regret",
+      "note": "Scaled setup: every task's items are split into two halves balanced in class mix and per-model error. Selectors run on one half with the paper's 100-label budget, 5 seeds and the full candidate pool; the visible half is data/benchmarks/<task>_train.json, the held-out half (labels, candidate order and item order hidden) lives only in eval/test/. Paper numbers below are the paper's full-pool values (Tables 1, 3, 4, 5) and are kept unchanged.",
       "metrics": {
         "initial_regret": {
           "higher_is_better": false,
           "coefficient": -1.0,
-          "description": "Zero-query excess error of the selected model."
-        },
-        "label_budget": {
-          "higher_is_better": false,
-          "coefficient": -0.2,
-          "description": "Number of ground-truth labels consumed; this zero-label experiment should stay at budget 0."
-        },
-        "num_models": {
-          "higher_is_better": true,
-          "coefficient": 0.05,
-          "description": "Candidate pool size covered by the run, guarding against selecting from an easier reduced pool."
-        },
-        "num_items": {
-          "higher_is_better": true,
-          "coefficient": 0.05,
-          "description": "Evaluation item count covered by the run, guarding against scoring on a smaller benchmark."
-        },
-        "cumulative_regret_at_100": {
-          "higher_is_better": false,
-          "coefficient": 0.0,
-          "description": "Unscored compatibility metric for the shared trace format; should remain zero when no labels are queried."
-        },
-        "instant_regret_at_100": {
-          "higher_is_better": false,
-          "coefficient": -0.2,
-          "description": "Compatibility metric for the shared trace format; equals initial regret in zero-label runs."
+          "description": "Excess error (percentage points) of the model selected with no labels."
         }
       },
       "results": {
         "ensv": {
           "type": "baseline",
-          "initial_regret": 3.6,
-          "label_budget": 0,
-          "num_models": 97,
-          "num_items": 872,
-          "cumulative_regret_at_100": 0.0,
-          "instant_regret_at_100": 3.6
+          "initial_regret": 3.6
         },
         "coda": {
           "type": "proposed",
-          "initial_regret": 3.6,
-          "label_budget": 0,
-          "num_models": 97,
-          "num_items": 872,
-          "cumulative_regret_at_100": 0.0,
-          "instant_regret_at_100": 3.6
+          "initial_regret": 3.6
+        },
+        "random": {
+          "type": "baseline"
+        },
+        "uncertainty": {
+          "type": "baseline"
         }
       }
     }
