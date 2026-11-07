@@ -1,0 +1,143 @@
+{
+  "name": "visible_label_oracle_shortcut",
+  "about": "read all visible labels, select their best index, no queries",
+  "command": [
+    "python",
+    "redteam/hardening/policies/visible_label_oracle.py"
+  ],
+  "data_mutation": null,
+  "test_exit_code": 0,
+  "restored": true,
+  "seconds": 5.4,
+  "rank_delta": -983.5172448132398,
+  "rank_contributions": {
+    "glue_rte_active_selection": {
+      "cumulative_regret_at_100": -398.04347826086956,
+      "cumulative_regret_at_25": -22.010869565217384,
+      "cumulative_regret_at_50": -68.81521739130434,
+      "initial_regret": -0.39130434782608686,
+      "instant_regret_at_50": -0.8695652173913043,
+      "instant_regret_at_100": -1.8260869565217392,
+      "near_optimal_at_100": -0.105,
+      "label_budget": 6.0
+    },
+    "glue_sst2_active_selection": {
+      "cumulative_regret_at_100": -315.5963302752294,
+      "cumulative_regret_at_25": -33.956422018348626,
+      "cumulative_regret_at_50": -100.77981651376146,
+      "initial_regret": -0.49541284403669733,
+      "instant_regret_at_50": -0.6422018348623854,
+      "instant_regret_at_100": -0.9633027522935779,
+      "near_optimal_at_100": -0.06999999999999999,
+      "label_budget": 4.000000000000001
+    },
+    "glue_mrpc_active_selection": {
+      "cumulative_regret_at_100": -156.56862745098042,
+      "cumulative_regret_at_25": -16.897058823529413,
+      "cumulative_regret_at_50": -48.24019607843138,
+      "initial_regret": -0.31372549019607854,
+      "instant_regret_at_50": -0.3529411764705883,
+      "instant_regret_at_100": -0.47058823529411764,
+      "near_optimal_at_100": -0.06999999999999999,
+      "label_budget": 4.000000000000001
+    },
+    "glue_cola_active_selection": {
+      "cumulative_regret_at_100": 163.404990403071,
+      "cumulative_regret_at_25": 0.09846449136276379,
+      "cumulative_regret_at_50": 5.801343570057581,
+      "initial_regret": 0.02994241842610364,
+      "instant_regret_at_50": 0.6310940499040307,
+      "instant_regret_at_100": 0.946641074856046,
+      "near_optimal_at_100": 0.0,
+      "label_budget": 1.2
+    },
+    "glue_rte_unsupervised_selection": {
+      "initial_regret": -0.9130434782608695
+    },
+    "glue_sst2_unsupervised_selection": {
+      "initial_regret": -1.238532110091743
+    }
+  },
+  "metrics": {
+    "glue_rte_active_selection": {
+      "initial_regret": 20.28985507246377,
+      "cumulative_regret_at_25": 507.2463768115942,
+      "cumulative_regret_at_50": 1014.4927536231884,
+      "cumulative_regret_at_100": 2028.9855072463768,
+      "instant_regret_at_50": 20.28985507246377,
+      "instant_regret_at_100": 20.28985507246377,
+      "near_optimal_at_100": 0.0,
+      "label_budget": 0.0
+    },
+    "glue_sst2_active_selection": {
+      "initial_regret": 16.05504587155963,
+      "cumulative_regret_at_25": 401.3761467889908,
+      "cumulative_regret_at_50": 802.7522935779816,
+      "cumulative_regret_at_100": 1605.5045871559632,
+      "instant_regret_at_50": 16.05504587155963,
+      "instant_regret_at_100": 16.05504587155963,
+      "near_optimal_at_100": 0.0,
+      "label_budget": 0.0
+    },
+    "glue_mrpc_active_selection": {
+      "initial_regret": 8.823529411764707,
+      "cumulative_regret_at_25": 220.58823529411765,
+      "cumulative_regret_at_50": 441.1764705882353,
+      "cumulative_regret_at_100": 882.3529411764706,
+      "instant_regret_at_50": 8.823529411764707,
+      "instant_regret_at_100": 8.823529411764707,
+      "near_optimal_at_100": 0.0,
+      "label_budget": 0.0
+    },
+    "glue_cola_active_selection": {
+      "initial_regret": 3.4548944337811904,
+      "cumulative_regret_at_25": 86.37236084452975,
+      "cumulative_regret_at_50": 172.7447216890595,
+      "cumulative_regret_at_100": 345.489443378119,
+      "instant_regret_at_50": 3.4548944337811904,
+      "instant_regret_at_100": 3.4548944337811904,
+      "near_optimal_at_100": 0.0,
+      "label_budget": 0.0
+    },
+    "glue_rte_unsupervised_selection": {
+      "initial_regret": 20.28985507246377
+    },
+    "glue_sst2_unsupervised_selection": {
+      "initial_regret": 16.05504587155963
+    }
+  },
+  "failures": {},
+  "labels_revealed_per_episode": {
+    "glue_rte_active_selection/seed0": 0,
+    "glue_rte_active_selection/seed1": 0,
+    "glue_rte_active_selection/seed2": 0,
+    "glue_rte_active_selection/seed3": 0,
+    "glue_rte_active_selection/seed4": 0,
+    "glue_sst2_active_selection/seed0": 0,
+    "glue_sst2_active_selection/seed1": 0,
+    "glue_sst2_active_selection/seed2": 0,
+    "glue_sst2_active_selection/seed3": 0,
+    "glue_sst2_active_selection/seed4": 0,
+    "glue_mrpc_active_selection/seed0": 0,
+    "glue_mrpc_active_selection/seed1": 0,
+    "glue_mrpc_active_selection/seed2": 0,
+    "glue_mrpc_active_selection/seed3": 0,
+    "glue_mrpc_active_selection/seed4": 0,
+    "glue_cola_active_selection/seed0": 0,
+    "glue_cola_active_selection/seed1": 0,
+    "glue_cola_active_selection/seed2": 0,
+    "glue_cola_active_selection/seed3": 0,
+    "glue_cola_active_selection/seed4": 0,
+    "glue_rte_unsupervised_selection/seed0": 0,
+    "glue_rte_unsupervised_selection/seed1": 0,
+    "glue_rte_unsupervised_selection/seed2": 0,
+    "glue_rte_unsupervised_selection/seed3": 0,
+    "glue_rte_unsupervised_selection/seed4": 0,
+    "glue_sst2_unsupervised_selection/seed0": 0,
+    "glue_sst2_unsupervised_selection/seed1": 0,
+    "glue_sst2_unsupervised_selection/seed2": 0,
+    "glue_sst2_unsupervised_selection/seed3": 0,
+    "glue_sst2_unsupervised_selection/seed4": 0
+  },
+  "complete": true
+}

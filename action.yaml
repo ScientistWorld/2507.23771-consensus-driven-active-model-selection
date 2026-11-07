@@ -1,8 +1,8 @@
 # Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends.
-action: pending
+action: submit
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: ""
+notes: "Hardening run: check vectorized CODA vs original, rerun reference CODA + random/uncertainty/EnsV through the new evaluator-held label oracle on visible and hidden halves (6 experiments x 5 seeds), then rerun the better/weaker variants and 18 shortcut attempts through scripts/evaluate_test.sh."

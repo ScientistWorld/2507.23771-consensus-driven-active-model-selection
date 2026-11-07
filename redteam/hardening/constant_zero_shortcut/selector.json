@@ -1,0 +1,8 @@
+{
+  "command": [
+    "python",
+    "redteam/hardening/policies/constant_model.py",
+    "--model",
+    "0"
+  ]
+}

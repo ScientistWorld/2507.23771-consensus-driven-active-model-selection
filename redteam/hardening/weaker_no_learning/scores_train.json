@@ -1,0 +1,76 @@
+{
+  "slice": "train",
+  "experiments": {
+    "glue_rte_active_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 15.827338129496402,
+          "cumulative_regret_at_25": 395.68345323741005,
+          "cumulative_regret_at_50": 791.3669064748201,
+          "cumulative_regret_at_100": 1582.7338129496402,
+          "instant_regret_at_50": 15.827338129496402,
+          "instant_regret_at_100": 15.827338129496402,
+          "near_optimal_at_100": 0.0,
+          "label_budget": 100.0
+        }
+      }
+    },
+    "glue_sst2_active_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 4.587155963302752,
+          "cumulative_regret_at_25": 114.67889908256879,
+          "cumulative_regret_at_50": 229.35779816513758,
+          "cumulative_regret_at_100": 458.71559633027516,
+          "instant_regret_at_50": 4.587155963302752,
+          "instant_regret_at_100": 4.587155963302752,
+          "near_optimal_at_100": 0.0,
+          "label_budget": 100.0
+        }
+      }
+    },
+    "glue_mrpc_active_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 0.980392156862745,
+          "cumulative_regret_at_25": 24.509803921568626,
+          "cumulative_regret_at_50": 49.01960784313725,
+          "cumulative_regret_at_100": 98.0392156862745,
+          "instant_regret_at_50": 0.980392156862745,
+          "instant_regret_at_100": 0.980392156862745,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0
+        }
+      }
+    },
+    "glue_cola_active_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 4.789272030651341,
+          "cumulative_regret_at_25": 119.73180076628356,
+          "cumulative_regret_at_50": 239.4636015325671,
+          "cumulative_regret_at_100": 478.9272030651342,
+          "instant_regret_at_50": 4.789272030651341,
+          "instant_regret_at_100": 4.789272030651341,
+          "near_optimal_at_100": 0.0,
+          "label_budget": 100.0
+        }
+      }
+    },
+    "glue_rte_unsupervised_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 15.827338129496402
+        }
+      }
+    },
+    "glue_sst2_unsupervised_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 4.587155963302752
+        }
+      }
+    }
+  },
+  "failures": {}
+}

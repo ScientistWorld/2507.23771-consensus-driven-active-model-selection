@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python",
+    "method/coda_reproduction.py",
+    "--eta",
+    "0.1",
+    "--stable-rounds",
+    "12",
+    "--min-labels",
+    "25"
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "name": "backdate_selection_shortcut",
+  "about": "query 100 labels committing model 0, then announce a backdated best",
+  "command": [
+    "python",
+    "redteam/hardening/policies/backdate.py"
+  ],
+  "data_mutation": null,
+  "test_exit_code": 0,
+  "restored": true,
+  "seconds": 3.0,
+  "rank_delta": -1628.7622393088448,
+  "rank_contributions": {
+    "glue_rte_active_selection": {
+      "cumulative_regret_at_100": -994.5652173913044,
+      "cumulative_regret_at_25": -90.48913043478261,
+      "cumulative_regret_at_50": -266.64130434782606,
+      "initial_regret": -1.608695652173913,
+      "instant_regret_at_50": -2.086956521739131,
+      "instant_regret_at_100": -0.0,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0
+    },
+    "glue_sst2_active_selection": {
+      "cumulative_regret_at_100": -221.55963302752298,
+      "cumulative_regret_at_25": -23.635321100917437,
+      "cumulative_regret_at_50": -70.96330275229359,
+      "initial_regret": -0.31192660550458723,
+      "instant_regret_at_50": -0.4587155963302753,
+      "instant_regret_at_100": -0.0,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0
+    },
+    "glue_mrpc_active_selection": {
+      "cumulative_regret_at_100": -77.15686274509805,
+      "cumulative_regret_at_25": -8.073529411764707,
+      "cumulative_regret_at_50": -22.75,
+      "initial_regret": -0.15686274509803927,
+      "instant_regret_at_50": -0.19607843137254907,
+      "instant_regret_at_100": 0.05882352941176469,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0
+    },
+    "glue_cola_active_selection": {
+      "cumulative_regret_at_100": 153.35124760076775,
+      "cumulative_regret_at_25": -1.067562380038388,
+      "cumulative_regret_at_50": 2.43282149712092,
+      "initial_regret": 0.009213051823416507,
+      "instant_regret_at_50": 0.6103646833013436,
+      "instant_regret_at_100": 1.0088291746641074,
+      "near_optimal_at_100": 0.020999999999999998,
+      "label_budget": -0.0
+    },
+    "glue_rte_unsupervised_selection": {
+      "initial_regret": -3.7536231884057973
+    },
+    "glue_sst2_unsupervised_selection": {
+      "initial_regret": -0.7798165137614679
+    }
+  },
+  "metrics": {
+    "glue_rte_active_selection": {
+      "initial_regret": 40.57971014492754,
+      "cumulative_regret_at_25": 1014.4927536231884,
+      "cumulative_regret_at_50": 2028.9855072463768,
+      "cumulative_regret_at_100": 4017.3913043478265,
+      "instant_regret_at_50": 40.57971014492754,
+      "instant_regret_at_100": 0.0,
+      "near_optimal_at_100": 1.0,
+      "label_budget": 100.0
+    },
+    "glue_sst2_active_selection": {
+      "initial_regret": 11.46788990825688,
+      "cumulative_regret_at_25": 286.69724770642205,
+      "cumulative_regret_at_50": 573.3944954128441,
+      "cumulative_regret_at_100": 1135.3211009174313,
+      "instant_regret_at_50": 11.46788990825688,
+      "instant_regret_at_100": 0.0,
+      "near_optimal_at_100": 1.0,
+      "label_budget": 100.0
+    },
+    "glue_mrpc_active_selection": {
+      "initial_regret": 4.901960784313726,
+      "cumulative_regret_at_25": 122.54901960784314,
+      "cumulative_regret_at_50": 245.09803921568627,
+      "cumulative_regret_at_100": 485.29411764705884,
+      "instant_regret_at_50": 4.901960784313726,
+      "instant_regret_at_100": 0.0,
+      "near_optimal_at_100": 1.0,
+      "label_budget": 100.0
+    },
+    "glue_cola_active_selection": {
+      "initial_regret": 5.182341650671785,
+      "cumulative_regret_at_25": 129.55854126679463,
+      "cumulative_regret_at_50": 259.11708253358927,
+      "cumulative_regret_at_100": 513.0518234165067,
+      "instant_regret_at_50": 5.182341650671785,
+      "instant_regret_at_100": 0.0,
+      "near_optimal_at_100": 1.0,
+      "label_budget": 100.0
+    },
+    "glue_rte_unsupervised_selection": {
+      "initial_regret": 40.57971014492754
+    },
+    "glue_sst2_unsupervised_selection": {
+      "initial_regret": 11.46788990825688
+    }
+  },
+  "failures": {},
+  "labels_revealed_per_episode": {
+    "glue_rte_active_selection/seed0": 100,
+    "glue_rte_active_selection/seed1": 100,
+    "glue_rte_active_selection/seed2": 100,
+    "glue_rte_active_selection/seed3": 100,
+    "glue_rte_active_selection/seed4": 100,
+    "glue_sst2_active_selection/seed0": 100,
+    "glue_sst2_active_selection/seed1": 100,
+    "glue_sst2_active_selection/seed2": 100,
+    "glue_sst2_active_selection/seed3": 100,
+    "glue_sst2_active_selection/seed4": 100,
+    "glue_mrpc_active_selection/seed0": 100,
+    "glue_mrpc_active_selection/seed1": 100,
+    "glue_mrpc_active_selection/seed2": 100,
+    "glue_mrpc_active_selection/seed3": 100,
+    "glue_mrpc_active_selection/seed4": 100,
+    "glue_cola_active_selection/seed0": 100,
+    "glue_cola_active_selection/seed1": 100,
+    "glue_cola_active_selection/seed2": 100,
+    "glue_cola_active_selection/seed3": 100,
+    "glue_cola_active_selection/seed4": 100,
+    "glue_rte_unsupervised_selection/seed0": 0,
+    "glue_rte_unsupervised_selection/seed1": 0,
+    "glue_rte_unsupervised_selection/seed2": 0,
+    "glue_rte_unsupervised_selection/seed3": 0,
+    "glue_rte_unsupervised_selection/seed4": 0,
+    "glue_sst2_unsupervised_selection/seed0": 0,
+    "glue_sst2_unsupervised_selection/seed1": 0,
+    "glue_sst2_unsupervised_selection/seed2": 0,
+    "glue_sst2_unsupervised_selection/seed3": 0,
+    "glue_sst2_unsupervised_selection/seed4": 0
+  },
+  "complete": true
+}

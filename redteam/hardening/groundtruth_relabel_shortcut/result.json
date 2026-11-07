@@ -1,0 +1,145 @@
+{
+  "name": "groundtruth_relabel_shortcut",
+  "about": "overwrite visible labels with model 0's predictions; select model 0",
+  "command": [
+    "python",
+    "redteam/hardening/policies/constant_model.py",
+    "--model",
+    "0"
+  ],
+  "data_mutation": "relabel",
+  "test_exit_code": 0,
+  "restored": true,
+  "seconds": 5.5,
+  "rank_delta": -1634.314710094187,
+  "rank_contributions": {
+    "glue_rte_active_selection": {
+      "cumulative_regret_at_100": -1006.7391304347825,
+      "cumulative_regret_at_25": -90.48913043478261,
+      "cumulative_regret_at_50": -266.64130434782606,
+      "initial_regret": -1.608695652173913,
+      "instant_regret_at_50": -2.086956521739131,
+      "instant_regret_at_100": -3.6521739130434785,
+      "near_optimal_at_100": -0.105,
+      "label_budget": 6.0
+    },
+    "glue_sst2_active_selection": {
+      "cumulative_regret_at_100": -223.85321100917437,
+      "cumulative_regret_at_25": -23.635321100917437,
+      "cumulative_regret_at_50": -70.96330275229359,
+      "initial_regret": -0.31192660550458723,
+      "instant_regret_at_50": -0.4587155963302753,
+      "instant_regret_at_100": -0.6880733944954128,
+      "near_optimal_at_100": -0.06999999999999999,
+      "label_budget": 4.000000000000001
+    },
+    "glue_mrpc_active_selection": {
+      "cumulative_regret_at_100": -78.13725490196079,
+      "cumulative_regret_at_25": -8.073529411764707,
+      "cumulative_regret_at_50": -22.75,
+      "initial_regret": -0.15686274509803927,
+      "instant_regret_at_50": -0.19607843137254907,
+      "instant_regret_at_100": -0.23529411764705882,
+      "near_optimal_at_100": -0.06999999999999999,
+      "label_budget": 4.000000000000001
+    },
+    "glue_cola_active_selection": {
+      "cumulative_regret_at_100": 153.04030710172742,
+      "cumulative_regret_at_25": -1.067562380038388,
+      "cumulative_regret_at_50": 2.43282149712092,
+      "initial_regret": 0.009213051823416507,
+      "instant_regret_at_50": 0.6103646833013436,
+      "instant_regret_at_100": 0.9155470249520153,
+      "near_optimal_at_100": 0.0,
+      "label_budget": 1.2
+    },
+    "glue_rte_unsupervised_selection": {
+      "initial_regret": -3.7536231884057973
+    },
+    "glue_sst2_unsupervised_selection": {
+      "initial_regret": -0.7798165137614679
+    }
+  },
+  "metrics": {
+    "glue_rte_active_selection": {
+      "initial_regret": 40.57971014492754,
+      "cumulative_regret_at_25": 1014.4927536231884,
+      "cumulative_regret_at_50": 2028.9855072463768,
+      "cumulative_regret_at_100": 4057.9710144927535,
+      "instant_regret_at_50": 40.57971014492754,
+      "instant_regret_at_100": 40.57971014492754,
+      "near_optimal_at_100": 0.0,
+      "label_budget": 0.0
+    },
+    "glue_sst2_active_selection": {
+      "initial_regret": 11.46788990825688,
+      "cumulative_regret_at_25": 286.69724770642205,
+      "cumulative_regret_at_50": 573.3944954128441,
+      "cumulative_regret_at_100": 1146.7889908256882,
+      "instant_regret_at_50": 11.46788990825688,
+      "instant_regret_at_100": 11.46788990825688,
+      "near_optimal_at_100": 0.0,
+      "label_budget": 0.0
+    },
+    "glue_mrpc_active_selection": {
+      "initial_regret": 4.901960784313726,
+      "cumulative_regret_at_25": 122.54901960784314,
+      "cumulative_regret_at_50": 245.09803921568627,
+      "cumulative_regret_at_100": 490.19607843137254,
+      "instant_regret_at_50": 4.901960784313726,
+      "instant_regret_at_100": 4.901960784313726,
+      "near_optimal_at_100": 0.0,
+      "label_budget": 0.0
+    },
+    "glue_cola_active_selection": {
+      "initial_regret": 5.182341650671785,
+      "cumulative_regret_at_25": 129.55854126679463,
+      "cumulative_regret_at_50": 259.11708253358927,
+      "cumulative_regret_at_100": 518.2341650671785,
+      "instant_regret_at_50": 5.182341650671785,
+      "instant_regret_at_100": 5.182341650671785,
+      "near_optimal_at_100": 0.0,
+      "label_budget": 0.0
+    },
+    "glue_rte_unsupervised_selection": {
+      "initial_regret": 40.57971014492754
+    },
+    "glue_sst2_unsupervised_selection": {
+      "initial_regret": 11.46788990825688
+    }
+  },
+  "failures": {},
+  "labels_revealed_per_episode": {
+    "glue_rte_active_selection/seed0": 0,
+    "glue_rte_active_selection/seed1": 0,
+    "glue_rte_active_selection/seed2": 0,
+    "glue_rte_active_selection/seed3": 0,
+    "glue_rte_active_selection/seed4": 0,
+    "glue_sst2_active_selection/seed0": 0,
+    "glue_sst2_active_selection/seed1": 0,
+    "glue_sst2_active_selection/seed2": 0,
+    "glue_sst2_active_selection/seed3": 0,
+    "glue_sst2_active_selection/seed4": 0,
+    "glue_mrpc_active_selection/seed0": 0,
+    "glue_mrpc_active_selection/seed1": 0,
+    "glue_mrpc_active_selection/seed2": 0,
+    "glue_mrpc_active_selection/seed3": 0,
+    "glue_mrpc_active_selection/seed4": 0,
+    "glue_cola_active_selection/seed0": 0,
+    "glue_cola_active_selection/seed1": 0,
+    "glue_cola_active_selection/seed2": 0,
+    "glue_cola_active_selection/seed3": 0,
+    "glue_cola_active_selection/seed4": 0,
+    "glue_rte_unsupervised_selection/seed0": 0,
+    "glue_rte_unsupervised_selection/seed1": 0,
+    "glue_rte_unsupervised_selection/seed2": 0,
+    "glue_rte_unsupervised_selection/seed3": 0,
+    "glue_rte_unsupervised_selection/seed4": 0,
+    "glue_sst2_unsupervised_selection/seed0": 0,
+    "glue_sst2_unsupervised_selection/seed1": 0,
+    "glue_sst2_unsupervised_selection/seed2": 0,
+    "glue_sst2_unsupervised_selection/seed3": 0,
+    "glue_sst2_unsupervised_selection/seed4": 0
+  },
+  "complete": true
+}

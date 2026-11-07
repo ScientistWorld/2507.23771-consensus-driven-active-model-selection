@@ -1,0 +1,397 @@
+{
+  "reference_test_scores": "scoring/scores_test.json",
+  "cases": {
+    "honest_stable_stop": {
+      "about": "better variant: eta 0.1 + stop after 12 unchanged rounds (>= 25 labels)",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -963.8297191421282,
+      "failures": {}
+    },
+    "weaker_no_learning": {
+      "about": "weaker variant: CODA prior and EIG queries, but no posterior update (eta 0)",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -151.1018538161268,
+      "failures": {}
+    },
+    "visible_label_oracle_shortcut": {
+      "about": "read all visible labels, select their best index, no queries",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -983.5172448132398,
+      "failures": {}
+    },
+    "trace_budget_shortcut": {
+      "about": "reference CODA plus forged budget/size/regret fields in every message",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": 0.0,
+      "failures": {}
+    },
+    "groundtruth_relabel_shortcut": {
+      "about": "overwrite visible labels with model 0's predictions; select model 0",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -1634.314710094187,
+      "failures": {}
+    },
+    "replace_fixed_predictions_shortcut": {
+      "about": "overwrite visible predictions with class 0; select model 0",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -1634.314710094187,
+      "failures": {}
+    },
+    "task_size_inflation_shortcut": {
+      "about": "duplicate every visible item 200x; select model 0",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -1634.314710094187,
+      "failures": {}
+    },
+    "backdate_selection_shortcut": {
+      "about": "query 100 labels committing model 0, then announce a backdated best",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -1628.7622393088448,
+      "failures": {}
+    },
+    "spoof_scores_shortcut": {
+      "about": "forge score files during evaluation; select model 0",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -1634.314710094187,
+      "failures": {}
+    },
+    "constant_zero_shortcut": {
+      "about": "always select model 0, never query",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -1634.314710094187,
+      "failures": {}
+    },
+    "empty_trace_shortcut": {
+      "about": "exit without answering",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -6363.177950813256,
+      "failures": {
+        "glue_rte_active_selection": {
+          "candidate": [
+            "seed 0: selector exited before answering round 0"
+          ]
+        },
+        "glue_sst2_active_selection": {
+          "candidate": [
+            "seed 0: selector exited before answering round 0"
+          ]
+        },
+        "glue_mrpc_active_selection": {
+          "candidate": [
+            "seed 0: selector exited before answering round 0"
+          ]
+        },
+        "glue_cola_active_selection": {
+          "candidate": [
+            "seed 0: selector exited before answering round 0"
+          ]
+        },
+        "glue_rte_unsupervised_selection": {
+          "candidate": [
+            "seed 0: selector exited before answering round 0"
+          ]
+        },
+        "glue_sst2_unsupervised_selection": {
+          "candidate": [
+            "seed 0: selector exited before answering round 0"
+          ]
+        }
+      }
+    },
+    "nan_model_shortcut": {
+      "about": "select NaN",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -6363.177950813256,
+      "failures": {
+        "glue_rte_active_selection": {
+          "candidate": [
+            "seed 0: malformed message '{\"select\": NaN, \"query\": null}\\n': non-finite number NaN"
+          ]
+        },
+        "glue_sst2_active_selection": {
+          "candidate": [
+            "seed 0: malformed message '{\"select\": NaN, \"query\": null}\\n': non-finite number NaN"
+          ]
+        },
+        "glue_mrpc_active_selection": {
+          "candidate": [
+            "seed 0: malformed message '{\"select\": NaN, \"query\": null}\\n': non-finite number NaN"
+          ]
+        },
+        "glue_cola_active_selection": {
+          "candidate": [
+            "seed 0: malformed message '{\"select\": NaN, \"query\": null}\\n': non-finite number NaN"
+          ]
+        },
+        "glue_rte_unsupervised_selection": {
+          "candidate": [
+            "seed 0: malformed message '{\"select\": NaN, \"query\": null}\\n': non-finite number NaN"
+          ]
+        },
+        "glue_sst2_unsupervised_selection": {
+          "candidate": [
+            "seed 0: malformed message '{\"select\": NaN, \"query\": null}\\n': non-finite number NaN"
+          ]
+        }
+      }
+    },
+    "null_model_shortcut": {
+      "about": "select null",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -6363.177950813256,
+      "failures": {
+        "glue_rte_active_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 87), got None"
+          ]
+        },
+        "glue_sst2_active_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 97), got None"
+          ]
+        },
+        "glue_mrpc_active_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 95), got None"
+          ]
+        },
+        "glue_cola_active_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 109), got None"
+          ]
+        },
+        "glue_rte_unsupervised_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 87), got None"
+          ]
+        },
+        "glue_sst2_unsupervised_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 97), got None"
+          ]
+        }
+      }
+    },
+    "negative_model_shortcut": {
+      "about": "select -1",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -6363.177950813256,
+      "failures": {
+        "glue_rte_active_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 87), got -1"
+          ]
+        },
+        "glue_sst2_active_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 97), got -1"
+          ]
+        },
+        "glue_mrpc_active_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 95), got -1"
+          ]
+        },
+        "glue_cola_active_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 109), got -1"
+          ]
+        },
+        "glue_rte_unsupervised_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 87), got -1"
+          ]
+        },
+        "glue_sst2_unsupervised_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 97), got -1"
+          ]
+        }
+      }
+    },
+    "float_model_shortcut": {
+      "about": "select 0.0",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -6363.177950813256,
+      "failures": {
+        "glue_rte_active_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 87), got 0.0"
+          ]
+        },
+        "glue_sst2_active_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 97), got 0.0"
+          ]
+        },
+        "glue_mrpc_active_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 95), got 0.0"
+          ]
+        },
+        "glue_cola_active_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 109), got 0.0"
+          ]
+        },
+        "glue_rte_unsupervised_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 87), got 0.0"
+          ]
+        },
+        "glue_sst2_unsupervised_selection": {
+          "candidate": [
+            "seed 0: select must be an integer in [0, 97), got 0.0"
+          ]
+        }
+      }
+    },
+    "duplicate_query_shortcut": {
+      "about": "query the same item twice",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -6363.177950813256,
+      "failures": {
+        "glue_rte_active_selection": {
+          "candidate": [
+            "seed 0: item 0 queried twice"
+          ]
+        },
+        "glue_sst2_active_selection": {
+          "candidate": [
+            "seed 0: item 0 queried twice"
+          ]
+        },
+        "glue_mrpc_active_selection": {
+          "candidate": [
+            "seed 0: item 0 queried twice"
+          ]
+        },
+        "glue_cola_active_selection": {
+          "candidate": [
+            "seed 0: item 0 queried twice"
+          ]
+        },
+        "glue_rte_unsupervised_selection": {
+          "candidate": [
+            "seed 0: query beyond the 0-label budget"
+          ]
+        },
+        "glue_sst2_unsupervised_selection": {
+          "candidate": [
+            "seed 0: query beyond the 0-label budget"
+          ]
+        }
+      }
+    },
+    "over_budget_shortcut": {
+      "about": "keep querying past the budget",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -6363.177950813256,
+      "failures": {
+        "glue_rte_active_selection": {
+          "candidate": [
+            "seed 0: query beyond the 100-label budget"
+          ]
+        },
+        "glue_sst2_active_selection": {
+          "candidate": [
+            "seed 0: query beyond the 100-label budget"
+          ]
+        },
+        "glue_mrpc_active_selection": {
+          "candidate": [
+            "seed 0: query beyond the 100-label budget"
+          ]
+        },
+        "glue_cola_active_selection": {
+          "candidate": [
+            "seed 0: query beyond the 100-label budget"
+          ]
+        },
+        "glue_rte_unsupervised_selection": {
+          "candidate": [
+            "seed 0: query beyond the 0-label budget"
+          ]
+        },
+        "glue_sst2_unsupervised_selection": {
+          "candidate": [
+            "seed 0: query beyond the 0-label budget"
+          ]
+        }
+      }
+    },
+    "crash_after_answer_shortcut": {
+      "about": "answer, then exit non-zero",
+      "test_exit_code": 0,
+      "restored": true,
+      "rank_delta": -6363.177950813256,
+      "failures": {
+        "glue_rte_active_selection": {
+          "candidate": [
+            "seed 0: selector exited with status 3"
+          ]
+        },
+        "glue_sst2_active_selection": {
+          "candidate": [
+            "seed 0: selector exited with status 3"
+          ]
+        },
+        "glue_mrpc_active_selection": {
+          "candidate": [
+            "seed 0: selector exited with status 3"
+          ]
+        },
+        "glue_cola_active_selection": {
+          "candidate": [
+            "seed 0: selector exited with status 3"
+          ]
+        },
+        "glue_rte_unsupervised_selection": {
+          "candidate": [
+            "seed 0: selector exited with status 3"
+          ]
+        },
+        "glue_sst2_unsupervised_selection": {
+          "candidate": [
+            "seed 0: selector exited with status 3"
+          ]
+        }
+      }
+    }
+  },
+  "registered_baselines": {
+    "coda": 0.0,
+    "ensv": -125.92066379693296,
+    "random": 256.7993353251038,
+    "uncertainty": 245.21675413523175
+  },
+  "reference_seed_spread": {
+    "per_seed_rank_vs_mean": {
+      "0": 3.4416913763379854e-16,
+      "1": 3.4416913763379854e-16,
+      "2": 3.4416913763379854e-16,
+      "3": 3.4416913763379854e-16,
+      "4": 3.4416913763379854e-16
+    },
+    "range": 0.0,
+    "sample_sd": 0.0,
+    "standard_error_of_5_seed_mean": 0.0
+  }
+}

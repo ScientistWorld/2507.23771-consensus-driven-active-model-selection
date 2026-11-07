@@ -1,0 +1,144 @@
+{
+  "name": "over_budget_shortcut",
+  "about": "keep querying past the budget",
+  "command": [
+    "python",
+    "redteam/hardening/policies/protocol_violation.py",
+    "overbudget"
+  ],
+  "data_mutation": null,
+  "test_exit_code": 0,
+  "restored": true,
+  "seconds": 0.7,
+  "rank_delta": -6363.177950813256,
+  "rank_contributions": {
+    "glue_rte_active_selection": {
+      "cumulative_regret_at_100": -1158.913043478261,
+      "cumulative_regret_at_25": -107.6086956521739,
+      "cumulative_regret_at_50": -316.09782608695656,
+      "initial_regret": -1.9130434782608692,
+      "instant_regret_at_50": -2.391304347826087,
+      "instant_regret_at_100": -4.108695652173913,
+      "near_optimal_at_100": -0.105,
+      "label_budget": -0.0
+    },
+    "glue_sst2_active_selection": {
+      "cumulative_regret_at_100": -1797.2477064220184,
+      "cumulative_regret_at_25": -200.6422018348624,
+      "cumulative_regret_at_50": -582.316513761468,
+      "initial_regret": -3.458715596330276,
+      "instant_regret_at_50": -3.605504587155964,
+      "instant_regret_at_100": -5.408256880733945,
+      "near_optimal_at_100": -0.06999999999999999,
+      "label_budget": -0.0
+    },
+    "glue_mrpc_active_selection": {
+      "cumulative_regret_at_100": -1205.5882352941176,
+      "cumulative_regret_at_25": -134.91176470588238,
+      "cumulative_regret_at_50": -389.171568627451,
+      "initial_regret": -2.4117647058823537,
+      "instant_regret_at_50": -2.4509803921568634,
+      "instant_regret_at_100": -3.6176470588235294,
+      "near_optimal_at_100": -0.06999999999999999,
+      "label_budget": -0.0
+    },
+    "glue_cola_active_selection": {
+      "cumulative_regret_at_100": -251.18234165067173,
+      "cumulative_regret_at_25": -46.54261036468329,
+      "cumulative_regret_at_50": -128.9395393474088,
+      "initial_regret": -0.7992322456813818,
+      "instant_regret_at_50": -0.1980806142034548,
+      "instant_regret_at_100": -0.29712092130518214,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0
+    },
+    "glue_rte_unsupervised_selection": {
+      "initial_regret": -4.463768115942029
+    },
+    "glue_sst2_unsupervised_selection": {
+      "initial_regret": -8.646788990825689
+    }
+  },
+  "metrics": {
+    "glue_rte_active_selection": {
+      "initial_regret": 45.65217391304348,
+      "cumulative_regret_at_25": 1141.304347826087,
+      "cumulative_regret_at_50": 2282.608695652174,
+      "cumulative_regret_at_100": 4565.217391304348,
+      "instant_regret_at_50": 45.65217391304348,
+      "instant_regret_at_100": 45.65217391304348,
+      "near_optimal_at_100": 0.0,
+      "label_budget": 100.0
+    },
+    "glue_sst2_active_selection": {
+      "initial_regret": 90.13761467889908,
+      "cumulative_regret_at_25": 2253.440366972477,
+      "cumulative_regret_at_50": 4506.880733944954,
+      "cumulative_regret_at_100": 9013.761467889908,
+      "instant_regret_at_50": 90.13761467889908,
+      "instant_regret_at_100": 90.13761467889908,
+      "near_optimal_at_100": 0.0,
+      "label_budget": 100.0
+    },
+    "glue_mrpc_active_selection": {
+      "initial_regret": 61.27450980392157,
+      "cumulative_regret_at_25": 1531.862745098039,
+      "cumulative_regret_at_50": 3063.725490196078,
+      "cumulative_regret_at_100": 6127.450980392156,
+      "instant_regret_at_50": 61.27450980392157,
+      "instant_regret_at_100": 61.27450980392157,
+      "near_optimal_at_100": 0.0,
+      "label_budget": 100.0
+    },
+    "glue_cola_active_selection": {
+      "initial_regret": 72.55278310940498,
+      "cumulative_regret_at_25": 1813.8195777351245,
+      "cumulative_regret_at_50": 3627.639155470249,
+      "cumulative_regret_at_100": 7255.278310940498,
+      "instant_regret_at_50": 72.55278310940498,
+      "instant_regret_at_100": 72.55278310940498,
+      "near_optimal_at_100": 0.0,
+      "label_budget": 100.0
+    },
+    "glue_rte_unsupervised_selection": {
+      "initial_regret": 45.65217391304348
+    },
+    "glue_sst2_unsupervised_selection": {
+      "initial_regret": 90.13761467889908
+    }
+  },
+  "failures": {
+    "glue_rte_active_selection": {
+      "candidate": [
+        "seed 0: query beyond the 100-label budget"
+      ]
+    },
+    "glue_sst2_active_selection": {
+      "candidate": [
+        "seed 0: query beyond the 100-label budget"
+      ]
+    },
+    "glue_mrpc_active_selection": {
+      "candidate": [
+        "seed 0: query beyond the 100-label budget"
+      ]
+    },
+    "glue_cola_active_selection": {
+      "candidate": [
+        "seed 0: query beyond the 100-label budget"
+      ]
+    },
+    "glue_rte_unsupervised_selection": {
+      "candidate": [
+        "seed 0: query beyond the 0-label budget"
+      ]
+    },
+    "glue_sst2_unsupervised_selection": {
+      "candidate": [
+        "seed 0: query beyond the 0-label budget"
+      ]
+    }
+  },
+  "labels_revealed_per_episode": {},
+  "complete": true
+}

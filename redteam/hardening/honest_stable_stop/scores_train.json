@@ -1,0 +1,76 @@
+{
+  "slice": "train",
+  "experiments": {
+    "glue_rte_active_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 15.827338129496402,
+          "cumulative_regret_at_25": 48.92086330935251,
+          "cumulative_regret_at_50": 48.92086330935251,
+          "cumulative_regret_at_100": 48.92086330935251,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 0.0,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 25.0
+        }
+      }
+    },
+    "glue_sst2_active_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 4.587155963302752,
+          "cumulative_regret_at_25": 14.220183486238534,
+          "cumulative_regret_at_50": 14.220183486238534,
+          "cumulative_regret_at_100": 14.220183486238534,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 0.0,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 26.0
+        }
+      }
+    },
+    "glue_mrpc_active_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 0.980392156862745,
+          "cumulative_regret_at_25": 0.980392156862745,
+          "cumulative_regret_at_50": 0.980392156862745,
+          "cumulative_regret_at_100": 0.980392156862745,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 0.0,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 25.0
+        }
+      }
+    },
+    "glue_cola_active_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 4.789272030651341,
+          "cumulative_regret_at_25": 581.4176245210728,
+          "cumulative_regret_at_50": 1979.8850574712644,
+          "cumulative_regret_at_100": 4776.819923371648,
+          "instant_regret_at_50": 55.93869731800767,
+          "instant_regret_at_100": 55.93869731800767,
+          "near_optimal_at_100": 0.0,
+          "label_budget": 27.0
+        }
+      }
+    },
+    "glue_rte_unsupervised_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 15.827338129496402
+        }
+      }
+    },
+    "glue_sst2_unsupervised_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 4.587155963302752
+        }
+      }
+    }
+  },
+  "failures": {}
+}

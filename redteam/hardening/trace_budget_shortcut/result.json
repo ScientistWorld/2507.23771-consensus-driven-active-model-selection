@@ -1,0 +1,143 @@
+{
+  "name": "trace_budget_shortcut",
+  "about": "reference CODA plus forged budget/size/regret fields in every message",
+  "command": [
+    "python",
+    "redteam/hardening/policies/spoofed_fields.py"
+  ],
+  "data_mutation": null,
+  "test_exit_code": 0,
+  "restored": true,
+  "seconds": 617.6,
+  "rank_delta": 0.0,
+  "rank_contributions": {
+    "glue_rte_active_selection": {
+      "cumulative_regret_at_100": -0.0,
+      "cumulative_regret_at_25": -0.0,
+      "cumulative_regret_at_50": -0.0,
+      "initial_regret": -0.0,
+      "instant_regret_at_50": -0.0,
+      "instant_regret_at_100": -0.0,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0
+    },
+    "glue_sst2_active_selection": {
+      "cumulative_regret_at_100": -0.0,
+      "cumulative_regret_at_25": -0.0,
+      "cumulative_regret_at_50": -0.0,
+      "initial_regret": -0.0,
+      "instant_regret_at_50": -0.0,
+      "instant_regret_at_100": -0.0,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0
+    },
+    "glue_mrpc_active_selection": {
+      "cumulative_regret_at_100": -0.0,
+      "cumulative_regret_at_25": -0.0,
+      "cumulative_regret_at_50": -0.0,
+      "initial_regret": -0.0,
+      "instant_regret_at_50": -0.0,
+      "instant_regret_at_100": -0.0,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0
+    },
+    "glue_cola_active_selection": {
+      "cumulative_regret_at_100": -0.0,
+      "cumulative_regret_at_25": -0.0,
+      "cumulative_regret_at_50": -0.0,
+      "initial_regret": -0.0,
+      "instant_regret_at_50": -0.0,
+      "instant_regret_at_100": -0.0,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0
+    },
+    "glue_rte_unsupervised_selection": {
+      "initial_regret": -0.0
+    },
+    "glue_sst2_unsupervised_selection": {
+      "initial_regret": -0.0
+    }
+  },
+  "metrics": {
+    "glue_rte_active_selection": {
+      "initial_regret": 13.768115942028988,
+      "cumulative_regret_at_25": 344.2028985507247,
+      "cumulative_regret_at_50": 661.5942028985507,
+      "cumulative_regret_at_100": 702.1739130434783,
+      "instant_regret_at_50": 5.797101449275362,
+      "instant_regret_at_100": 0.0,
+      "near_optimal_at_100": 1.0,
+      "label_budget": 100.0
+    },
+    "glue_sst2_active_selection": {
+      "initial_regret": 3.669724770642202,
+      "cumulative_regret_at_25": 24.08256880733945,
+      "cumulative_regret_at_50": 27.522935779816514,
+      "cumulative_regret_at_100": 27.522935779816514,
+      "instant_regret_at_50": 0.0,
+      "instant_regret_at_100": 0.0,
+      "near_optimal_at_100": 1.0,
+      "label_budget": 100.0
+    },
+    "glue_mrpc_active_selection": {
+      "initial_regret": 0.980392156862745,
+      "cumulative_regret_at_25": 32.84313725490196,
+      "cumulative_regret_at_50": 70.09803921568627,
+      "cumulative_regret_at_100": 99.50980392156862,
+      "instant_regret_at_50": 0.0,
+      "instant_regret_at_100": 0.980392156862745,
+      "near_optimal_at_100": 1.0,
+      "label_budget": 100.0
+    },
+    "glue_cola_active_selection": {
+      "initial_regret": 5.950095969289827,
+      "cumulative_regret_at_25": 90.01919385796545,
+      "cumulative_regret_at_50": 321.49712092130517,
+      "cumulative_regret_at_100": 3068.9059500959693,
+      "instant_regret_at_50": 56.046065259117086,
+      "instant_regret_at_100": 56.046065259117086,
+      "near_optimal_at_100": 0.0,
+      "label_budget": 100.0
+    },
+    "glue_rte_unsupervised_selection": {
+      "initial_regret": 13.768115942028988
+    },
+    "glue_sst2_unsupervised_selection": {
+      "initial_regret": 3.669724770642202
+    }
+  },
+  "failures": {},
+  "labels_revealed_per_episode": {
+    "glue_rte_active_selection/seed0": 100,
+    "glue_rte_active_selection/seed1": 100,
+    "glue_rte_active_selection/seed2": 100,
+    "glue_rte_active_selection/seed3": 100,
+    "glue_rte_active_selection/seed4": 100,
+    "glue_sst2_active_selection/seed0": 100,
+    "glue_sst2_active_selection/seed1": 100,
+    "glue_sst2_active_selection/seed2": 100,
+    "glue_sst2_active_selection/seed3": 100,
+    "glue_sst2_active_selection/seed4": 100,
+    "glue_mrpc_active_selection/seed0": 100,
+    "glue_mrpc_active_selection/seed1": 100,
+    "glue_mrpc_active_selection/seed2": 100,
+    "glue_mrpc_active_selection/seed3": 100,
+    "glue_mrpc_active_selection/seed4": 100,
+    "glue_cola_active_selection/seed0": 100,
+    "glue_cola_active_selection/seed1": 100,
+    "glue_cola_active_selection/seed2": 100,
+    "glue_cola_active_selection/seed3": 100,
+    "glue_cola_active_selection/seed4": 100,
+    "glue_rte_unsupervised_selection/seed0": 0,
+    "glue_rte_unsupervised_selection/seed1": 0,
+    "glue_rte_unsupervised_selection/seed2": 0,
+    "glue_rte_unsupervised_selection/seed3": 0,
+    "glue_rte_unsupervised_selection/seed4": 0,
+    "glue_sst2_unsupervised_selection/seed0": 0,
+    "glue_sst2_unsupervised_selection/seed1": 0,
+    "glue_sst2_unsupervised_selection/seed2": 0,
+    "glue_sst2_unsupervised_selection/seed3": 0,
+    "glue_sst2_unsupervised_selection/seed4": 0
+  },
+  "complete": true
+}
