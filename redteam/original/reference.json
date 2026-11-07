@@ -1,0 +1,367 @@
+{
+  "experiments": {
+    "glue_rte_active_selection": {
+      "description": "Active model selection on the GLUE RTE benchmark at a 100-label budget, matching the paper's main cumulative-regret comparison for this task.",
+      "weight": 0.34,
+      "primary_metric": "cumulative_regret_at_100",
+      "metrics": {
+        "cumulative_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -1.0,
+          "description": "Total excess error incurred over the queried-label trajectory through the 100-label budget."
+        },
+        "cumulative_regret_at_25": {
+          "higher_is_better": false,
+          "coefficient": -0.45,
+          "description": "Early-label cumulative excess error through 25 queried labels, catching methods that only recover late."
+        },
+        "cumulative_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.65,
+          "description": "Mid-budget cumulative excess error through 50 queried labels."
+        },
+        "initial_regret": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Zero-query excess error of the initially selected model."
+        },
+        "instant_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Excess error of the selected model after 50 queried labels."
+        },
+        "instant_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -0.3,
+          "description": "Excess error of the selected model after the full 100-label budget."
+        },
+        "near_optimal_at_100": {
+          "higher_is_better": true,
+          "coefficient": 0.35,
+          "description": "Whether the selected model is within one percentage point of the best candidate at the 100-label budget."
+        },
+        "label_budget": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Number of ground-truth labels consumed; improvements should not come from querying more labels."
+        },
+        "num_models": {
+          "higher_is_better": true,
+          "coefficient": 0.05,
+          "description": "Candidate pool size covered by the run, guarding against selecting from an easier reduced pool."
+        },
+        "num_items": {
+          "higher_is_better": true,
+          "coefficient": 0.05,
+          "description": "Evaluation item count covered by the run, guarding against scoring on a smaller benchmark."
+        }
+      },
+      "results": {
+        "random": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 375.7,
+          "instant_regret_at_100": 1.2,
+          "label_budget": 100,
+          "num_models": 87,
+          "num_items": 277
+        },
+        "uncertainty": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 390.3,
+          "instant_regret_at_100": 0.0,
+          "label_budget": 100,
+          "num_models": 87,
+          "num_items": 277
+        },
+        "coda": {
+          "type": "proposed",
+          "cumulative_regret_at_100": 283.8,
+          "instant_regret_at_100": 0.0,
+          "label_budget": 100,
+          "num_models": 87,
+          "num_items": 277
+        }
+      }
+    },
+    "glue_sst2_active_selection": {
+      "description": "Active model selection on the GLUE SST2 benchmark at a 100-label budget, matching the paper's main cumulative-regret comparison for this additional GLUE task.",
+      "weight": 0.22,
+      "primary_metric": "cumulative_regret_at_100",
+      "metrics": {
+        "cumulative_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -1.0,
+          "description": "Total excess error incurred over the queried-label trajectory through the 100-label budget."
+        },
+        "cumulative_regret_at_25": {
+          "higher_is_better": false,
+          "coefficient": -0.45,
+          "description": "Early-label cumulative excess error through 25 queried labels, catching methods that only recover late."
+        },
+        "cumulative_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.65,
+          "description": "Mid-budget cumulative excess error through 50 queried labels."
+        },
+        "initial_regret": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Zero-query excess error of the initially selected model."
+        },
+        "instant_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Excess error of the selected model after 50 queried labels."
+        },
+        "instant_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -0.3,
+          "description": "Excess error of the selected model after the full 100-label budget."
+        },
+        "near_optimal_at_100": {
+          "higher_is_better": true,
+          "coefficient": 0.35,
+          "description": "Whether the selected model is within one percentage point of the best candidate at the 100-label budget."
+        },
+        "label_budget": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Number of ground-truth labels consumed; improvements should not come from querying more labels."
+        },
+        "num_models": {
+          "higher_is_better": true,
+          "coefficient": 0.05,
+          "description": "Candidate pool size covered by the run, guarding against selecting from an easier reduced pool."
+        },
+        "num_items": {
+          "higher_is_better": true,
+          "coefficient": 0.05,
+          "description": "Evaluation item count covered by the run, guarding against scoring on a smaller benchmark."
+        }
+      },
+      "results": {
+        "random": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 219.9,
+          "instant_regret_at_100": 0.8,
+          "label_budget": 100,
+          "num_models": 97,
+          "num_items": 872
+        },
+        "uncertainty": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 89.6,
+          "instant_regret_at_100": 0.1,
+          "label_budget": 100,
+          "num_models": 97,
+          "num_items": 872
+        },
+        "coda": {
+          "type": "proposed",
+          "cumulative_regret_at_100": 51.7,
+          "instant_regret_at_100": 0.0,
+          "label_budget": 100,
+          "num_models": 97,
+          "num_items": 872
+        }
+      }
+    },
+    "glue_mrpc_active_selection": {
+      "description": "Active model selection on the GLUE MRPC benchmark at a 100-label budget, adding another paper-reported ModelSelector text task.",
+      "weight": 0.20,
+      "primary_metric": "cumulative_regret_at_100",
+      "metrics": {
+        "cumulative_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -1.0,
+          "description": "Total excess error incurred over the queried-label trajectory through the 100-label budget."
+        },
+        "cumulative_regret_at_25": {
+          "higher_is_better": false,
+          "coefficient": -0.45,
+          "description": "Early-label cumulative excess error through 25 queried labels, catching methods that only recover late."
+        },
+        "cumulative_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.65,
+          "description": "Mid-budget cumulative excess error through 50 queried labels."
+        },
+        "initial_regret": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Zero-query excess error of the initially selected model."
+        },
+        "instant_regret_at_50": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Excess error of the selected model after 50 queried labels."
+        },
+        "instant_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -0.3,
+          "description": "Excess error of the selected model after the full 100-label budget."
+        },
+        "near_optimal_at_100": {
+          "higher_is_better": true,
+          "coefficient": 0.35,
+          "description": "Whether the selected model is within one percentage point of the best candidate at the 100-label budget."
+        },
+        "label_budget": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Number of ground-truth labels consumed; improvements should not come from querying more labels."
+        },
+        "num_models": {
+          "higher_is_better": true,
+          "coefficient": 0.05,
+          "description": "Candidate pool size covered by the run, guarding against selecting from an easier reduced pool."
+        },
+        "num_items": {
+          "higher_is_better": true,
+          "coefficient": 0.05,
+          "description": "Evaluation item count covered by the run, guarding against scoring on a smaller benchmark."
+        }
+      },
+      "results": {
+        "random": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 318.2,
+          "instant_regret_at_100": 0.2,
+          "label_budget": 100,
+          "num_models": 95,
+          "num_items": 408
+        },
+        "uncertainty": {
+          "type": "baseline",
+          "cumulative_regret_at_100": 301.1,
+          "instant_regret_at_100": 0.2,
+          "label_budget": 100,
+          "num_models": 95,
+          "num_items": 408
+        },
+        "coda": {
+          "type": "proposed",
+          "cumulative_regret_at_100": 49.0,
+          "instant_regret_at_100": 0.5,
+          "label_budget": 100,
+          "num_models": 95,
+          "num_items": 408
+        }
+      }
+    },
+    "glue_rte_unsupervised_selection": {
+      "description": "Unsupervised model selection on GLUE RTE using no queried labels, matching the paper's Table 5 step-0 regret comparison.",
+      "weight": 0.14,
+      "primary_metric": "initial_regret",
+      "metrics": {
+        "initial_regret": {
+          "higher_is_better": false,
+          "coefficient": -1.0,
+          "description": "Zero-query excess error of the selected model."
+        },
+        "label_budget": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Number of ground-truth labels consumed; this zero-label experiment should stay at budget 0."
+        },
+        "num_models": {
+          "higher_is_better": true,
+          "coefficient": 0.05,
+          "description": "Candidate pool size covered by the run, guarding against selecting from an easier reduced pool."
+        },
+        "num_items": {
+          "higher_is_better": true,
+          "coefficient": 0.05,
+          "description": "Evaluation item count covered by the run, guarding against scoring on a smaller benchmark."
+        },
+        "cumulative_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": 0.0,
+          "description": "Unscored compatibility metric for the shared trace format; should remain zero when no labels are queried."
+        },
+        "instant_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Compatibility metric for the shared trace format; equals initial regret in zero-label runs."
+        }
+      },
+      "results": {
+        "ensv": {
+          "type": "baseline",
+          "initial_regret": 14.8,
+          "label_budget": 0,
+          "num_models": 87,
+          "num_items": 277,
+          "cumulative_regret_at_100": 0.0,
+          "instant_regret_at_100": 14.8
+        },
+        "coda": {
+          "type": "proposed",
+          "initial_regret": 14.8,
+          "label_budget": 0,
+          "num_models": 87,
+          "num_items": 277,
+          "cumulative_regret_at_100": 0.0,
+          "instant_regret_at_100": 14.8
+        }
+      }
+    },
+    "glue_sst2_unsupervised_selection": {
+      "description": "Unsupervised model selection on GLUE SST2 using no queried labels, matching the paper's Table 5 step-0 regret comparison.",
+      "weight": 0.10,
+      "primary_metric": "initial_regret",
+      "metrics": {
+        "initial_regret": {
+          "higher_is_better": false,
+          "coefficient": -1.0,
+          "description": "Zero-query excess error of the selected model."
+        },
+        "label_budget": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Number of ground-truth labels consumed; this zero-label experiment should stay at budget 0."
+        },
+        "num_models": {
+          "higher_is_better": true,
+          "coefficient": 0.05,
+          "description": "Candidate pool size covered by the run, guarding against selecting from an easier reduced pool."
+        },
+        "num_items": {
+          "higher_is_better": true,
+          "coefficient": 0.05,
+          "description": "Evaluation item count covered by the run, guarding against scoring on a smaller benchmark."
+        },
+        "cumulative_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": 0.0,
+          "description": "Unscored compatibility metric for the shared trace format; should remain zero when no labels are queried."
+        },
+        "instant_regret_at_100": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Compatibility metric for the shared trace format; equals initial regret in zero-label runs."
+        }
+      },
+      "results": {
+        "ensv": {
+          "type": "baseline",
+          "initial_regret": 3.6,
+          "label_budget": 0,
+          "num_models": 97,
+          "num_items": 872,
+          "cumulative_regret_at_100": 0.0,
+          "instant_regret_at_100": 3.6
+        },
+        "coda": {
+          "type": "proposed",
+          "initial_regret": 3.6,
+          "label_budget": 0,
+          "num_models": 97,
+          "num_items": 872,
+          "cumulative_regret_at_100": 0.0,
+          "instant_regret_at_100": 3.6
+        }
+      }
+    }
+  }
+}
