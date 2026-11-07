@@ -1,0 +1,37 @@
+{
+  "slice": "train",
+  "experiments": {
+    "glue_rte_active_selection": {
+      "results": {
+        "coda": {
+          "initial_regret": 15.827338129496404,
+          "cumulative_regret_at_25": 296.4028776978418,
+          "cumulative_regret_at_50": 302.15827338129503,
+          "cumulative_regret_at_100": 302.15827338129503,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 0.0,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0,
+          "num_models": 87.0,
+          "num_items": 139.0
+        }
+      }
+    },
+    "glue_sst2_active_selection": {
+      "results": {
+        "coda": {
+          "initial_regret": 3.669724770642202,
+          "cumulative_regret_at_25": 51.146788990825556,
+          "cumulative_regret_at_50": 53.21100917431179,
+          "cumulative_regret_at_100": 53.21100917431179,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 0.0,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0,
+          "num_models": 97.0,
+          "num_items": 436.0
+        }
+      }
+    }
+  }
+}

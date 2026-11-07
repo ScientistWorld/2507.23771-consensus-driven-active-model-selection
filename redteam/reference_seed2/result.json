@@ -1,0 +1,33 @@
+{
+  "name": "reference_seed2",
+  "train_exit_code": 0,
+  "test_exit_code": 0,
+  "rank_delta": -15.03665337056245,
+  "rank_contributions": {
+    "glue_rte_active_selection": {
+      "cumulative_regret_at_100": -8.27826086956523,
+      "cumulative_regret_at_25": -0.0,
+      "cumulative_regret_at_50": -5.380869565217401,
+      "initial_regret": 1.2079226507921704e-16,
+      "instant_regret_at_50": -0.0,
+      "instant_regret_at_100": -0.0,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0,
+      "num_models": 0.0,
+      "num_items": 0.0
+    },
+    "glue_sst2_active_selection": {
+      "cumulative_regret_at_100": -0.6559633027522945,
+      "cumulative_regret_at_25": -0.2951834862385325,
+      "cumulative_regret_at_50": -0.42637614678899144,
+      "initial_regret": -0.0,
+      "instant_regret_at_50": -0.0,
+      "instant_regret_at_100": -0.0,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0,
+      "num_models": 0.0,
+      "num_items": 0.0
+    }
+  },
+  "seconds": 1495.5133440494537
+}

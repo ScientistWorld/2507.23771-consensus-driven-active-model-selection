@@ -1,0 +1,8 @@
+{
+  "glue_rte": {
+    "maximum_absolute_EIG_difference": 2.6645352591003757e-15
+  },
+  "glue_sst2": {
+    "maximum_absolute_EIG_difference": 1.7763568394002505e-15
+  }
+}

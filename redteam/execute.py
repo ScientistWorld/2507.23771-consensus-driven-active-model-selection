@@ -61,9 +61,8 @@ def run(name):
             raise RuntimeError('Unexpected output directory; refusing to overwrite original backup')
         active.rename(old_active)
     traces = folder / 'traces'
-    if traces.exists():
-        shutil.rmtree(traces)
-    traces.mkdir()
+    # Preserve complete per-seed checkpoints if a worker was lost mid-case.
+    traces.mkdir(exist_ok=True)
     active.symlink_to(traces)
 
     saved_scores = state / 'scores'

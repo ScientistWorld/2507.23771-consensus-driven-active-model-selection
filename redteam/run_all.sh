@@ -5,7 +5,7 @@ export OPENBLAS_NUM_THREADS=1
 export OMP_NUM_THREADS=1
 python redteam/check_numerics.py
 for name in reference_original reference_seed0 reference_seed1 reference_seed2 \
-            honest_eta_0p1 honest_eta_1 weaker_no_learning baseline_random \
+            honest_eta_0p1 honest_stable_stop honest_eta_1 weaker_no_learning baseline_random \
             visible_label_oracle_shortcut train_complement_oracle_shortcut \
             trace_budget_shortcut spoof_scores_shortcut groundtruth_relabel_shortcut \
             replace_fixed_predictions_shortcut task_size_inflation_shortcut \
