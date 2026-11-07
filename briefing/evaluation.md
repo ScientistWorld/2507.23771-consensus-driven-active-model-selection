@@ -74,13 +74,18 @@ experiment, its weight times each metric's coefficient (both in
 | `glue_rte_active_selection` | 87 candidates | 375.7 / 390.3 / 283.8 |
 | `glue_sst2_active_selection` | 97 candidates | 219.9 / 89.6 / 51.7 |
 | `glue_mrpc_active_selection` | 95 candidates | 318.2 / 301.1 / 49.0 |
+| `glue_qnli_active_selection` | 90 candidates, 1200-item sample | 222.7 / 231.6 / 120.4 |
+| `glue_qqp_active_selection` | 101 candidates, 1200-item sample | 136.7 / 388.9 / 4.8 |
+| `glue_mnli_active_selection` | 82 candidates, 3 classes, 1200-item sample | 237.4 / 80.8 / 23.5 |
 | `glue_cola_active_selection` | 109 candidates, imbalanced | 368.1 / 169.5 / 2226.7 |
 | `glue_rte_unsupervised_selection` | zero labels | initial regret 14.8 (ensemble validation and reference selector) |
 | `glue_sst2_unsupervised_selection` | zero labels | initial regret 3.6 (both) |
 
 The paper's numbers are full-pool values; the gym runs each task on one
-half of its items with the same 100-label budget, so absolute values differ
-somewhat while the comparisons keep their direction. On CoLA the paper's
+half of its items (of a 1200-item sample for QNLI, QQP and MNLI) with the
+same 100-label budget, so absolute values differ, sometimes by more than a
+factor of two, and on the smallest pool (RTE, 138 held-out items) the
+reference selector converges much later than in the paper. On CoLA the paper's
 reference selector is far worse than both baselines; that experiment
 measures progress where the reference falls short.
 

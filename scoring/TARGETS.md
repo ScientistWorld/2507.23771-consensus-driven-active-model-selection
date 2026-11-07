@@ -10,14 +10,18 @@ every round; selectors only answer the oracle protocol. Visible slice:
 ## Primary: glue_rte_active_selection
 
 Identify a high-accuracy candidate on GLUE RTE within a 100-label budget.
+Each of the six regular GLUE tasks carries the same weight in the ranking.
 
 - **Metric:** `cumulative_regret_at_100` (lower is better); also
   `cumulative_regret_at_25/50`, `initial_regret`, `instant_regret_at_50/100`,
   `near_optimal_at_100`.
 
-## Additional: glue_sst2_active_selection, glue_mrpc_active_selection
+## Additional: glue_sst2, glue_mrpc, glue_qnli, glue_qqp, glue_mnli active selection
 
-The same objective on GLUE SST2 and GLUE MRPC, same metrics and budget.
+The same objective on the other GLUE tasks of the paper's main table
+(`glue_<task>_active_selection`), same metrics and 100-label budget. QNLI,
+QQP and MNLI use a fixed 1200-item sample of their pools; MNLI has three
+classes.
 
 ## Headroom: glue_cola_active_selection
 

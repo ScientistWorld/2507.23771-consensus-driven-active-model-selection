@@ -108,3 +108,25 @@ The auxiliary train/test split evaluators now use a deterministic hash tie-break
 ## Deviations from Paper
 
 The GLUE jobs use the paper's black-box/class-ID prediction setting through the original ModelSelector raw files instead of the authors' `.pt` release tensors. This is a data-format substitution only: the candidate predictions, labels, and tasks match the paper's ModelSelector-derived GLUE benchmarks, and CODA's algorithmic procedure is unchanged.
+
+## Hardening (iteration 11)
+
+The evaluation was rebuilt so that the hidden test drives every registered selector against a label oracle it owns. Held-out labels live only in `eval/test/`, and leaky full-pool artifacts were removed. All shortcuts from REDTEAM.md are closed. CODA was vectorized and checked against the original loop to about 1e-15. The baselines now break ties at random, as the released code does.
+
+The test covers all seven GLUE tasks of Table 1 (RTE, SST2, MRPC, QNLI, QQP, MNLI, CoLA) and the RTE/SST2 zero-label experiments, on held-out halves of each pool. Held-out cumulative regret at 100 for CODA:
+
+| Task | CODA | Random | Uncertainty |
+|---|---:|---:|---:|
+| RTE | 702.2 | 349.7 | 278.6 |
+| SST2 | 27.5 | 208.6 | 77.5 |
+| MRPC | 99.5 | 230.0 | 424.7 |
+| QNLI | 219.7 | 244.3 | 176.5 |
+| QQP | 21.2 | 110.0 | 65.5 |
+| MNLI | 23.8 | 466.9 | 512.3 |
+| CoLA | 3068.9 | 282.7 | 139.6 |
+
+- On CoLA, CODA fails as in the paper, ending at 56.0 regret.
+- Zero-label CODA ties EnsV on both tasks (RTE 13.8, SST2 3.7).
+- The baselines rank below the reference: random −60.0, uncertainty −91.6.
+- The paper's Fig. 6 ablation ranks +113.0.
+- On the 138-item RTE half, CODA converges late and loses to both baselines (see HARDENING.md).

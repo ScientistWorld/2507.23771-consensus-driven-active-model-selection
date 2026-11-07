@@ -26,3 +26,7 @@ The workspace is ready to serve as a research gym. Improve-mode agents can build
 - Ready for gym use: yes
 - Confidence: high
 - Key limitation: MRPC active selection uses one corrected CODA seed and is excluded from auxiliary train/test scoring.
+
+## Hardening addendum (iteration 11)
+
+The evaluation design described above was replaced; see HARDENING.md and DESIGN_NOTES.md. `python validate.py` passes. `python validate.py --post-design` flags 13 primary values that are more than 2× from the paper's full-pool numbers. All come from the half-pool and subsampled setup, and they are listed in HARDENING.md section 9.

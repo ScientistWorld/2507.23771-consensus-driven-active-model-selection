@@ -26,6 +26,23 @@ The same question on a paraphrase task with a skewed label distribution,
 where a reasonable zero-label choice already exists. It measures whether
 queried labels improve on the starting choice rather than degrade it.
 
+## glue_qnli_active_selection
+
+The same question on a question-answering entailment task (a fixed sample
+of its items), with a mid-sized candidate pool.
+
+## glue_qqp_active_selection
+
+The same question on a paraphrase task (a fixed sample of its items) where
+candidates are close in accuracy, so a selector must separate near-ties
+without wasting labels.
+
+## glue_mnli_active_selection
+
+The same question on a three-class inference task (a fixed sample of its
+items), checking that label-efficient selection is not limited to binary
+classification.
+
 ## glue_cola_active_selection
 
 The same question on an acceptability task with imbalanced labels and some
