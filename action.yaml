@@ -1,6 +1,8 @@
-# End-of-turn action for the scheduler.
-# Use submit when a compute rerun is needed; use done only after
-# regenerated artifacts pass validation.
-action: done
+# Once you set action to 'submit' or 'done', STOP immediately.
+# Do NOT sleep, poll, or wait for jobs. The system reads this file
+# only after your turn ends.
+action: pending
+gpus: 0
+test: false
 milestone: secondary_claims
-notes: "Final verification passed: validation clean, fetch URLs checked, and the gym is ready with the documented MRPC one-seed limitation."
+notes: ""
