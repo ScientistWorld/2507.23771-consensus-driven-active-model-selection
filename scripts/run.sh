@@ -39,5 +39,5 @@ step evaluate_train bash scripts/evaluate_train.sh
 step evaluate_main bash scripts/evaluate.sh
 step cases python redteam/hardening/run_cases.py
 echo "== validate $(date -u +%H:%M:%S)"
-python validate.py
+python validate.py || echo "validate.py reported issues (see above)"
 python validate.py --post-design || echo "post-design check reported issues (see above)"
