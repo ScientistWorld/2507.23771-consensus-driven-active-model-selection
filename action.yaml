@@ -1,2 +1,8 @@
-action: done
-notes: "Audit complete: honest improvement +151.36 vs 17.07 seed spread; seven paying shortcuts, including +885.46 item inflation; evidence committed and gym files restored."
+# Once you set action to 'submit' or 'done', STOP immediately.
+# Do NOT sleep, poll, or wait for jobs. The system reads this file
+# only after your turn ends.
+action: pending
+gpus: 0
+test: false
+milestone: secondary_claims
+notes: ""
