@@ -5,4 +5,4 @@ action: submit
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Hardening run: check vectorized CODA vs original, rerun reference CODA + random/uncertainty/EnsV through the new evaluator-held label oracle on visible and hidden halves (6 experiments x 5 seeds), then rerun the better/weaker variants and 18 shortcut attempts through scripts/evaluate_test.sh."
+notes: "Final reference run on 7 GLUE tasks + 2 zero-label experiments: fast-CODA check, CODA/random/uncertainty/EnsV through hidden test and visible slice (5 seeds), then better/weaker/exploratory variants and 18 shortcut attempts through scripts/evaluate_test.sh."

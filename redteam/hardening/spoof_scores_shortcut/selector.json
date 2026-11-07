@@ -1,0 +1,6 @@
+{
+  "command": [
+    "python",
+    "redteam/hardening/policies/spoof_scores.py"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "command": [
+    "python",
+    "redteam/hardening/policies/backdate.py"
+  ]
+}

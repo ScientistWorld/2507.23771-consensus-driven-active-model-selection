@@ -1,0 +1,218 @@
+{
+  "name": "backdate_selection_shortcut",
+  "about": "query 100 labels committing model 0, then announce a backdated best",
+  "command": [
+    "python",
+    "redteam/hardening/policies/backdate.py"
+  ],
+  "data_mutation": null,
+  "test_exit_code": 0,
+  "restored": true,
+  "seconds": 4.8,
+  "rank_delta": -1600.636402385115,
+  "rank_contributions": {
+    "glue_rte_active_selection": {
+      "cumulative_regret_at_100": -430.97826086956525,
+      "cumulative_regret_at_25": -39.21195652173913,
+      "cumulative_regret_at_50": -115.54456521739131,
+      "initial_regret": -0.6971014492753623,
+      "instant_regret_at_50": -0.9043478260869567,
+      "instant_regret_at_100": -0.0,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0
+    },
+    "glue_sst2_active_selection": {
+      "cumulative_regret_at_100": -144.01376146788994,
+      "cumulative_regret_at_25": -15.362958715596333,
+      "cumulative_regret_at_50": -46.12614678899083,
+      "initial_regret": -0.20275229357798166,
+      "instant_regret_at_50": -0.29816513761467894,
+      "instant_regret_at_100": -0.0,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0
+    },
+    "glue_mrpc_active_selection": {
+      "cumulative_regret_at_100": -50.15196078431373,
+      "cumulative_regret_at_25": -5.247794117647059,
+      "cumulative_regret_at_50": -14.787500000000001,
+      "initial_regret": -0.1019607843137255,
+      "instant_regret_at_50": -0.12745098039215688,
+      "instant_regret_at_100": 0.038235294117647055,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0
+    },
+    "glue_qnli_active_selection": {
+      "cumulative_regret_at_100": -535.5956666666667,
+      "cumulative_regret_at_25": -59.64075000000001,
+      "cumulative_regret_at_50": -171.70400000000004,
+      "initial_regret": -1.0833333333333335,
+      "instant_regret_at_50": -1.0530000000000002,
+      "instant_regret_at_100": -0.0052,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0
+    },
+    "glue_qqp_active_selection": {
+      "cumulative_regret_at_100": -16.553333333333335,
+      "cumulative_regret_at_25": -1.0725,
+      "cumulative_regret_at_50": -4.605250000000001,
+      "initial_regret": -0.030333333333333337,
+      "instant_regret_at_50": -0.034666666666666665,
+      "instant_regret_at_100": -0.0,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0
+    },
+    "glue_mnli_active_selection": {
+      "cumulative_regret_at_100": 3.098333333333333,
+      "cumulative_regret_at_25": 0.8092500000000001,
+      "cumulative_regret_at_50": 1.7745000000000002,
+      "initial_regret": 0.117,
+      "instant_regret_at_50": -0.0,
+      "instant_regret_at_100": -0.0,
+      "near_optimal_at_100": 0.0,
+      "label_budget": -0.0
+    },
+    "glue_cola_active_selection": {
+      "cumulative_regret_at_100": 51.117082533589254,
+      "cumulative_regret_at_25": -0.3558541266794627,
+      "cumulative_regret_at_50": 0.8109404990403067,
+      "initial_regret": 0.003071017274472169,
+      "instant_regret_at_50": 0.2034548944337812,
+      "instant_regret_at_100": 0.3362763915547025,
+      "near_optimal_at_100": 0.006999999999999999,
+      "label_budget": -0.0
+    },
+    "glue_rte_unsupervised_selection": {
+      "initial_regret": -2.6811594202898554
+    },
+    "glue_sst2_unsupervised_selection": {
+      "initial_regret": -0.7798165137614679
+    }
+  },
+  "metrics": {
+    "glue_rte_active_selection": {
+      "initial_regret": 40.57971014492754,
+      "cumulative_regret_at_25": 1014.4927536231884,
+      "cumulative_regret_at_50": 2028.9855072463768,
+      "cumulative_regret_at_100": 4017.3913043478265,
+      "instant_regret_at_50": 40.57971014492754,
+      "instant_regret_at_100": 0.0,
+      "near_optimal_at_100": 1.0,
+      "label_budget": 100.0
+    },
+    "glue_sst2_active_selection": {
+      "initial_regret": 11.46788990825688,
+      "cumulative_regret_at_25": 286.69724770642205,
+      "cumulative_regret_at_50": 573.3944954128441,
+      "cumulative_regret_at_100": 1135.3211009174313,
+      "instant_regret_at_50": 11.46788990825688,
+      "instant_regret_at_100": 0.0,
+      "near_optimal_at_100": 1.0,
+      "label_budget": 100.0
+    },
+    "glue_mrpc_active_selection": {
+      "initial_regret": 4.901960784313726,
+      "cumulative_regret_at_25": 122.54901960784314,
+      "cumulative_regret_at_50": 245.09803921568627,
+      "cumulative_regret_at_100": 485.29411764705884,
+      "instant_regret_at_50": 4.901960784313726,
+      "instant_regret_at_100": 0.0,
+      "near_optimal_at_100": 1.0,
+      "label_budget": 100.0
+    },
+    "glue_qnli_active_selection": {
+      "initial_regret": 43.833333333333336,
+      "cumulative_regret_at_25": 1095.8333333333335,
+      "cumulative_regret_at_50": 2191.666666666667,
+      "cumulative_regret_at_100": 4339.666666666667,
+      "instant_regret_at_50": 43.833333333333336,
+      "instant_regret_at_100": 0.16666666666666666,
+      "near_optimal_at_100": 1.0,
+      "label_budget": 100.0
+    },
+    "glue_qqp_active_selection": {
+      "initial_regret": 1.5,
+      "cumulative_regret_at_25": 37.5,
+      "cumulative_regret_at_50": 75.0,
+      "cumulative_regret_at_100": 148.5,
+      "instant_regret_at_50": 1.5,
+      "instant_regret_at_100": 0.0,
+      "near_optimal_at_100": 1.0,
+      "label_budget": 100.0
+    },
+    "glue_mnli_active_selection": {
+      "initial_regret": 0.0,
+      "cumulative_regret_at_25": 0.0,
+      "cumulative_regret_at_50": 0.0,
+      "cumulative_regret_at_100": 0.0,
+      "instant_regret_at_50": 0.0,
+      "instant_regret_at_100": 0.0,
+      "near_optimal_at_100": 1.0,
+      "label_budget": 100.0
+    },
+    "glue_cola_active_selection": {
+      "initial_regret": 5.182341650671785,
+      "cumulative_regret_at_25": 129.55854126679463,
+      "cumulative_regret_at_50": 259.11708253358927,
+      "cumulative_regret_at_100": 513.0518234165067,
+      "instant_regret_at_50": 5.182341650671785,
+      "instant_regret_at_100": 0.0,
+      "near_optimal_at_100": 1.0,
+      "label_budget": 100.0
+    },
+    "glue_rte_unsupervised_selection": {
+      "initial_regret": 40.57971014492754
+    },
+    "glue_sst2_unsupervised_selection": {
+      "initial_regret": 11.46788990825688
+    }
+  },
+  "failures": {},
+  "labels_revealed_per_episode": {
+    "glue_rte_active_selection/seed0": 100,
+    "glue_rte_active_selection/seed1": 100,
+    "glue_rte_active_selection/seed2": 100,
+    "glue_rte_active_selection/seed3": 100,
+    "glue_rte_active_selection/seed4": 100,
+    "glue_sst2_active_selection/seed0": 100,
+    "glue_sst2_active_selection/seed1": 100,
+    "glue_sst2_active_selection/seed2": 100,
+    "glue_sst2_active_selection/seed3": 100,
+    "glue_sst2_active_selection/seed4": 100,
+    "glue_mrpc_active_selection/seed0": 100,
+    "glue_mrpc_active_selection/seed1": 100,
+    "glue_mrpc_active_selection/seed2": 100,
+    "glue_mrpc_active_selection/seed3": 100,
+    "glue_mrpc_active_selection/seed4": 100,
+    "glue_qnli_active_selection/seed0": 100,
+    "glue_qnli_active_selection/seed1": 100,
+    "glue_qnli_active_selection/seed2": 100,
+    "glue_qnli_active_selection/seed3": 100,
+    "glue_qnli_active_selection/seed4": 100,
+    "glue_qqp_active_selection/seed0": 100,
+    "glue_qqp_active_selection/seed1": 100,
+    "glue_qqp_active_selection/seed2": 100,
+    "glue_qqp_active_selection/seed3": 100,
+    "glue_qqp_active_selection/seed4": 100,
+    "glue_mnli_active_selection/seed0": 100,
+    "glue_mnli_active_selection/seed1": 100,
+    "glue_mnli_active_selection/seed2": 100,
+    "glue_mnli_active_selection/seed3": 100,
+    "glue_mnli_active_selection/seed4": 100,
+    "glue_cola_active_selection/seed0": 100,
+    "glue_cola_active_selection/seed1": 100,
+    "glue_cola_active_selection/seed2": 100,
+    "glue_cola_active_selection/seed3": 100,
+    "glue_cola_active_selection/seed4": 100,
+    "glue_rte_unsupervised_selection/seed0": 0,
+    "glue_rte_unsupervised_selection/seed1": 0,
+    "glue_rte_unsupervised_selection/seed2": 0,
+    "glue_rte_unsupervised_selection/seed3": 0,
+    "glue_rte_unsupervised_selection/seed4": 0,
+    "glue_sst2_unsupervised_selection/seed0": 0,
+    "glue_sst2_unsupervised_selection/seed1": 0,
+    "glue_sst2_unsupervised_selection/seed2": 0,
+    "glue_sst2_unsupervised_selection/seed3": 0,
+    "glue_sst2_unsupervised_selection/seed4": 0
+  },
+  "complete": true
+}

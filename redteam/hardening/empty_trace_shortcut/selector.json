@@ -1,0 +1,7 @@
+{
+  "command": [
+    "python",
+    "redteam/hardening/policies/protocol_violation.py",
+    "empty"
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "slice": "test",
+  "experiments": {
+    "glue_rte_active_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 13.768115942028988,
+          "cumulative_regret_at_25": 336.3768115942029,
+          "cumulative_regret_at_50": 383.768115942029,
+          "cumulative_regret_at_100": 383.768115942029,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 0.0,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0
+        }
+      }
+    },
+    "glue_sst2_active_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 3.669724770642202,
+          "cumulative_regret_at_25": 47.56880733944954,
+          "cumulative_regret_at_50": 51.37614678899083,
+          "cumulative_regret_at_100": 51.37614678899083,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 0.0,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0
+        }
+      }
+    },
+    "glue_mrpc_active_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 0.980392156862745,
+          "cumulative_regret_at_25": 46.27450980392156,
+          "cumulative_regret_at_50": 51.56862745098039,
+          "cumulative_regret_at_100": 86.8627450980392,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 0.980392156862745,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0
+        }
+      }
+    },
+    "glue_qnli_active_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 2.1666666666666665,
+          "cumulative_regret_at_25": 61.76666666666667,
+          "cumulative_regret_at_50": 117.3,
+          "cumulative_regret_at_100": 120.56666666666668,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 0.16666666666666666,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0
+        }
+      }
+    },
+    "glue_qqp_active_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 0.3333333333333333,
+          "cumulative_regret_at_25": 16.366666666666667,
+          "cumulative_regret_at_50": 17.8,
+          "cumulative_regret_at_100": 17.8,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 0.0,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0
+        }
+      }
+    },
+    "glue_mnli_active_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 4.5,
+          "cumulative_regret_at_25": 18.03333333333333,
+          "cumulative_regret_at_50": 19.766666666666666,
+          "cumulative_regret_at_100": 19.766666666666666,
+          "instant_regret_at_50": 0.0,
+          "instant_regret_at_100": 0.0,
+          "near_optimal_at_100": 1.0,
+          "label_budget": 100.0
+        }
+      }
+    },
+    "glue_cola_active_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 5.950095969289827,
+          "cumulative_regret_at_25": 75.31669865642995,
+          "cumulative_regret_at_50": 144.99040307101728,
+          "cumulative_regret_at_100": 1550.0575815738964,
+          "instant_regret_at_50": 2.8790786948176583,
+          "instant_regret_at_100": 56.046065259117086,
+          "near_optimal_at_100": 0.0,
+          "label_budget": 100.0
+        }
+      }
+    },
+    "glue_rte_unsupervised_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 13.768115942028988
+        }
+      }
+    },
+    "glue_sst2_unsupervised_selection": {
+      "results": {
+        "candidate": {
+          "initial_regret": 3.669724770642202
+        }
+      }
+    }
+  },
+  "failures": {}
+}
