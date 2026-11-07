@@ -15,6 +15,8 @@ The paper studies how to select the best model from a pool of pretrained classif
 - On the reproduced GLUE RTE task, the paper reports cumulative regret 283.8 for CODA versus 375.7 for random sampling and 390.3 for uncertainty sampling.
 - On GLUE MRPC, the paper reports cumulative regret 49.0 for CODA versus 318.2 for random sampling and 301.1 for uncertainty sampling.
 - The consensus prior alone is also reported to be competitive for unsupervised model selection on many tasks.
+- The paper's documented failure case is GLUE CoLA (imbalanced labels, biased candidates): CODA's cumulative regret is 2226.7 versus 368.1 for random sampling and 169.5 for uncertainty sampling.
+- In this gym, labels come only from an evaluator-held oracle that records the selected model every round; SST2, QNLI and RTE have visible and held-out halves, and CoLA is scored on a held-out half only.
 
 ---
 
@@ -30,7 +32,7 @@ Selecting among many pretrained or domain-adapted models normally requires a lab
 
 ## Success Criteria
 
-A successful solution should choose a near-best or best candidate model early in the label acquisition process. It should achieve low instantaneous and cumulative regret under a fixed label budget, on the same prediction tensors and hidden labels used by all compared methods.
+A successful selector picks a best or near-best candidate early in the label acquisition process and keeps it, giving low cumulative regret over a 100-label budget, and does so across tasks with different numbers of candidates, difficulty and class balance (including an imbalanced task where simple baselines currently do better). It also picks a good candidate before any label is revealed. Labels are obtained only from the evaluator's oracle, one query per round, so every improvement is measured under the same annotation budget, the same candidate predictions and the same hidden labels for all methods.
 
 ---
 
@@ -52,29 +54,97 @@ The primary claim is that CODA reduces annotation effort for active model select
 
 # Evaluation
 
+## How a selector is evaluated
+
+A selector is a program registered in `outputs/selectors/<name>.json` as
+`{"command": ["python", "path/to/policy.py", ...]}` (use
+`bash scripts/register_selector.sh <name> <command...>`). The evaluator, not
+the selector, owns the labels. For each experiment and each of the seeds
+0–4 it starts the command once (working directory = repository root, one CPU
+core, at most 30 minutes per episode) and exchanges one JSON object per line
+over stdin/stdout:
+
+1. The evaluator sends the episode: the candidate pool's predicted classes
+   on every item of the pool (`predicted_classes`, H lists of N ints),
+   `num_classes`, the label `budget` (100, or 0 for zero-label experiments)
+   and the `seed`.
+2. In every round t = 0, 1, …, budget the selector sends
+   `{"select": k, "query": i}`: `k` is the model it selects having seen t
+   labels, `i` the next item whose label it wants, or `null` to stop
+   querying (its last selection is then held for every remaining round). At
+   round `budget` the query must be `null`.
+3. After each query the evaluator replies `{"label": y}`.
+
+`data/selection_protocol.py` implements the client side for any object with
+`select()`, `query()` and `observe(item, label)`.
+
+The evaluator records the selection of every round before it reveals the
+next label, counts the labels it reveals, and computes every metric itself
+from the labels it holds. Nothing else the selector prints or writes is
+read. A selector that crashes, times out, sends a malformed message or a
+non-integer / out-of-range index, queries an item twice or queries past the
+budget fails that experiment: it is scored as if it had selected the worst
+candidate in every round and spent the whole budget.
+
+## Slices
+
+- **SST2, QNLI and RTE are split.** Each task's items (for QNLI, a fixed
+  1200-item sample) are split into two halves balanced in class mix and
+  per-candidate error rate.
+  - The visible half, `data/benchmarks/<task>_train.json` (predictions and
+    labels), is scored by `scripts/evaluate_train.sh` and `scripts/evaluate.sh`.
+  - The held-out half is scored by `scripts/evaluate_test.sh`. Its labels are
+    not in the workspace.
+- **CoLA has no visible part.** Only its held-out half is used, by the
+  held-out test.
+
+In every held-out pool, candidate order and item order differ from any
+visible or public ordering, so nothing learned about particular candidate
+indices carries over. All slices use the same budgets, seeds, metrics and
+protocol.
+
 ## Metrics
 
-The primary metric is cumulative regret at 100 label queries. At each step, regret is the difference between the empirical 0-1 loss of the selected model and the empirical 0-1 loss of the true best model on the full benchmark labels. Lower is better.
+Regret in round t is the difference, in percentage points, between the 0-1
+error of the selected model on the pool and the error of the best candidate
+on that pool.
 
-Secondary metrics include instantaneous regret at step 100 and fixed-resource checks: the label budget, number of candidate models, and number of evaluated items.
+- `cumulative_regret_at_100` (primary): regret summed over rounds 1–100.
+- `cumulative_regret_at_25`, `cumulative_regret_at_50`: the same over the
+  first 25 / 50 rounds.
+- `initial_regret`: regret of the round-0 selection (no labels).
+- `instant_regret_at_50`, `instant_regret_at_100`: regret after round 50 /
+  100.
+- `near_optimal_at_100`: fraction of seeds whose round-100 selection is
+  within one percentage point of the best candidate.
+- `label_budget`: labels actually revealed (mean over seeds). Stopping early
+  saves labels; it can never exceed the budget.
 
-For zero-label selection, the metric is initial regret before any queried labels. It uses the same full benchmark labels only for scoring, not for method selection.
+Zero-label experiments use only `initial_regret` with a budget of 0.
 
-## Baselines and Targets
+Every metric is the mean over seeds 0–4. The ranking adds, for every
+experiment, its weight times each metric's coefficient (both in
+`scoring/reference.json`) times the change against the reference run in
+`scoring/scores_test.json`.
 
-The core reproduced benchmark uses GLUE RTE from the fixed ModelSelector-derived task suite. Reference targets are taken from the published active model selection tables:
+## Experiments and paper targets
 
-- Random sampling: cumulative regret 375.7 at step 100; instantaneous regret 1.2 at step 100.
-- Uncertainty sampling: cumulative regret 390.3 at step 100; instantaneous regret 0.0 at step 100.
-- Reference active selector: cumulative regret 283.8 at step 100; instantaneous regret 0.0 at step 100.
+| Experiment | Pool | Paper cumulative regret at 100 (random / uncertainty / reference selector) |
+|---|---|---|
+| `glue_sst2_active_selection` | 97 candidates, 436-item halves | 219.9 / 89.6 / 51.7 |
+| `glue_qnli_active_selection` | 90 candidates, 600-item halves of a 1200-item sample | 222.7 / 231.6 / 120.4 |
+| `glue_cola_active_selection` | 109 candidates, 521-item held-out half, imbalanced | 368.1 / 169.5 / 2226.7 |
+| `glue_rte_unsupervised_selection` | zero labels, 87 candidates, halves | initial regret 14.8 (ensemble validation and reference selector) |
+| `glue_sst2_unsupervised_selection` | zero labels, halves | initial regret 3.6 (both) |
 
-The secondary zero-label targets reproduced here are GLUE RTE initial regret 14.8 and GLUE SST2 initial regret 3.6 for both the reference zero-label selector and the unsupervised ensemble-validation baseline.
+The paper's numbers are full-pool values; the gym runs each task on half of
+its pool, so absolute values differ somewhat. On CoLA the paper's reference
+selector is far worse than both baselines; that experiment measures progress where the reference falls short.
 
-The next active expansion target is GLUE MRPC. Reference targets are cumulative regret 318.2 for random sampling, 301.1 for uncertainty sampling, and 49.0 for the reference active selector at a 100-label budget.
-
-## Evaluation Protocol
-
-Evaluation reads method-produced JSON traces from `outputs/coda/<task>/<method>/seed_*.json`. It does not call implementation code from `method/`. Each trace records the selected model at each active labeling step, and the evaluator aggregates metrics across seeds into `scoring/scores.json`.
+Registered baselines: `random` (random queries, empirical-risk selection),
+`uncertainty` (highest committee-entropy queries, empirical-risk selection;
+both break ties at random), and `ensv` (zero-label agreement with the
+committee majority).
 
 ---
 
@@ -466,6 +536,76 @@ Evaluation reads method-produced JSON traces from `outputs/coda/<task>/<method>/
 ### [2026-06-02 08:45] - secondary_claims
 - Final verification passed after the deterministic auxiliary split job completed successfully.
 - `python validate.py --compare` passes, download URLs were checked, and the workspace is ready for gym use.
+
+</details>
+
+### Iteration 11: claude-opus-5-5 (hardener)
+- **Milestone**: `secondary_claims` | **Status**: done
+- **Working time**: 40m | **GPU**: 0.0h
+- **Jobs**: 18 total (12 completed, 6 failed)
+
+<details>
+<summary>Progress Log</summary>
+
+### [2026-06-02 01:59] - secondary_claims
+- Active-selection core claim reproduced on GLUE RTE and GLUE SST2.
+- Zero-label unsupervised selection claim reproduced on GLUE RTE and GLUE SST2.
+- Prepared a follow-up GLUE MRPC active-selection run to broaden the benchmark.
+
+### [2026-06-02 02:01] - secondary_claims
+- Continuing-agent audit confirmed the implementation is CODA's consensus-driven active model selection algorithm rather than a surrogate.
+- `python validate.py --compare` passes for the completed RTE/SST2 active and zero-label experiments, and eval/data do not import from `method/`.
+- `scoring/TARGETS.md` includes GLUE MRPC active selection, but `scoring/scores.json` does not yet include it, so the MRPC CPU job is being submitted instead of marking the workspace done.
+
+### [2026-06-02 03:04] - secondary_claims
+- MRPC CPU job timed out after 3600 seconds, but completed random and uncertainty baselines plus CODA seeds 0, 1, and 2.
+- Added resume-safe seed skipping to the method runner and updated `scripts/run.sh` to finish missing CODA seeds 3 and 4.
+- Resubmitting a CPU continuation job to merge the completed five-seed MRPC result into `scoring/scores.json` and validate.
+
+### [2026-06-02 03:40] - secondary_claims
+- MRPC continuation completed CODA seeds 3 and 4 and produced a five-seed MRPC active-selection result.
+- Fixed the evaluator to emit only metrics declared for each experiment in `scoring/reference.json`, and removed its unnecessary NumPy dependency.
+- `python validate.py --compare` now passes with RTE, SST2, MRPC active selection plus RTE/SST2 zero-label selection.
+
+### [2026-06-02 04:25] - method_runs
+- Final audit found that the main evaluator should recompute regrets from fixed benchmark labels instead of trusting trace-written regret fields, and should score all declared experiments by default.
+- Aligned CODA's EIG acquisition with the released implementation's disagreement-candidate filter and removed the beta-PDF clipping approximation.
+- Because the query sequence changed, stale CODA scores are no longer final evidence; submitting a CPU rerun to regenerate corrected CODA traces and restore the highest supported milestone.
+
+### [2026-06-02 05:25] - method_runs
+- Corrective CPU rerun timed out after producing all five corrected GLUE RTE CODA traces and GLUE SST2 CODA seed 0.
+- Updating the run script to resume only GLUE SST2 seed 1 and regenerate GLUE MRPC CODA traces with a smaller quadrature grid so evaluation can finish inside the CPU job limit.
+
+### [2026-06-02 07:05] - method_runs
+- Resume job completed GLUE SST2 CODA seed 1 and one corrected GLUE MRPC CODA seed before another CPU timeout.
+- The next job is evaluation-only: it scores the completed corrected traces, including MRPC as a one-seed expansion, and runs train/test scoring plus validation.
+
+### [2026-06-02 07:50] - method_runs
+- Evaluation-only job wrote corrected main scores, but validation failed because the auxiliary train slice included zero-label comparisons where CODA and EnsV intentionally tie on the primary metric.
+- Train/test evaluators now default to active-selection experiments only; zero-label secondary claims remain scored by the main evaluator.
+- Resubmitting an evaluation-only CPU job to refresh train/test scores and rerun `python validate.py --compare`.
+
+### [2026-06-02 08:20] - secondary_claims
+- Evaluation-only rerun completed successfully and `python validate.py --compare` passed.
+- Corrected scores include RTE, SST2, and MRPC active selection plus RTE/SST2 zero-label selection.
+- Final verification restored the supported milestone to `secondary_claims`.
+
+### [2026-06-02 08:35] - secondary_claims
+- Fixed stricter validation by limiting auxiliary train/test scores to stable RTE/SST2 active-selection splits.
+- MRPC remains in main `scores.json`; it is excluded only from auxiliary split scoring because its one corrected CODA seed is unstable on half-splits.
+- `python validate.py` passes.
+
+### [2026-06-02 06:57] - secondary_claims
+- Removed runtime randomness from the auxiliary train/test split construction so hidden-slice scoring is fully deterministic and the validator no longer flags it as a regenerate-without-read pattern.
+- The main CODA scores and milestone are unchanged; submitting a CPU evaluation-only job to refresh auxiliary score files inside the packaged container.
+
+### [2026-06-02 08:45] - secondary_claims
+- Final verification passed after the deterministic auxiliary split job completed successfully.
+- `python validate.py --compare` passes, download URLs were checked, and the workspace is ready for gym use.
+
+### [2026-11-07 19:20] - secondary_claims
+- Hardening: evaluator-held label oracle, held-out halves whose answers live only in eval/test/, and shortcut fixes (see HARDENING.md).
+- Reference rerun on all seven GLUE tasks of Table 1 plus the zero-label experiments. CODA beats both baselines on SST2, MRPC, QQP and MNLI, beats random on QNLI, fails on CoLA as in the paper, and ties EnsV at zero labels. It loses on the small RTE half.
 
 </details>
 
